@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <!-- 第二頁全能搜尋框 -->
+      <!-- 全能搜尋框 (支援第三頁應備文件/條件檢索) -->
       <div class="relative w-full max-w-3xl mx-auto my-4" onclick="event.stopPropagation()">
         <div class="relative flex items-center">
           <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-lg"></i>
@@ -89,7 +89,7 @@
             id="searchInput" 
             oninput="handleSearchInput()" 
             onfocus="handleSearchInput()"
-            placeholder="搜尋項目或關鍵應備文件 (如: 民事判決、死亡診斷書、繼承系統表...)" 
+            placeholder="輸入關鍵書表或項目名稱 (如: 死亡診斷書、繼承系統表、民事判決、房屋稅單、48項扣繳單位...)" 
             class="w-full pl-12 pr-10 py-3.5 bg-white border-2 border-blue-400 rounded-full shadow-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-slate-800 text-base transition-all"
           >
           <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 text-slate-400 hover:text-slate-600">
@@ -97,7 +97,7 @@
           </button>
         </div>
 
-        <!-- 搜尋建議下拉選單 -->
+        <!-- 搜尋建議下拉選單 (顯示完整結構路徑) -->
         <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-96 overflow-y-auto custom-scrollbar">
           <ul id="searchResults" class="divide-y divide-slate-100">
             <!-- 動態注入搜尋結果 -->
@@ -253,19 +253,19 @@
 
       <!-- 條件選單卡片 -->
       <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-8 space-y-6">
-
-        <!-- 下拉選單：選擇身分／類別／業別 -->
+        
+        <!-- 下拉選單 2：選擇身分／類別 -->
         <div id="subGroup" class="space-y-2">
           <label id="identitySelectLabel" for="identitySelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
             <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>
-            請選擇身分／類別／業別：
+            請選擇申請人身分／案件類別：
           </label>
           <select id="identitySelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors">
             <!-- 動態生成選項 -->
           </select>
         </div>
 
-        <!-- 債權人執行名義選單 (僅債權人項目觸發) -->
+        <!-- 下拉選單 3：債權人執行名義選單 (僅債權人項目觸發) -->
         <div id="executionGroup" class="space-y-2 hidden">
           <label for="executionSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
             <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">2</span>
@@ -300,25 +300,18 @@
       <div id="resultBox" class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-6 md:p-8 shadow-md space-y-4">
         <h3 class="text-xl font-bold text-emerald-900 border-b border-emerald-200 pb-3 flex items-center gap-2">
           <i class="fa-solid fa-clipboard-check text-emerald-600"></i>
-          💼 臨櫃洽辦應檢核／攜帶書表清單：
+          臨櫃洽辦應檢核／攜帶書表清單：
         </h3>
-
-        <!-- 特別提醒／費用提示 -->
-        <div id="feeHint" class="hidden p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl font-bold text-sm leading-relaxed whitespace-pre-line"></div>
 
         <!-- 書表清單 -->
         <ul id="docList" class="space-y-3 text-slate-800 text-min-14">
           <!-- 動態載入 li -->
         </ul>
 
-        <!-- 一鍵複製功能按鈕 -->
-        <div class="pt-2 flex flex-wrap gap-4">
-          <button onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-5 rounded-xl shadow transition-all flex items-center gap-2">
-            <i class="fa-solid fa-copy"></i> 💼 複製清單內容
-          </button>
-        </div>
+        <!-- 特別備註 -->
+        <div id="specialNotes" class="hidden bg-white/80 p-4 rounded-xl border border-emerald-200 text-amber-800 text-sm leading-relaxed font-medium whitespace-pre-line"></div>
 
-        <!-- 注意事項 -->
+        <!-- 注意事項說明區 (針對48項特別顯示) -->
         <div id="alertInfoBox" class="hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
           <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
           <ul class="list-disc pl-5 space-y-1">
@@ -328,8 +321,12 @@
           </ul>
         </div>
 
-        <!-- 特別備註 -->
-        <div id="specialNotes" class="hidden bg-white/80 p-4 rounded-xl border border-emerald-200 text-amber-800 text-sm leading-relaxed font-medium"></div>
+        <!-- 一鍵複製功能按鈕 -->
+        <div class="pt-2 flex flex-wrap gap-4">
+          <button onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-5 rounded-xl shadow transition-all flex items-center gap-2">
+            <i class="fa-solid fa-copy"></i> 複製清單內容
+          </button>
+        </div>
 
         <!-- 流程圖圖片區 -->
         <div id="infoImgContainer" class="mt-4 text-center hidden">
@@ -352,7 +349,7 @@
     const STD_TAX = "所在地最近一期房屋稅單影本或房屋稅籍證明文件（如為承租房屋請加附租賃合約書影本）";
     const STD_EXAM = "考試及格證書/開業執照/執業執照";
 
-    // 48 項非營利事業扣繳單位完整資料集
+    // 48 項非營利事業扣繳單位完整資料集 (對應附件02內容)
     const official48Items = [
         { id: "1", name: "1. 律師或法律事務所", docs: [STD_EXAM, "公會核發之律師身分證明影本", STD_ID, STD_TAX], hint: "※ 事務所地址、電話、傳真異動者，應向公會陳報，取具「律師身分證明」文件。" },
         { id: "2", name: "2. 以合署方式經營之律師或法律事務所", docs: [STD_EXAM, "公會核發之律師身分證明影本", "合署契約書影本", "以合署方式經營之律師或法律事務所全體律師名冊影本", STD_ID, STD_TAX], hint: "※ 事務所中每位合署律師皆需分別編配統一編號。\n※ 扣繳單位名稱：「○○律師(或法律)事務所○○○律師」" },
@@ -446,7 +443,7 @@
         creditor_data: {
             title: "債權人查調債務人課稅資料查詢",
             options: [
-                { id: "creditor", name: "債權人本人或代理人", docs: ['債權人查調債務人財產及所得資料申請書<a href="https://www.etax.nat.gov.tw/etwmain/etw212w/detail/8757297469441906833" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>',"債權人身分證正本（營利事業檢附主管機關核准設立文件影本與負責人身分證正本）"] }
+                { id: "creditor", name: "債權人本人或代理人", docs: ['債權人查調債務人財產及所得資料申請書<a href="https://www.etax.nat.gov.tw/etwmain/etw212w/detail/8757297469441906833" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>','債權人身分證正本（營利事業檢附主管機關核准設立文件影本與負責人身分證正本）'] }
             ]
         },
         tax_status: {
@@ -494,45 +491,62 @@
         }
     };
 
+    // 精準優化：擴充深層搜尋資料庫，針對第三頁網頁攜帶書表與細節內容編列關鍵字，排除籠統干擾
     const deepSearchDatabase = [
-      { path: "查詢作業 > 1. 各稅核定資料", key: "tax_history", isReady: true },
-      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", key: "tax_arrears", isReady: true },
-      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", key: "income_list", isReady: true },
-      { path: "查詢作業 > 4. 個人財產歸戶資料查詢", key: "property_list", isReady: true },
-      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", key: "deceased_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", key: "creditor_data", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 核定通知書、各稅繳納證明", key: "tax_history", isReady: true },
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 欠稅查詢、退稅資料", key: "tax_arrears", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 所得清單、扣繳憑單清單", key: "income_list", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 財產歸戶、全國財產清單", key: "property_list", isReady: true },
       
-      // 新增：債權人各執行名義特殊字詞檢索路徑（排除身分證等籠統內容）
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關民事判決暨確定證明書", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關支付命令暨確定證明書", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關債權憑證", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關本票准予強制執行民事裁定", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 假扣押、假處分、假執行裁判 (收受裁定未逾30日)", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 法院成立之和解筆錄或調解筆錄", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 經法院核定之鄉鎮市調解委員會調解書", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 依公證法得為強制執行之公證書", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 訴訟費用額裁定暨確定證明書", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 仲裁判斷書及法院准許執行裁定書（約定免裁定者免附）", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 依其他法律規定得為強制執行之名義", key: "creditor_data", isReady: true },
+      // 第5項：精準納入第三頁重要書表關鍵字（死亡診斷書、戶口名簿、親屬關係證明、繼承系統表、駐外機構簽證）
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 死亡診斷書、載有死亡日期戶口名簿", key: "deceased_data", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 親屬關係證明文件、詳細記事戶籍謄本", key: "deceased_data", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承系統表（加蓋申請人印章）", key: "deceased_data", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 國外證明文件、駐外機構簽證正本", key: "deceased_data", isReady: true },
 
-      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", key: "tax_status", isReady: true },
-      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", key: "small_business", isReady: true },
-      { path: "查詢作業 > 9. 各類申辦案件作業進度查詢", key: "case_progress", isReady: true },
-      { path: "查詢作業 > 10. 營業人暨扣繳單位稅籍查詢", key: "business_reg", isReady: true },
-      { path: "查詢作業 > 11. 全國贈與資料查詢", key: "gift_tax", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人查調債務人財產及所得資料申請書", key: "creditor_data", isReady: true },
+      
+      // 債權人執行名義各類專用關鍵字（精準指向第三頁執行名義清單）
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關民事判決暨確定證明書", key: "creditor_data", targetExecution: "court_judgment", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關支付命令暨確定證明書", key: "creditor_data", targetExecution: "payment_order", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關債權憑證", key: "creditor_data", targetExecution: "creditor_cert", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 司法機關本票准予強制執行民事裁定", key: "creditor_data", targetExecution: "promissory_note", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 假扣押、假處分、假執行裁判 (收受裁定未逾30日)", key: "creditor_data", targetExecution: "provisional_injunction", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 法院成立之和解筆錄或調解筆錄", key: "creditor_data", targetExecution: "court_settlement", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 經法院核定之鄉鎮市調解委員會調解書", key: "creditor_data", targetExecution: "town_mediation", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 依公證法得為強制執行之公證書", key: "creditor_data", targetExecution: "notary_public", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 訴訟費用額裁定暨確定證明書", key: "creditor_data", targetExecution: "litigation_costs", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 仲裁判斷書及法院准許執行裁定書", key: "creditor_data", targetExecution: "arbitration", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 依其他法律規定得為強制執行之名義", key: "creditor_data", targetExecution: "other_law", isReady: true },
 
-      { path: "申辦作業 > 1. 遺產稅延期申報", key: "apply_1", isReady: false },
-      { path: "申辦作業 > 2. 贈與稅延期申報", key: "apply_2", isReady: false },
-      { path: "申辦作業 > 3. 扣繳單位設立、變更登記（統一編號編配）", key: "withholding_setup", isReady: true },
-      { path: "申辦作業 > 4. 查調即時通知", key: "apply_4", isReady: false },
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 綜所稅稅籍資料", key: "tax_status", isReady: true },
+      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢 > 營業額核定資料、主管機關核准設立文件", key: "small_business", isReady: true },
+      { path: "查詢作業 > 9. 各類申辦案件作業進度查詢 > 申辦進度查詢", key: "case_progress", isReady: true },
+      { path: "查詢作業 > 10. 營業人暨扣繳單位稅籍查詢 > 營業人稅籍、統一編號查詢", key: "business_reg", isReady: true },
+      { path: "查詢作業 > 11. 全國贈與資料查詢 > 贈與資料查詢", key: "gift_tax", isReady: true },
 
-      // 將 48 項扣繳單位分別建立檢索路徑
+      // 動態將 48 項扣繳單位完整加入深層搜尋資料庫（包含其攜帶書表特徵）
       ...official48Items.map(item => ({
         path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
         key: "withholding_setup",
         targetIdentity: item.id,
         isReady: true
-      }))
+      })),
+
+      { path: "申辦作業 > 1. 遺產稅延期申報", key: "apply_1", isReady: false },
+      { path: "申辦作業 > 2. 贈與稅延期申報", key: "apply_2", isReady: false },
+      { path: "申辦作業 > 4. 查調即時通知", key: "apply_4", isReady: false },
+
+      { path: "核發書證 > 1. 各項稅款補發稅單", key: "cert_1", isReady: false },
+      { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書", key: "cert_2", isReady: false },
+      { path: "核發書證 > 3. 儲蓄免扣證", key: "cert_3", isReady: false },
+      { path: "核發書證 > 4. 中 (英) 文綜合所得稅納稅證明書", key: "cert_4", isReady: false },
+      { path: "核發書證 > 5. 核發違章欠稅查復表", key: "cert_5", isReady: false },
+      { path: "核發書證 > 6. 核發扣繳稅繳納證明", key: "cert_6", isReady: false },
+      { path: "核發書證 > 7. 補發遺產稅證明書", key: "cert_7", isReady: false },
+      { path: "核發書證 > 8. 補發贈與稅證明書", key: "cert_8", isReady: false },
+      { path: "核發書證 > 9. 核發繳稅證明", key: "cert_9", isReady: false },
+      { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所所得稅繳納證明書", key: "cert_10", isReady: false }
     ];
 
     let currentSelectedItemKey = "";
@@ -562,6 +576,7 @@
       alert('該項目第三頁功能建置中，敬請期待！');
     }
 
+    /* 搜尋引擎處理邏輯 */
     function handleSearchInput() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
       const clearBtn = document.getElementById('clearSearchBtn');
@@ -574,6 +589,7 @@
         clearBtn.classList.add('hidden');
       }
 
+      // 篩選包含關鍵字的完整結構路徑
       const matches = deepSearchDatabase.filter(item => item.path.toLowerCase().includes(query));
 
       if (matches.length > 0 && query !== '') {
@@ -601,7 +617,7 @@
             document.getElementById('searchInput').value = item.path;
             closeAllDropdowns();
             if (item.isReady) {
-              selectItem(item.key, item.targetIdentity);
+              selectItem(item.key, item.targetIdentity, item.targetExecution);
             } else {
               showBuildingAlert();
             }
@@ -622,18 +638,19 @@
     }
 
     function closeAllDropdowns() {
-      const drop1 = document.getElementById('searchDropdown');
-      if (drop1) drop1.classList.add('hidden');
+      document.getElementById('searchDropdown').classList.add('hidden');
     }
 
-    function selectItem(itemKey, targetIdentity = null) {
+    function selectItem(itemKey, targetIdentity = null, targetExecution = null) {
       currentSelectedItemKey = itemKey;
       const data = systemData[itemKey];
 
       if (!data) return;
 
+      // 更新第三頁標題
       document.getElementById('selectedItemTitle').textContent = data.title;
 
+      // 動態寫入下拉選單 2 (身分/類別)
       const identitySelect = document.getElementById("identitySelect");
       identitySelect.innerHTML = "";
       data.options.forEach(opt => {
@@ -643,48 +660,63 @@
           identitySelect.appendChild(optionElem);
       });
 
+      // 若為 48 項扣繳單位，調整標題文字與代理人文字
+      const identityLabel = document.getElementById("identitySelectLabel");
+      const agentGroupText = document.getElementById("agentGroupText");
+      if (itemKey === "withholding_setup") {
+          identityLabel.innerHTML = '<span class="w-7 h-7 bg-indigo-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>請選擇申辦單位／事務所類別：';
+          agentGroupText.textContent = '委託他人代理申辦（委任辦理請勾選）';
+      } else {
+          identityLabel.innerHTML = '<span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>請選擇申請人身分／案件類別：';
+          agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
+      }
+
+      // 若有搜尋指定的身份類別，自動選擇該選項
       if (targetIdentity) {
         identitySelect.value = targetIdentity;
       }
 
+      // 判斷是否顯示債權人執行名義選單
       const executionGroup = document.getElementById("executionGroup");
+      const executionSelect = document.getElementById("executionSelect");
+
       if (itemKey === "creditor_data") {
           executionGroup.classList.remove("hidden");
+          if (targetExecution) {
+            executionSelect.value = targetExecution;
+          }
       } else {
           executionGroup.classList.add("hidden");
       }
 
-      const alertInfoBox = document.getElementById("alertInfoBox");
-      const identitySelectLabel = document.getElementById("identitySelectLabel");
-      const agentGroupText = document.getElementById("agentGroupText");
-
-      if (itemKey === "withholding_setup") {
-          alertInfoBox.classList.remove("hidden");
-          identitySelectLabel.innerHTML = '<span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span> 請選擇扣繳單位類別／事務所別：';
-          agentGroupText.textContent = "委託他人代理辦理（委任辦理請勾選，並加附委任書）";
-      } else {
-          alertInfoBox.classList.add("hidden");
-          identitySelectLabel.innerHTML = '<span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span> 請選擇申請人身分／案件類別：';
-          agentGroupText.textContent = "委託他人代理辦理（委任辦理請勾選）";
-      }
-
+      // 重設代理人勾選
       document.getElementById("isAgent").checked = false;
 
+      // 切換至第三頁並渲染結果
       goToStep(3);
       renderChecklist();
     }
 
     function getIdText(type, isAgent, role = "") {
         const roleText = role ? `（${role}）` : "";
+        
         switch (type) {
             case "ID_CARD":
-                return isAgent ? `需帶申請人${roleText}身分證正本或正反面影本` : `請攜帶申請人${roleText}身分證正本`;
+                return isAgent 
+                    ? `需帶申請人${roleText}身分證正本或正反面影本` 
+                    : `請攜帶申請人${roleText}身分證正本`;
             case "ID_CARD_RESPONSIBLE":
-                return isAgent ? `需帶申請人（負責人）身分證正本或正反面影本` : `請攜帶申請人（負責人）身分證正本`;
+                return isAgent 
+                    ? `需帶申請人（負責人）身分證正本或正反面影本` 
+                    : `請攜帶申請人（負責人）身分證正本`;
             case "ID_CARD_WITH_STAMP":
-                return isAgent ? `需帶申請人${roleText}身分證正本或正反面影本及印章` : `請攜帶申請人${roleText}身分證正本及印章`;
+                return isAgent 
+                    ? `需帶申請人${roleText}身分證正本或正反面影本及印章` 
+                    : `請攜帶申請人${roleText}身分證正本及印章`;
             case "ID_CARD_PROOF":
-                return isAgent ? `需帶申請人身分證正本或正反面影本或證明文件` : `請攜帶申請人身分證正本或證明文件`;
+                return isAgent 
+                    ? `需帶申請人身分證正本或正反面影本或證明文件` 
+                    : `請攜帶申請人身分證正本或證明文件`;
             default:
                 return type;
         }
@@ -699,18 +731,20 @@
         
         const docList = document.getElementById("docList");
         const specialNotes = document.getElementById("specialNotes");
+        const alertInfoBox = document.getElementById("alertInfoBox");
         const infoImgContainer = document.getElementById("infoImgContainer");
         const infoImg = document.getElementById("infoImg");
-        const feeHint = document.getElementById("feeHint");
 
         const itemData = systemData[currentSelectedItemKey];
         if (!itemData) return;
 
         const selectedOpt = itemData.options.find(opt => opt.id === identityVal) || itemData.options[0];
+
         if (!selectedOpt) return;
 
         let docs = [];
 
+        // 轉換並解析文件清單內容
         selectedOpt.docs.forEach(docKey => {
             if (docKey.startsWith("ID_CARD")) {
                 docs.push(getIdText(docKey, isAgent, selectedOpt.role));
@@ -719,11 +753,13 @@
             }
         });
 
+        // 債權人項目：帶入選項內容
         if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
             const executionText = executionSelect.options[executionSelect.selectedIndex].text;
             docs.push(executionText);
         }
 
+        // 代理人勾選擴充項目
         if (isAgent) {
             docs.push("代理人國民身分證正本");
             docs.push('申請人（或委託人）授權委託書正本<a href="https://www.etax.nat.gov.tw/etwmain/etw212w" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>');
@@ -737,14 +773,19 @@
             docList.appendChild(li);
         });
 
-        if (selectedOpt.note && selectedOpt.note.trim() !== "") {
-            feeHint.textContent = selectedOpt.note;
-            feeHint.classList.remove("hidden");
+        if (selectedOpt.note) {
+            specialNotes.textContent = selectedOpt.note;
+            specialNotes.classList.remove("hidden");
         } else {
-            feeHint.classList.add("hidden");
+            specialNotes.classList.add("hidden");
         }
 
-        specialNotes.classList.add("hidden");
+        // 如果是 48 項扣繳單位，顯示注意事項方塊
+        if (currentSelectedItemKey === "withholding_setup") {
+            alertInfoBox.classList.remove("hidden");
+        } else {
+            alertInfoBox.classList.add("hidden");
+        }
 
         if (selectedOpt.img) {
             infoImg.src = selectedOpt.img;
@@ -767,7 +808,7 @@
         text += "• 查詢項目：" + itemData.title + "\n";
         
         if (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
-            text += "• 申請人/單位身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
+            text += "• 選擇對象/身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
         }
         if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
             text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
@@ -781,6 +822,7 @@
         const docListItems = document.querySelectorAll("#docList li span");
         docListItems.forEach(item => {
             let clone = item.cloneNode(true);
+            
             const links = clone.querySelectorAll("a");
             links.forEach(a => {
                 const linkUrl = a.href;
@@ -789,12 +831,13 @@
                     a.parentNode.replaceChild(textNode, a);
                 }
             });
+
             text += "✔ " + clone.textContent + "\n";
         });
 
-        const feeHint = document.getElementById("feeHint");
-        if (!feeHint.classList.contains("hidden") && feeHint.textContent.trim() !== "") {
-            text += "\n" + feeHint.textContent + "\n";
+        const specialNotes = document.getElementById("specialNotes");
+        if (!specialNotes.classList.contains("hidden") && specialNotes.textContent.trim() !== "") {
+            text += "\n" + specialNotes.textContent + "\n";
         }
 
         return text;
