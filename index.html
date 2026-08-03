@@ -809,25 +809,34 @@
         const executionSelect = document.getElementById("executionSelect");
         const isAgent = document.getElementById("isAgent").checked;
 
-        let text = "";
-        if (currentSelectedItemKey === "withholding_setup") {
-            const selectedText = identitySelect.options[identitySelect.selectedIndex].text;
-            text = `【國稅局設籍文件檢核 - ${selectedText}】\n\n`;
-        } else {
-            text = "📌 【申請項目與條件】\n";
-            text += "• 查詢項目：" + itemData.title + "\n";
-            
-            if (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
-                text += "• 選擇對象/身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
-            }
-            if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
-                text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
-            }
-            if (isAgent) {
-                text += "• 辦理方式：委託他人代理辦理\n";
-            }
-            text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
+        const isWithholding = (currentSelectedItemKey === "withholding_setup");
+
+        // 判斷系統分類前綴
+        let systemHeader = "【國稅申辦作業系統】";
+        if (!isWithholding) {
+            // 如果不是扣繳單位（例如屬於查詢項目），可以根據實際需要切換，預設依查詢作業範本
+            systemHeader = "【國稅查詢作業系統】";
         }
+
+        let text = `${systemHeader}\n\n`;
+        text += "📌 【申請項目與條件】\n";
+        text += "• 查詢項目：" + itemData.title;
+        
+        if (isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
+            text += " - " + identitySelect.options[identitySelect.selectedIndex].text;
+        }
+        text += "\n";
+
+
+        if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
+            text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
+        }
+
+        if (isAgent) {
+            text += "• 辦理方式：委託他人代理辦理\n";
+        }
+
+        text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
         
         const docListItems = document.querySelectorAll("#docList li span");
         docListItems.forEach(item => {
