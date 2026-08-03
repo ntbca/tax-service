@@ -311,7 +311,14 @@
         <!-- 特別備註 -->
         <div id="specialNotes" class="hidden bg-white/80 p-4 rounded-xl border border-emerald-200 text-amber-800 text-sm leading-relaxed font-medium whitespace-pre-line"></div>
 
-        <!-- 注意事項說明區 (針對48項特別顯示) -->
+        <!-- 一鍵複製功能按鈕 -->
+        <div class="pt-2 flex flex-wrap gap-4">
+          <button onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-5 rounded-xl shadow transition-all flex items-center gap-2">
+            <i class="fa-solid fa-copy"></i> 複製清單內容
+          </button>
+        </div>
+
+        <!-- 注意事項說明區 (針對48項特別顯示，已依需求移至複製按鈕下方) -->
         <div id="alertInfoBox" class="hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
           <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
           <ul class="list-disc pl-5 space-y-1">
@@ -319,13 +326,6 @@
             <li>外國營利事業在我國境內未設分支機構，而委託本國營利事業為營業代理人，該營業代理人無須辦理營業登記，但應向該管稽徵機關報備(所轄國稅局)。</li>
             <li>律師、會計師、地政士、記帳士、技師、建築師、醫師診所、不動產估價師、保險經紀人及專利師等，申請編配統一編號時<b>免檢附加入同業公會之證明文件</b>。</li>
           </ul>
-        </div>
-
-        <!-- 一鍵複製功能按鈕 -->
-        <div class="pt-2 flex flex-wrap gap-4">
-          <button onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-5 rounded-xl shadow transition-all flex items-center gap-2">
-            <i class="fa-solid fa-copy"></i> 複製清單內容
-          </button>
         </div>
 
         <!-- 流程圖圖片區 -->
@@ -482,9 +482,8 @@
                 id: item.id,
                 name: item.name,
                 docs: [
-                    '填寫「扣繳單位設立（變更）登記申請書」並加蓋扣繳單位、負責人及扣繳義務人印章',
-                    ...item.docs,
-                    '負責人及扣繳義務人國民身分證正本、影本及印章'
+                    '填寫「扣繳單位設立（變更）登記申請書-統一編號編配通知書（一式三份，請加蓋扣繳單位章及負責人章）」 <a href="https://www.etax.nat.gov.tw/etwmain/etw212w/detail/5091161354246138343" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a><br><span class="text-xs text-slate-500 font-normal">如為變更或註銷登記者，請繳回原統一編配通知書正本（若遺失需附切結書）</span>',
+                    ...item.docs
                 ],
                 note: item.hint
             }))
@@ -664,8 +663,8 @@
       const identityLabel = document.getElementById("identitySelectLabel");
       const agentGroupText = document.getElementById("agentGroupText");
       if (itemKey === "withholding_setup") {
-          identityLabel.innerHTML = '<span class="w-7 h-7 bg-indigo-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>請選擇申辦單位／事務所類別：';
-          agentGroupText.textContent = '委託他人代理申辦（委任辦理請勾選）';
+          identityLabel.innerHTML = '<span class="w-7 h-7 bg-indigo-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>請選擇業別 (共 48 項)：';
+          agentGroupText.textContent = '委託代理人申請(委託他人代辦請勾選)';
       } else {
           identityLabel.innerHTML = '<span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>請選擇申請人身分／案件類別：';
           agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
@@ -759,10 +758,16 @@
             docs.push(executionText);
         }
 
-        // 代理人勾選擴充項目
+        // 代理人勾選擴充項目 (若為 48 項專用，對齊附件內容)
         if (isAgent) {
-            docs.push("代理人國民身分證正本");
-            docs.push('申請人（或委託人）授權委託書正本<a href="https://www.etax.nat.gov.tw/etwmain/etw212w" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>');
+            if (currentSelectedItemKey === "withholding_setup") {
+                docs.push('申請人（或委託人）授權委託書正本<a href="https://www.etax.nat.gov.tw/etwmain/etw212w" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>');
+                docs.push('申請人身分證正反面影本或正本');
+                docs.push('代理人國民身分證正本');
+            } else {
+                docs.push("代理人國民身分證正本");
+                docs.push('申請人（或委託人）授權委託書正本<a href="https://www.etax.nat.gov.tw/etwmain/etw212w" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>');
+            }
         }
 
         docList.innerHTML = "";
@@ -804,20 +809,25 @@
         const executionSelect = document.getElementById("executionSelect");
         const isAgent = document.getElementById("isAgent").checked;
 
-        let text = "📌 【申請項目與條件】\n";
-        text += "• 查詢項目：" + itemData.title + "\n";
-        
-        if (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
-            text += "• 選擇對象/身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
+        let text = "";
+        if (currentSelectedItemKey === "withholding_setup") {
+            const selectedText = identitySelect.options[identitySelect.selectedIndex].text;
+            text = `【國稅局設籍文件檢核 - ${selectedText}】\n\n`;
+        } else {
+            text = "📌 【申請項目與條件】\n";
+            text += "• 查詢項目：" + itemData.title + "\n";
+            
+            if (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
+                text += "• 選擇對象/身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
+            }
+            if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
+                text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
+            }
+            if (isAgent) {
+                text += "• 辦理方式：委託他人代理辦理\n";
+            }
+            text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
         }
-        if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
-            text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
-        }
-        if (isAgent) {
-            text += "• 辦理方式：委託他人代理辦理\n";
-        }
-
-        text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
         
         const docListItems = document.querySelectorAll("#docList li span");
         docListItems.forEach(item => {
@@ -832,7 +842,10 @@
                 }
             });
 
-            text += "✔ " + clone.textContent + "\n";
+            const brs = clone.querySelectorAll('br');
+            brs.forEach(br => br.replaceWith('\n'));
+
+            text += "✔ " + clone.innerText.trim() + "\n";
         });
 
         const specialNotes = document.getElementById("specialNotes");
