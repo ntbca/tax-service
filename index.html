@@ -577,6 +577,17 @@
 
     // 完整的深層檢索資料庫
     const deepSearchDatabase = [
+      { path: "查詢作業 > 1. 各稅核定資料", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料"], key: "tax_history", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢"], key: "tax_arrears", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人綜合所得稅各類所得資料清單查詢", "所得清單"], key: "income_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人財產歸戶資料查詢", "財產歸戶"], key: "property_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人財產、所得及贈與資料查詢", "被繼承人資料"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人課稅資料查詢", "債權人查調"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢", "綜所稅稅籍"], key: "tax_status", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業"], key: "small_business", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 10. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與資料查詢"], key: "gift_tax", targetIdentity: "donor", isReady: true },
+
       { path: "查詢作業 > 1. 各稅核定資料 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 營利事業", "營利事業核定資料", "公司各稅核定"], key: "tax_history", targetIdentity: "corp_biz", isReady: true },
       { path: "查詢作業 > 1. 各稅核定資料 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 機關團體", "機關團體核定資料"], key: "tax_history", targetIdentity: "corp_group", isReady: true },
 
@@ -615,17 +626,6 @@
       { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢 > 營利事業或扣繳單位", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢", "扣繳單位稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
 
       { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與人查詢", "贈與查詢", "全國贈與"], key: "gift_tax", targetIdentity: "donor", isReady: true },
-
-      { path: "查詢作業 > 1. 各稅核定資料", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料"], key: "tax_history", targetIdentity: "indiv", isReady: true },
-      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢"], key: "tax_arrears", targetIdentity: "indiv", isReady: true },
-      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人綜合所得稅各類所得資料清單查詢", "所得清單"], key: "income_list", targetIdentity: "citizen", isReady: true },
-      { path: "查詢作業 > 4. 個人財產歸戶資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人財產歸戶資料查詢", "財產歸戶"], key: "property_list", targetIdentity: "citizen", isReady: true },
-      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人財產、所得及贈與資料查詢", "被繼承人資料"], key: "deceased_data", targetIdentity: "successor", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人課稅資料查詢", "債權人查調"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
-      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢", "綜所稅稅籍"], key: "tax_status", targetIdentity: "indiv", isReady: true },
-      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業"], key: "small_business", targetIdentity: "corp", isReady: true },
-      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
-      { path: "查詢作業 > 10. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與資料查詢"], key: "gift_tax", targetIdentity: "donor", isReady: true },
 
       { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["遺產稅延期申報"], isReady: false },
       { path: "申辦作業 > 2. 贈與稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["贈與稅延期申報"], isReady: false },
