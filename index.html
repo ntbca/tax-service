@@ -146,16 +146,13 @@
               <span>8. 小規模營利事業營業額核定資料查詢 <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span></span>
               <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('case_progress')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>9. 各類申辦案件作業進度查詢 <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
-            </a>
+           
             <a href="javascript:void(0)" onclick="selectItem('business_reg')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>10. 營業人暨扣繳單位稅籍查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
+              <span>9. 營業人暨扣繳單位稅籍查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
               <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
             </a>
             <a href="javascript:void(0)" onclick="selectItem('gift_tax')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>11. 全國贈與資料查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
+              <span>10. 全國贈與資料查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
               <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
             </a>
           </div>
@@ -443,7 +440,7 @@
         creditor_data: {
             title: "債權人查調債務人課稅資料查詢",
             options: [
-                { id: "creditor", name: "債權人本人或代理人", docs: ['債權人查調債務人財產及所得資料申請書<a href="https://www.etax.nat.gov.tw/etwmain/etw212w/detail/8757297469441906833" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>','債權人身分證正本（營利事業檢附主管機關核准設立文件影本與負責人身分證正本）'] }
+                { id: "creditor", name: "債權人本人或代理人", docs: ['債權人查調債務人財產及所得資料申請書','債權人身分證正本（營利事業檢附主管機關核准設立文件影本與負責人身分證正本）'] }
             ]
         },
         tax_status: {
@@ -482,7 +479,7 @@
                 id: item.id,
                 name: item.name,
                 docs: [
-                    '填寫「扣繳單位設立（變更）登記申請書-統一編號編配通知書（一式三份，請加蓋扣繳單位章及負責人章）」 <a href="https://www.etax.nat.gov.tw/etwmain/etw212w/detail/5091161354246138343" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a><br><span class="text-xs text-slate-500 font-normal">如為變更或註銷登記者，請繳回原統一編配通知書正本（若遺失需附切結書）</span>',
+                    '填寫「扣繳單位設立（變更）登記申請書-統一編號編配通知書（一式三份，請加蓋扣繳單位章及負責人章）」'<br><span class="text-xs text-slate-500 font-normal">如為變更或註銷登記者，請繳回原統一編配通知書正本（若遺失需附切結書）</span>',
                     ...item.docs
                 ],
                 note: item.hint
@@ -761,12 +758,12 @@
         // 代理人勾選擴充項目 (若為 48 項專用，對齊附件內容)
         if (isAgent) {
             if (currentSelectedItemKey === "withholding_setup") {
-                docs.push('申請人（或委託人）授權委託書正本<a href="https://www.etax.nat.gov.tw/etwmain/etw212w" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>');
+                docs.push('申請人（或委託人）授權委託書正本');
                 docs.push('申請人身分證正反面影本或正本');
                 docs.push('代理人國民身分證正本');
             } else {
                 docs.push("代理人國民身分證正本");
-                docs.push('申請人（或委託人）授權委託書正本<a href="https://www.etax.nat.gov.tw/etwmain/etw212w" target="_blank" class="text-blue-600 underline font-bold hover:text-blue-800 ml-1">（點選可至稅務入口網下載）</a>');
+                docs.push('申請人（或委託人）授權委託書正本');
             }
         }
 
