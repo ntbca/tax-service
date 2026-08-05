@@ -502,19 +502,70 @@
         }
     };
 
-    const deepSearchDatabase = [
-      { path: "查詢作業 > 1. 各稅核定資料", key: "tax_history", isReady: true },
-      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", key: "tax_arrears", isReady: true },
-      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", key: "income_list", isReady: true },
-      { path: "查詢作業 > 4. 個人財產歸戶資料查詢", key: "property_list", isReady: true },
-      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", key: "deceased_data", isReady: true },
-      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", key: "creditor_data", isReady: true },
-      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", key: "tax_status", isReady: true },
-      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", key: "small_business", isReady: true },
-      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", key: "business_reg", isReady: true },
-      { path: "查詢作業 > 10. 全國贈與資料查詢", key: "gift_tax", isReady: true },
+   const deepSearchDatabase = [
+      { 
+        path: "查詢作業 > 1. 各稅核定資料", 
+        keywords: ["各稅核定資料", "經濟部最新核准函影本", "變更登記表影本", "商業登記抄本影本", "法人登記證", "立案證書", "開業執照", "執業執照"], 
+        key: "tax_history", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", 
+        keywords: ["納稅欠稅及退稅資料查詢", "經濟部最新核准函影本", "變更登記表影本", "商業登記抄本影本", "法人登記證", "立案證書", "開業執照", "執業執照"], 
+        key: "tax_arrears", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", 
+        keywords: ["個人綜合所得稅各類所得資料清單查詢", "護照正本", "居留證正本", "臺灣地區入出境許可證", "詳細記事戶口名簿", "詳細記事戶籍謄本"], 
+        key: "income_list", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 4. 個人財產歸戶資料查詢", 
+        keywords: ["個人財產歸戶資料查詢", "財產歸戶", "護照正本", "居留證正本", "臺灣地區入出境許可證", "詳細記事戶口名簿", "詳細記事戶籍謄本"], 
+        key: "property_list", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", 
+        keywords: ["被繼承人財產、所得及贈與資料查詢", "被繼承人除戶謄本", "死亡診斷證明書", "親屬關係證明文件", "繼承系統表正本"], 
+        key: "deceased_data", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", 
+        keywords: ["債權人查調債務人課稅資料查詢", "債權人查調債務人財產及所得資料申請書"], 
+        key: "creditor_data", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 7. 綜合所得稅稅籍查詢", 
+        keywords: ["綜合所得稅稅籍查詢", "臺灣地區入出境許可證", "居留證正本"], 
+        key: "tax_status", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", 
+        keywords: ["小規模營利事業營業額核定資料查詢", "主管機關核准設立文件影本"], 
+        key: "small_business", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", 
+        keywords: ["營業人暨扣繳單位稅籍查詢", "主管機關核准設立文件影本"], 
+        key: "business_reg", 
+        isReady: true 
+      },
+      { 
+        path: "查詢作業 > 10. 全國贈與資料查詢", 
+        keywords: ["全國贈與資料查詢", "贈與人"], 
+        key: "gift_tax", 
+        isReady: true 
+      },
       ...official48Items.map(item => ({
         path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
+        keywords: [item.name, ...item.docs.filter(d => !d.includes("身分證"))],
         key: "withholding_setup",
         targetIdentity: item.id,
         isReady: true
@@ -557,7 +608,7 @@
       alert('該項目第三頁功能建置中，敬請期待！');
     }
 
-    function handleSearchInput() {
+function handleSearchInput() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
       const clearBtn = document.getElementById('clearSearchBtn');
       const dropdown = document.getElementById('searchDropdown');
@@ -569,7 +620,10 @@
         clearBtn.classList.add('hidden');
       }
 
-      const matches = deepSearchDatabase.filter(item => item.path.toLowerCase().includes(query));
+      // 修正：比對 keywords 陣列，只要其中一個關鍵字包含 query 即可
+      const matches = deepSearchDatabase.filter(item => 
+        item.keywords.some(kw => kw.toLowerCase().includes(query))
+      );
 
       if (matches.length > 0 && query !== '') {
         resultsList.innerHTML = '';
@@ -579,6 +633,7 @@
           li.innerHTML = `
             <div class="flex items-center gap-3">
               <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm flex-shrink-0"></i>
+              <!-- 下拉選單顯示維持乾淨，只到第二欄 path -->
               <span class="font-medium text-slate-800 text-min-14 leading-tight">${item.path}</span>
             </div>
           `;
