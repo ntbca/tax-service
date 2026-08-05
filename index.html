@@ -915,21 +915,72 @@
         const itemData = systemData[currentSelectedItemKey];
         if (!itemData) return "";
 
-        let text = "【國稅作業系統清單】\n\n";
-        text += "• 項目：" + itemData.title + "\n";
-        text += "• 應備文件：\n";
+        const identitySelect = document.getElementById("identitySelect");
+        const executionSelect = document.getElementById("executionSelect");
+        const isAgent = document.getElementById("isAgent").checked;
+
+        const isWithholding = (currentSelectedItemKey === "withholding_setup");
+
+        // 判斷系統分類前綴
+        let systemHeader = "【國稅申辦作業系統】";
+        if (!isWithholding) {
+            // 如果不是扣繳單位（例如屬於查詢項目），可以根據實際需要切換，預設依查詢作業範本
+            systemHeader = "【國稅查詢作業系統】";
+        }
+
+        let text = `${systemHeader}\n\n`;
+        text += "📌 【申請項目與條件】\n";
+        text += "• 查詢項目：" + itemData.title;
+        
+        if (isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
+            text += " - " + identitySelect.options[identitySelect.selectedIndex].text;
+        }
+        text += "\n";
+
+
+        if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
+            text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
+        }
+
+        if (isAgent) {
+            text += "• 辦理方式：委託他人代理辦理\n";
+        }
+
+        text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
         
         const docListItems = document.querySelectorAll("#docList li span");
         docListItems.forEach(item => {
-            text += "✔ " + item.innerText.trim() + "\n";
+            let clone = item.cloneNode(true);
+            
+            const links = clone.querySelectorAll("a");
+            links.forEach(a => {
+                const linkUrl = a.href;
+                if (linkUrl) {
+                    const textNode = document.createTextNode(` ( 連結：${linkUrl} )`);
+                    a.parentNode.replaceChild(textNode, a);
+                }
+            });
+
+            const brs = clone.querySelectorAll('br');
+            brs.forEach(br => br.replaceWith('\n'));
+
+            text += "✔ " + clone.innerText.trim() + "\n";
         });
+
+        const specialNotes = document.getElementById("specialNotes");
+        if (!specialNotes.classList.contains("hidden") && specialNotes.textContent.trim() !== "") {
+            text += "\n" + specialNotes.textContent + "\n";
+        }
+
         return text;
     }
 
     function copyChecklist() {
         const text = generateFormattedText();
         navigator.clipboard.writeText(text).then(() => {
-            alert("已成功複製清單內容！");
+            alert("已成功複製清單與選項內容！");
+        }).catch(() => {
+            alert("複製失敗，請手動複製。");
         });
     }
   </script>
