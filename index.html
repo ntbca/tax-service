@@ -924,7 +924,6 @@
         // 判斷系統分類前綴
         let systemHeader = "【國稅申辦作業系統】";
         if (!isWithholding) {
-            // 如果不是扣繳單位（例如屬於查詢項目），可以根據實際需要切換，預設依查詢作業範本
             systemHeader = "【國稅查詢作業系統】";
         }
 
@@ -937,7 +936,8 @@
         }
         text += "\n";
       
-       if (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
+        // 如果不是扣繳單位（即申辦作業第3項），才保留「申請人身分」這一欄
+        if (!isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
             text += "• 申請人身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
         }
 
