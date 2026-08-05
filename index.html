@@ -936,7 +936,10 @@
             text += " - " + identitySelect.options[identitySelect.selectedIndex].text;
         }
         text += "\n";
-
+      
+       if (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
+            text += "• 申請人身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
+        }
 
         if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
             text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
