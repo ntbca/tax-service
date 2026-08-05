@@ -80,19 +80,20 @@
         </div>
       </div>
 
-      <!-- 全能搜尋框 -->
+      <!-- 全能搜尋框 (改用 textarea 支援自動換行) -->
       <div class="relative w-full max-w-3xl mx-auto my-4" onclick="event.stopPropagation()">
         <div class="relative flex items-center">
-          <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-lg"></i>
-          <input 
-            type="text" 
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-lg pointer-events-none"></i>
+          <textarea 
             id="searchInput" 
             oninput="handleSearchInput()" 
             onfocus="handleSearchInput()"
-            placeholder="輸入關鍵書表或項目名稱 (如: 死亡診斷書、繼承系統表、法人登記證、公司組織...)" 
-            class="w-full pl-12 pr-10 py-3.5 bg-white border-2 border-blue-400 rounded-full shadow-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-slate-800 text-base transition-all"
-          >
-          <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer">
+            placeholder="輸入關鍵書表或項目名稱 (如: 各稅核定資料、遺產稅延期申報、補發稅單...)" 
+            rows="1"
+            class="w-full pl-12 pr-10 py-3.5 bg-white border-2 border-blue-400 rounded-2xl shadow-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-slate-800 text-base transition-all resize-none overflow-hidden leading-relaxed"
+            style="min-height: 52px;"
+          ></textarea>
+          <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-4 text-slate-400 hover:text-slate-600 cursor-pointer">
             <i class="fa-solid fa-xmark text-lg"></i>
           </button>
         </div>
@@ -114,45 +115,75 @@
             <i class="fa-solid fa-magnifying-glass"></i> 查詢作業項目清單
           </div>
           <div class="p-4 flex-1 divide-y divide-slate-100 space-y-1 overflow-y-auto max-h-[600px] custom-scrollbar">
-            <a href="javascript:void(0)" onclick="selectItem('tax_history')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>1. 各稅核定資料 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('tax_history')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">1. 各稅核定資料</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('tax_arrears')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>2. 納稅欠稅及退稅資料查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('tax_arrears')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">2. 納稅欠稅及退稅資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('income_list')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>3. 個人綜合所得稅各類所得資料清單查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('income_list')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">3. 個人綜合所得稅各類所得資料清單查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('property_list')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>4. 個人財產歸戶資料查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('property_list')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">4. 個人財產歸戶資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('deceased_data')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>5. 被繼承人財產、所得及贈與資料查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('deceased_data')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">5. 被繼承人財產、所得及贈與資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('creditor_data')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>6. 債權人查調債務人課稅資料查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('creditor_data')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">6. 債權人查調債務人課稅資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('tax_status')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>7. 綜合所得稅稅籍查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('tax_status')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">7. 綜合所得稅稅籍查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('small_business')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>8. 小規模營利事業營業額核定資料查詢 <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('small_business')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">8. 小規模營利事業營業額核定資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('business_reg')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>9. 營業人暨扣繳單位稅籍查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('business_reg')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">9. 營業人暨扣繳單位稅籍查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('gift_tax')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>10. 全國贈與資料查詢 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('gift_tax')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">10. 全國贈與資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <i class="fa-solid fa-chevron-right text-slate-400 text-xs"></i>
+              </div>
             </a>
           </div>
         </div>
@@ -163,21 +194,33 @@
             <i class="fa-solid fa-file-pen"></i> 申辦作業項目清單
           </div>
           <div class="p-4 flex-1 divide-y divide-slate-100 space-y-1 overflow-y-auto max-h-[600px] custom-scrollbar">
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>1. 遺產稅延期申報 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">1. 遺產稅延期申報</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>2. 贈與稅延期申報 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">2. 贈與稅延期申報</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="selectItem('withholding_setup')" class="block p-3 hover:bg-indigo-50 text-indigo-900 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between bg-indigo-50/50">
-              <span>3. 扣繳單位設立、變更登記（統一編號編配） <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span></span>
-              <i class="fa-solid fa-chevron-right text-indigo-500 text-xs"></i>
+            <a href="javascript:void(0)" onclick="selectItem('withholding_setup')" class="block p-3 hover:bg-indigo-50 text-indigo-900 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 bg-indigo-50/50">
+              <span class="flex-1">3. 扣繳單位設立、變更登記（統一編號編配）</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span>
+                <i class="fa-solid fa-chevron-right text-indigo-500 text-xs"></i>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>4. 查調即時通知 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">4. 查調即時通知</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
           </div>
         </div>
@@ -188,45 +231,75 @@
             <i class="fa-solid fa-award"></i> 核發書證項目清單
           </div>
           <div class="p-4 flex-1 divide-y divide-slate-100 space-y-1 overflow-y-auto max-h-[600px] custom-scrollbar">
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>1. 各項稅款補發稅單 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">1. 各項稅款補發稅單</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>2. 補發遺產稅不動產公同共有同意移轉證明書 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">2. 補發遺產稅不動產公同共有同意移轉證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>3. 儲蓄免扣證 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">3. 儲蓄免扣證</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>4. 中 (英) 文綜合所得稅納稅證明書 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">4. 中 (英) 文綜合所得稅納稅證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>5. 核發違章欠稅查復表 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">5. 核發違章欠稅查復表</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>6. 核發扣繳稅繳納證明 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">6. 核發扣繳稅繳納證明</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>7. 補發遺產稅證明書 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">7. 補發遺產稅證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>8. 補發贈與稅證明書 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">8. 補發贈與稅證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>9. 核發繳稅證明 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">9. 核發繳稅證明</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between">
-              <span>10. 核發中、英文個人房屋土地交易所所得稅繳納證明書 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span></span>
-              <span class="text-xs text-slate-400">建置中</span>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">10. 核發中、英文個人房屋土地交易所所得稅繳納證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
             </a>
           </div>
         </div>
@@ -399,7 +472,7 @@
         { id: "48", name: "48. 證券商經營財富管理帳戶/現金管理專戶", docs: ["金管會核准文件影本", "證券商許可證照影本", STD_TAX], hint: "" }
     ];
 
-    // 系統資料庫（已將「營利事業」與「機關團體」拆分為獨立選項）
+    // 系統資料庫
     const systemData = {
         tax_history: {
             title: "各稅核定資料",
@@ -421,7 +494,7 @@
             title: "個人綜合所得稅各類所得資料清單查詢",
             options: [
                 { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"] },
-                { id: "foreign", name: "外籍人士", docs: ["申請人護照正本，或內政部移民署核發之居留證正本(有效期間內)"] },
+                { id: "foreign", name: "外籍人士", docs: ["申請人護照正本，or內政部移民署核發之居留證正本(有效期間內)"] },
                 { id: "mainland", name: "大陸人士", docs: ["申請人內政部移民署核發之臺灣地區入出境許可證或居留證正本(有效期間內)"] },
                 { 
                   id: "minor", 
@@ -438,7 +511,7 @@
             title: "個人財產歸戶資料查詢",
             options: [
                 { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"] },
-                { id: "foreign", name: "外籍人士", docs: ["護照正本，或內政部移民署核發之居留證正本(有效期間內)"] },
+                { id: "foreign", name: "外籍人士", docs: ["護照正本，or內政部移民署核發之居留證正本(有效期間內)"] },
                 { id: "mainland", name: "大陸人士", docs: ["申請人內政部移民署核發之臺灣地區入出境許可證或居留證正本(有效期間內)"] },
                 {
                   id: "minor", 
@@ -494,7 +567,7 @@
                 id: item.id,
                 name: item.name,
                 docs: [
-                    '填寫「扣繳單位設立（變更）登記申請書-統一編號編配通知書（一式三份，請加蓋扣繳單位章及負責人章）」',
+                    '填寫 「扣繳單位設立（變更）登記申請書-統一編號編配通知書（一式三份，請加蓋扣繳單位章及負責人章）」 ',
                     ...item.docs
                 ],
                 note: item.hint
@@ -502,70 +575,85 @@
         }
     };
 
-   const deepSearchDatabase = [
-      { 
-        path: "查詢作業 > 1. 各稅核定資料", 
-        keywords: ["各稅核定資料", "經濟部最新核准函影本", "變更登記表影本", "商業登記抄本影本", "法人登記證", "立案證書", "開業執照", "執業執照"], 
-        key: "tax_history", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", 
-        keywords: ["納稅欠稅及退稅資料查詢", "經濟部最新核准函影本", "變更登記表影本", "商業登記抄本影本", "法人登記證", "立案證書", "開業執照", "執業執照"], 
-        key: "tax_arrears", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", 
-        keywords: ["個人綜合所得稅各類所得資料清單查詢", "護照正本", "居留證正本", "臺灣地區入出境許可證", "詳細記事戶口名簿", "詳細記事戶籍謄本"], 
-        key: "income_list", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 4. 個人財產歸戶資料查詢", 
-        keywords: ["個人財產歸戶資料查詢", "財產歸戶", "護照正本", "居留證正本", "臺灣地區入出境許可證", "詳細記事戶口名簿", "詳細記事戶籍謄本"], 
-        key: "property_list", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", 
-        keywords: ["被繼承人財產、所得及贈與資料查詢", "被繼承人除戶謄本", "死亡診斷證明書", "親屬關係證明文件", "繼承系統表正本"], 
-        key: "deceased_data", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", 
-        keywords: ["債權人查調債務人課稅資料查詢", "債權人查調債務人財產及所得資料申請書"], 
-        key: "creditor_data", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 7. 綜合所得稅稅籍查詢", 
-        keywords: ["綜合所得稅稅籍查詢", "臺灣地區入出境許可證", "居留證正本"], 
-        key: "tax_status", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", 
-        keywords: ["小規模營利事業營業額核定資料查詢", "主管機關核准設立文件影本"], 
-        key: "small_business", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", 
-        keywords: ["營業人暨扣繳單位稅籍查詢", "主管機關核准設立文件影本"], 
-        key: "business_reg", 
-        isReady: true 
-      },
-      { 
-        path: "查詢作業 > 10. 全國贈與資料查詢", 
-        keywords: ["全國贈與資料查詢", "贈與人"], 
-        key: "gift_tax", 
-        isReady: true 
-      },
+    // 完整的深層檢索資料庫
+    const deepSearchDatabase = [
+      { path: "查詢作業 > 1. 各稅核定資料 > 納稅義務人 (個人)", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 個人", "納稅義務人個人核定", "個人各稅核定"], key: "tax_history", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 營利事業", "營利事業核定資料", "公司各稅核定"], key: "tax_history", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 機關團體", "機關團體核定資料"], key: "tax_history", targetIdentity: "corp_group", isReady: true },
+
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 納稅義務人 (個人)", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢 個人", "個人欠稅退稅查詢", "個人納稅欠稅"], key: "tax_arrears", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢 營利事業", "營利事業欠稅查詢", "公司退稅查詢"], key: "tax_arrears", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢 機關團體", "機關團體欠稅查詢"], key: "tax_arrears", targetIdentity: "corp_group", isReady: true },
+
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 國民 (滿18歲以上)", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 國民", "成年人所得清單", "個人綜所稅各類所得資料清單查詢 國民"], key: "income_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 外籍人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 外籍人士", "外國人所得清單", "外籍人士綜所稅清單"], key: "income_list", targetIdentity: "foreign", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 大陸人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 大陸人士", "大陸地區人民所得清單"], key: "income_list", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 查調未成年子女案件 > 詳細記事戶口名簿", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["詳細記事戶口名簿", "戶口名簿", "未成年子女戶口名簿", "查調未成年子女案件 所得清單"], key: "income_list", targetIdentity: "minor", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 查調未成年子女案件 > 詳細記事戶籍謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["詳細記事戶籍謄本", "戶籍謄本", "未成年子女戶籍謄本", "查調未成年子女案件 所得清單"], key: "income_list", targetIdentity: "minor", isReady: true },
+
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 國民 (滿18歲以上)", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 國民", "成年人財產歸戶", "個人財產歸戶資料查詢 國民"], key: "property_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 外籍人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 外籍人士", "外國人財產歸戶"], key: "property_list", targetIdentity: "foreign", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 大陸人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 大陸人士", "大陸地區人民財產歸戶"], key: "property_list", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 查調未成年子女案件 > 詳細記事戶口名簿", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產查調未成年子女戶口名簿", "財產詳細記事戶口名簿", "財產戶口名簿"], key: "property_list", targetIdentity: "minor", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 查調未成年子女案件 > 詳細記事戶籍謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產查調未成年子女戶籍謄本", "財產詳細記事戶籍謄本", "財產戶籍謄本"], key: "property_list", targetIdentity: "minor", isReady: true },
+
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 死亡診斷證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["死亡診斷證明書", "死亡證明"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 被繼承人除戶謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人除戶謄本", "除戶謄本", "被繼承人除戶"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 載有死亡日期之戶口名簿影本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["載有死亡日期之戶口名簿", "死亡戶口名簿"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 與被繼承人親屬關係證明文件", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: [ "親屬關係證明文件", "親屬關係證明"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 繼承系統表正本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承系統表正本", "繼承系統表", "系統表正本"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 債權人查調債務人財產及所得資料申請書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人財產及所得資料申請書", "債權人申請書"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關民事判決暨確定證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關民事判決暨確定證明書", "民事判決確定證明書", "法院判決"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關支付命令暨確定證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關支付命令暨確定證明書", "支付命令確定證明書", "支付命令"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關債權憑證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關債權憑證", "債權憑證"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關本票准予強制執行民事裁定", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關本票准予強制執行民事裁定", "本票裁定", "本票強制執行裁定"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 納稅義務人 (個人) > 個人綜所稅稅籍", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢 個人", "綜所稅稅籍 個人", "個人綜所稅稅籍"], key: "tax_status", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 大陸人士 > 大陸地區人民綜所稅稅籍", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢 大陸人士", "大陸地區人民綜所稅稅籍"], key: "tax_status", targetIdentity: "mainland", isReady: true },
+
+      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢 > 營利事業負責人 > 小規模營利事業負責人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業負責人", "小規模營業額核定"], key: "small_business", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢 > 營利事業負責人 > 主管機關核准設立文件影本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業主管機關核准設立文件影本", "小規模設立文件影本"], key: "small_business", targetIdentity: "corp", isReady: true },
+
+      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢 > 營利事業或扣繳單位 > 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢", "扣繳單位稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢 > 營利事業或扣繳單位 > 主管機關核准設立文件影本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人稅籍查詢主管機關核准設立文件影本", "扣繳單位設立文件影本"], key: "business_reg", targetIdentity: "corp", isReady: true },
+
+      { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人 > 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與人查詢", "贈與查詢", "全國贈與"], key: "gift_tax", targetIdentity: "donor", isReady: true },
+      { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人 > 贈與人身分證正本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與人身分證正本", "贈與人身分證"], key: "gift_tax", targetIdentity: "donor", isReady: true },
+
+      { path: "查詢作業 > 1. 各稅核定資料", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料"], key: "tax_history", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢"], key: "tax_arrears", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人綜合所得稅各類所得資料清單查詢", "所得清單"], key: "income_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人財產歸戶資料查詢", "財產歸戶"], key: "property_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人財產、所得及贈與資料查詢", "被繼承人資料"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人課稅資料查詢", "債權人查調"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢", "綜所稅稅籍"], key: "tax_status", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業"], key: "small_business", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 10. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與資料查詢"], key: "gift_tax", targetIdentity: "donor", isReady: true },
+
+      { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["遺產稅延期申報"], isReady: false },
+      { path: "申辦作業 > 2. 贈與稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["贈與稅延期申報"], isReady: false },
+      { path: "申辦作業 > 3. 扣繳單位設立、變更登記（統一編號編配）", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["扣繳單位設立、變更登記（統一編號編配）", "扣繳單位設立", "統一編號編配"], key: "withholding_setup", targetIdentity: "1", isReady: true },
+      { path: "申辦作業 > 4. 查調即時通知", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["查調即時通知"], isReady: false },
+
+      { path: "核發書證 > 1. 各項稅款補發稅單", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["各項稅款補發稅單", "補發稅單"], isReady: false },
+      { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["補發遺產稅不動產公同共有同意移轉證明書", "遺產稅不動產移轉證明書"], isReady: false },
+      { path: "核發書證 > 3. 儲蓄免扣證", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["儲蓄免扣證"], isReady: false },
+      { path: "核發書證 > 4. 中 (英) 文綜合所得稅納稅證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["中 (英) 文綜合所得稅納稅證明書", "中英文綜所稅納稅證明書"], isReady: false },
+      { path: "核發書證 > 5. 核發違章欠稅查復表", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發違章欠稅查復表", "違章欠稅查復表"], isReady: false },
+      { path: "核發書證 > 6. 核發扣繳稅繳納證明", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發扣繳稅繳納證明", "扣繳稅繳納證明"], isReady: false },
+      { path: "核發書證 > 7. 補發遺產稅證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["補發遺產稅證明書", "遺產稅證明書"], isReady: false },
+      { path: "核發書證 > 8. 補發贈與稅證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["補發贈與稅證明書", "贈與稅證明書"], isReady: false },
+      { path: "核發書證 > 9. 核發繳稅證明", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發繳稅證明", "繳稅證明"], isReady: false },
+      { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所所得稅繳納證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發中、英文個人房屋土地交易所所得稅繳納證明書", "房地合一所得稅繳納證明書"], isReady: false },
+
       ...official48Items.map(item => ({
         path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
-        keywords: [item.name, ...item.docs.filter(d => !d.includes("身分證"))],
+        badgeText: "申辦作業",
+        badgeClass: "bg-indigo-100 text-indigo-800",
+        
+        keywords: [item.name],
         key: "withholding_setup",
         targetIdentity: item.id,
         isReady: true
@@ -574,7 +662,6 @@
 
     let currentSelectedItemKey = "";
 
-    // 強制頁面切換核心函數
     function goToStep(stepNum) {
       const s1 = document.getElementById('step-1');
       const s2 = document.getElementById('step-2');
@@ -608,8 +695,14 @@
       alert('該項目第三頁功能建置中，敬請期待！');
     }
 
-function handleSearchInput() {
-      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    function handleSearchInput() {
+      const searchInput = document.getElementById('searchInput');
+      
+      // 自動調整 textarea 高度以適應換行
+      searchInput.style.height = 'auto';
+      searchInput.style.height = (searchInput.scrollHeight) + 'px';
+
+      const query = searchInput.value.trim().toLowerCase();
       const clearBtn = document.getElementById('clearSearchBtn');
       const dropdown = document.getElementById('searchDropdown');
       const resultsList = document.getElementById('searchResults');
@@ -620,7 +713,6 @@ function handleSearchInput() {
         clearBtn.classList.add('hidden');
       }
 
-      // 修正：比對 keywords 陣列，只要其中一個關鍵字包含 query 即可
       const matches = deepSearchDatabase.filter(item => 
         item.keywords.some(kw => kw.toLowerCase().includes(query))
       );
@@ -629,16 +721,28 @@ function handleSearchInput() {
         resultsList.innerHTML = '';
         matches.forEach(item => {
           const li = document.createElement('li');
-          li.className = 'px-5 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between transition-colors border-b border-slate-50 last:border-b-0';
+          li.className = 'px-5 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between transition-colors border-b border-slate-50 last:border-b-0 gap-4';
+          
+          let rightSideHtml = `<div class="flex items-center gap-1.5 flex-shrink-0">`;
+          if (item.badgeText) {
+            rightSideHtml += `<span class="${item.badgeClass} text-xs px-2 py-0.5 rounded font-bold">${item.badgeText}</span>`;
+          }
+          if (item.statusText) {
+            rightSideHtml += `<span class="bg-slate-100 text-slate-500 text-xs px-2 py-0.5 rounded font-bold">${item.statusText}</span>`;
+          }
+          rightSideHtml += `</div>`;
+
           li.innerHTML = `
-            <div class="flex items-center gap-3">
-              <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm flex-shrink-0"></i>
-              <!-- 下拉選單顯示維持乾淨，只到第二欄 path -->
-              <span class="font-medium text-slate-800 text-min-14 leading-tight">${item.path}</span>
+            <div class="flex items-start gap-3 min-w-0 flex-1">
+              <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm flex-shrink-0 mt-1"></i>
+              <span class="font-medium text-slate-800 text-min-14 whitespace-normal break-all">${item.path}</span>
             </div>
+            ${rightSideHtml}
           `;
           li.onclick = () => {
-            document.getElementById('searchInput').value = item.path;
+            searchInput.value = item.path; 
+            searchInput.style.height = 'auto';
+            searchInput.style.height = (searchInput.scrollHeight) + 'px';
             closeAllDropdowns();
             if (item.isReady) {
               selectItem(item.key, item.targetIdentity);
@@ -655,7 +759,9 @@ function handleSearchInput() {
     }
 
     function clearSearch() {
-      document.getElementById('searchInput').value = '';
+      const searchInput = document.getElementById('searchInput');
+      searchInput.value = '';
+      searchInput.style.height = '52px';
       document.getElementById('clearSearchBtn').classList.add('hidden');
       closeAllDropdowns();
     }
@@ -691,7 +797,6 @@ function handleSearchInput() {
           agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
       }
 
-      // === 紅框提示設定 ===
       const customAlertBox = document.getElementById("customAlertBox");
       if (itemKey === "small_business") {
           customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
@@ -704,9 +809,8 @@ function handleSearchInput() {
       } else {
           customAlertBox.style.display = "none";
       }
-      // ===================================
 
-      if (targetIdentity) {
+      if (targetIdentity !== null && targetIdentity !== undefined) {
         identitySelect.value = targetIdentity;
       }
 
@@ -726,7 +830,6 @@ function handleSearchInput() {
         const roleText = role ? `（${role}）` : "";
 
         switch (type) {
-
             case "ID_CARD":
                 return isAgent ? `申請人${roleText}身分證正本或正反面影本及印章` : `申請人${roleText}身分證正本`;
 
