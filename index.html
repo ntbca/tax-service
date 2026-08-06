@@ -880,16 +880,20 @@
             docs.push('申請人（或委託人）授權委託書正本');
         }
 
-        docList.innerHTML = currentDocs.map((doc, index) => {
-    // 假設每一個項目的「第二個 doc」是這行補充說明
-    if (index === 1 && currentSelectedItemKey === "withholding_setup") {
-        return `<li class="list-none ml-6 text-xs text-slate-500 mt-1">${doc}</li>`;
-    }
-    return `<li class="flex items-start">
-        <span class="text-green-600 mr-2">✔</span>
-        <span>${doc}</span>
-    </li>`;
-}).join('');
+        docs.forEach((doc, index) => {
+            const li = document.createElement("li");
+            
+            // 判斷：如果是「扣繳單位設立」且剛好是「第二行（index 為 1）」
+            if (index === 1 && currentSelectedItemKey === "withholding_setup") {
+                li.className = "list-none ml-6 text-xs text-slate-500 mt-1 bg-white/70 p-2 rounded-lg border border-emerald-100";
+                li.innerHTML = `<span>${doc}</span>`;
+            } else {
+                li.className = "flex items-start gap-2 bg-white/70 p-3 rounded-lg border border-emerald-100";
+                li.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i> <span>${doc}</span>`;
+            }
+            
+            docList.appendChild(li);
+        });
 
         if (selectedOpt.note) {
             specialNotes.textContent = selectedOpt.note;
