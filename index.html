@@ -955,38 +955,16 @@
         text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
         
         const docListItems = document.querySelectorAll("#docList li");
-        docListItems.forEach((li, index) => {
+        docListItems.forEach((li) => {
             let textContent = li.innerText.trim();
             
-            // 如果是該補充說明的那一行，直接印出，不加 ✔
+            // 如果是扣繳單位的第二行補充說明，直接印出，不加 ✔
             if (textContent.includes('如為變更或註銷登記者')) {
                 text += textContent + "\n";
             } else {
                 let cleanText = textContent.replace(/^✔\s*/, '');
                 text += "✔ " + cleanText + "\n";
             }
-        });
-            
-            const links = clone.querySelectorAll("a");
-            links.forEach(a => {
-                const linkUrl = a.href;
-                if (linkUrl) {
-                    const textNode = document.createTextNode(` ( 連結：${linkUrl} )`);
-                    a.parentNode.replaceChild(textNode, a);
-                }
-            });
-
-            const brs = clone.querySelectorAll('br');
-            brs.forEach(br => br.replaceWith('\n'));
-
-            // 取得純文字並處理內部可能存在的換行
-            let rawText = clone.innerText.trim();
-            // 如果文字內有換行（例如扣繳單位的備註），我們在換行後方不要加 ✔，直接接下去
-            let formattedLines = rawText.split('\n').map((line, index) => {
-                return index === 0 ? "✔ " + line : line;
-            }).join('\n');
-
-            text += formattedLines + "\n";
         });
 
         const specialNotes = document.getElementById("specialNotes");
