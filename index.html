@@ -918,7 +918,6 @@
 
         const isWithholding = (currentSelectedItemKey === "withholding_setup");
 
-        // 判斷系統分類前綴
         let systemHeader = "【國稅申辦作業系統】";
         if (!isWithholding) {
             systemHeader = "【國稅查詢作業系統】";
@@ -933,7 +932,6 @@
         }
         text += "\n";
       
-        // 如果不是扣繳單位（即申辦作業第3項），才保留「申請人身分」這一欄
         if (!isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
             text += "• 申請人身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
         }
@@ -964,7 +962,14 @@
             const brs = clone.querySelectorAll('br');
             brs.forEach(br => br.replaceWith('\n'));
 
-            text += "✔ " + clone.innerText.trim() + "\n";
+            // 取得純文字並處理內部可能存在的換行
+            let rawText = clone.innerText.trim();
+            // 如果文字內有換行（例如扣繳單位的備註），我們在換行後方不要加 ✔，直接接下去
+            let formattedLines = rawText.split('\n').map((line, index) => {
+                return index === 0 ? "✔ " + line : line;
+            }).join('\n');
+
+            text += formattedLines + "\n";
         });
 
         const specialNotes = document.getElementById("specialNotes");
