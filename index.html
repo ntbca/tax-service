@@ -916,59 +916,74 @@
         const executionSelect = document.getElementById("executionSelect");
         const isAgent = document.getElementById("isAgent").checked;
 
-        const selectedOpt = itemData.options.find(opt => opt.id === identitySelect.value) || itemData.options[0];
+        const isWithholding = (currentSelectedItemKey === "withholding_setup");
+
+        // 判斷系統分類前綴
+        let systemHeader = "【國稅申辦作業系統】";
+        if (!isWithholding) {
+            systemHeader = "【國稅查詢作業系統】";
+        }
+
+        let text = `${systemHeader}\n\n`;
+        text += "📌 【申請項目與條件】\n";
+        text += "• 查詢項目：" + itemData.title;
         
-        let text = `【全功能櫃檯應備文件查詢系統】\n`;
-        text += `項目：${itemData.title}\n`;
-        text += `身分／類別：${selectedOpt.name}\n`;
-        if (isAgent) {
-          text += `辦理方式：委託他人代理辦理\n`;
+        if (isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
+            text += " - " + identitySelect.options[identitySelect.selectedIndex].text;
         }
-        text += `----------------------------------------\n`;
-        text += `應檢核／攜帶書表清單：\n`;
+        text += "\n";
+      
+        // 如果不是扣繳單位（即申辦作業第3項），才保留「申請人身分」這一欄
+        if (!isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
+            text += "• 申請人身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
+        }
 
-        let docs = [];
-        selectedOpt.docs.forEach(docKey => {
-            if (docKey.startsWith("ID_CARD")) {
-                docs.push(getIdText(docKey, isAgent, selectedOpt.role));
-            } else {
-                // 去除 HTML 標籤
-                const cleanDoc = docKey.replace(/<[^>]*>?/gm, '');
-                docs.push(cleanDoc);
-            }
-        });
-
-        if (currentSelectedItemKey === "creditor_data" && executionSelect) {
-            docs.push(executionSelect.options[executionSelect.selectedIndex].text);
+        if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
+            text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
         }
 
         if (isAgent) {
-            docs.push('代理人國民身分證正本');
-            docs.push('申請人（或委託人）授權委託書正本');
+            text += "• 辦理方式：委託他人代理辦理\n";
         }
 
-        docs.forEach((doc, index) => {
-            text += `${index + 1}. ${doc}\n`;
+        text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
+        
+        const docListItems = document.querySelectorAll("#docList li span");
+        docListItems.forEach(item => {
+            let clone = item.cloneNode(true);
+            
+            const links = clone.querySelectorAll("a");
+            links.forEach(a => {
+                const linkUrl = a.href;
+                if (linkUrl) {
+                    const textNode = document.createTextNode(` ( 連結：${linkUrl} )`);
+                    a.parentNode.replaceChild(textNode, a);
+                }
+            });
+
+            const brs = clone.querySelectorAll('br');
+            brs.forEach(br => br.replaceWith('\n'));
+
+            text += "✔ " + clone.innerText.trim() + "\n";
         });
 
-        if (selectedOpt.note) {
-            text += `\n【特別備註】\n${selectedOpt.note}\n`;
+        const specialNotes = document.getElementById("specialNotes");
+        if (!specialNotes.classList.contains("hidden") && specialNotes.textContent.trim() !== "") {
+            text += "\n" + specialNotes.textContent + "\n";
         }
 
         return text;
     }
 
     function copyChecklist() {
-        const textToCopy = generateFormattedText();
-        if (!textToCopy) return;
-
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            alert('已成功複製應備文件清單至剪貼簿！');
-        }).catch(err => {
-            console.error('複製失敗: ', err);
-            alert('複製失敗，請手動複製。');
+        const text = generateFormattedText();
+        navigator.clipboard.writeText(text).then(() => {
+            alert("已成功複製清單與選項內容！");
+        }).catch(() => {
+            alert("複製失敗，請手動複製。");
         });
     }
+
   </script>
 </body>
 </html>
