@@ -845,9 +845,11 @@
     function renderChecklist() {
         if (!currentSelectedItemKey) return;
 
+        const docList = document.getElementById("docList");
+        docList.innerHTML = ""; // 修正點：每次重新渲染前先清空舊清單，避免重複疊加
+
         const identityVal = document.getElementById("identitySelect").value;
         const isAgent = document.getElementById("isAgent").checked;
-        const docList = document.getElementById("docList");
         const specialNotes = document.getElementById("specialNotes");
         const alertInfoBox = document.getElementById("alertInfoBox");
         const infoImgContainer = document.getElementById("infoImgContainer");
@@ -883,7 +885,6 @@
         docs.forEach((doc, index) => {
             const li = document.createElement("li");
             
-            // 判斷：如果是「扣繳單位設立」且剛好是「第二行（index 為 1）」
             if (index === 1 && currentSelectedItemKey === "withholding_setup") {
                 li.className = "list-none ml-6 text-xs text-slate-500 mt-1 bg-white/70 p-2 rounded-lg border border-emerald-100";
                 li.innerHTML = `<span>${doc}</span>`;
@@ -958,7 +959,6 @@
         docListItems.forEach((li) => {
             let textContent = li.innerText.trim();
             
-            // 如果是扣繳單位的第二行補充說明，直接印出，不加 ✔
             if (textContent.includes('如為變更或註銷登記者')) {
                 text += textContent + "\n";
             } else {
