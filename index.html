@@ -80,18 +80,24 @@
       </div>
 
       <!-- 全能搜尋框 (支援自動換行) -->
-      <div class="relative w-full max-w-3xl mx-auto my-4" onclick="event.stopPropagation()">
-        <div class="relative flex items-center">
-          <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-lg pointer-events-none"></i>
-          <textarea 
-            id="searchInput" 
-            oninput="handleSearchInput()" 
-            onfocus="handleSearchInput()"
-            placeholder="輸入關鍵書表或項目名稱 (如: 各稅核定資料、遺產稅延期申報、補發稅單...)" 
-            rows="1"
-            class="w-full pl-11 pr-10 py-3 bg-white border-2 border-blue-400 rounded-2xl shadow-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-slate-800 text-sm md:text-base transition-all resize-none overflow-hidden leading-snug"
-            style="min-height: 48px;"
-          ></textarea>
+      <div class="relative flex items-center w-full">
+  <!-- 左側放大鏡圖示 -->
+  <span class="absolute left-4 text-blue-400 flex items-center pointer-events-none">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+    </svg>
+  </span>
+
+  <!-- 搜尋輸入框（改用 input 取代 textarea，解決文字上下偏移與裁切問題） -->
+  <input 
+    type="text" 
+    id="searchInput" 
+    oninput="handleSearchInput()" 
+    onfocus="handleSearchInput()"
+    placeholder="輸入關鍵書表或項目名稱 (如: 各稅核定資料、遺產稅延期申報、補發稅單...)" 
+    class="w-full pl-11 pr-10 py-3 bg-white border-2 border-blue-400 rounded-2xl shadow-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-slate-800 text-sm md:text-base transition-all"
+  >
+</div>
 
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 top-4 text-slate-400 hover:text-slate-600 cursor-pointer">
             <i class="fa-solid fa-xmark text-lg"></i>
