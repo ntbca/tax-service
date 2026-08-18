@@ -566,8 +566,7 @@
                 id: item.id,
                 name: item.name,
                 docs: [
-                    '填寫 「扣繳單位設立（變更）登記申請書-統一編號編配通知書（一式三份，請加蓋扣繳單位章及負責人章）」',
-                    '如為變更或註銷登記者，請繳回原統一編號編配通知書正本（若遺失需附切結書）',
+                    '填寫 「扣繳單位設立（變更）登記申請書-統一編號編配通知書」（一式三份，請加蓋扣繳單位章及負責人章）* 如為變更或註銷登記者，請繳回原統一編號編配通知書正本（若遺失需附切結書）',
                     ...item.docs
                 ],
                 note: item.hint
@@ -883,16 +882,30 @@
             docs.push('授權委託書正本');
         }
 
+        docList.innerHTML = ""; // 每次重新渲染前先清空舊清單
+
         docs.forEach((doc, index) => {
             const li = document.createElement("li");
             
-            if (index === 1 && currentSelectedItemKey === "withholding_setup") {
-                li.className = "list-none ml-6 text-xs text-slate-500 mt-1 bg-white/70 p-2 rounded-lg border border-emerald-100";
-                li.innerHTML = `<span>${doc}</span>`;
-            } else {
-                li.className = "flex items-start gap-2 bg-white/70 p-3 rounded-lg border border-emerald-100";
-                li.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mt-1"></i> <span>${doc}</span>`;
+            // 檢查這條文字裡面有沒有包含換行或是以 * 開頭的備註
+            // 如果您原本的資料是用陣列分開的，我們在這裡判斷：
+            // 如果它是補充說明（例如原本想當成小字的），我們讓它跟前一個項目合併，或者獨立渲染成帶有小字的卡片
+            
+            // 這裡直接支援您在字串裡用 \n 或特定符號換行，或者我們維持獨立卡片但允許內部換行：
+            let formattedText = doc;
+            
+            // 如果字串裡面含有 *，我們把它轉換成帶有小字的 HTML 格式
+            if (doc.includes("\n*") || doc.includes("*")) {
+                let parts = doc.split("*");
+                formattedText = parts[0] + `<br><span class='text-xs text-slate-600 block mt-2 leading-relaxed'>* ${parts.slice(1).join("*")}</span>`;
             }
+
+            // 每一項獨立一個「圖二風格」的白底綠框卡片
+            li.className = "flex items-start gap-2 bg-white/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm mt-3 first:mt-0 list-none";
+            li.innerHTML = `
+                <i class="fa-solid fa-circle-check text-emerald-600 mt-1 flex-shrink-0"></i> 
+                <span class="flex-1 font-medium text-slate-800">${formattedText}</span>
+            `;
             
             docList.appendChild(li);
         });
@@ -918,7 +931,7 @@
         }
     }
 
-    function generateFormattedText() {
+function generateFormattedText() {
         const itemData = systemData[currentSelectedItemKey];
         if (!itemData) return "";
 
@@ -960,11 +973,20 @@
         docListItems.forEach((li) => {
             let textContent = li.innerText.trim();
             
-            if (textContent.includes('如為變更或註銷登記者')) {
-                text += textContent + "\n";
-            } else {
-                let cleanText = textContent.replace(/^✔\s*/, '');
-                text += "✔ " + cleanText + "\n";
+            // 移除原本 DOM 內可能帶有的圖示字元，避免重複
+            let cleanText = textContent.replace(/^[✔☑-]\s*/, '');
+            
+            // 將內容依換行拆開，確保 * 開頭的備註直接緊接在主項目下方，不額外空行
+            let lines = cleanText.split('\n').map(l => l.trim()).filter(l => l);
+            
+            if (lines.length > 0) {
+                // 第一行強制加上勾勾
+                text += "✔ " + lines[0] + "\n";
+                
+                // 處理後續的備註行（例如 * 註解）
+                for (let i = 1; i < lines.length; i++) {
+                    text += lines[i] + "\n";
+                }
             }
         });
 
