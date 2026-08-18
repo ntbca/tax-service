@@ -33,35 +33,25 @@
   <header class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white py-6 px-4 md:px-12 shadow-md w-full">
     <div class="w-full max-w-7xl mx-auto text-center md:text-left">
       <h1 class="text-xl md:text-3xl font-bold tracking-wide">全功能櫃檯各項作業應備文件查詢系統</h1>
-      <p class="text-blue-200 text-sm md:text-base mt-1">中區國稅局彰化分局 × 彰化縣地方稅務局</p>
+      <p class="text-blue-200 text-sm md:text-base mt-1">中區國稅局彰化分局</p>
     </div>
   </header>
 
   <!-- 主要內容區塊 -->
   <main class="flex-1 w-full max-w-[1920px] mx-auto p-4 md:p-8 flex flex-col justify-center items-center">
 
-    <!-- 第一層：選擇 國稅 / 地方稅 -->
+    <!-- 第一層：選擇 國稅 -->
     <section id="step-1" class="w-full max-w-4xl text-center py-8">
-      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-800 mb-8">請點選欲查詢稅務類型</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 px-4">
+      <h2 class="text-2xl md:text-4xl font-extrabold text-slate-800 mb-8">點擊檢索國稅服務項目</h2>
+      <div class="flex justify-center px-4">
         
         <!-- 國稅按鈕 -->
-        <button type="button" onclick="selectTaxType('national')" class="group relative bg-white border-2 border-blue-600 hover:bg-blue-600 rounded-2xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center justify-center cursor-pointer">
+        <button type="button" onclick="selectTaxType('national')" class="group relative bg-white border-2 border-blue-600 hover:bg-blue-600 rounded-2xl p-8 md:p-12 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center justify-center cursor-pointer w-full max-w-md">
           <div class="w-20 h-20 md:w-28 md:h-28 bg-blue-100 group-hover:bg-white text-blue-600 rounded-full flex items-center justify-center mb-4 transition-colors">
             <i class="fa-solid fa-building-columns text-4xl md:text-6xl"></i>
           </div>
           <span class="text-3xl md:text-5xl font-bold text-blue-900 group-hover:text-white transition-colors">國 稅</span>
-          <span class="text-min-14 text-slate-500 group-hover:text-blue-100 mt-2">點擊檢索國稅服務項目</span>
-        </button>
-
-        <!-- 地方稅按鈕 -->
-        <button type="button" onclick="selectTaxType('local')" class="group relative bg-white border-2 border-slate-300 hover:border-emerald-600 rounded-2xl p-8 md:p-12 shadow-md hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center cursor-pointer">
-          <div class="w-20 h-20 md:w-28 md:h-28 bg-slate-100 text-slate-400 group-hover:bg-emerald-100 group-hover:text-emerald-600 rounded-full flex items-center justify-center mb-4 transition-colors">
-            <i class="fa-solid fa-house-chimney text-4xl md:text-6xl"></i>
-          </div>
-          <span class="text-3xl md:text-5xl font-bold text-slate-500 group-hover:text-emerald-900 transition-colors">地 方 稅</span>
-          <span class="text-min-14 text-slate-400 mt-2">（系統建置中）</span>
-        </button>
+                  </button>
 
       </div>
     </section>
@@ -72,7 +62,7 @@
       <!-- 返回按鈕與標題 -->
       <div class="flex items-center justify-between border-b border-slate-300 pb-4">
         <button type="button" onclick="goBack()" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-bold text-min-14 transition-all cursor-pointer">
-          <i class="fa-solid fa-arrow-left"></i> 重選稅務類型
+          <i class="fa-solid fa-arrow-left"></i> 回首頁
         </button>
         <div class="text-xl md:text-2xl font-bold text-blue-900">
           國稅服務項目
@@ -498,7 +488,7 @@
             title: "個人綜合所得稅各類所得資料清單查詢",
             options: [
                 { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"] },
-                { id: "foreign", name: "外籍人士", docs: ["申請人護照正本，或內政部移民署核發之居留證正本(有效期間內)"] },
+                { id: "foreign", name: "外籍人士", docs: ["申請人護照正本，or內政部移民署核發之居留證正本(有效期間內)"] },
                 { id: "mainland", name: "大陸人士", docs: ["申請人內政部移民署核發之臺灣地區入出境許可證或居留證正本(有效期間內)"] },
                 { 
                   id: "minor", 
@@ -685,8 +675,6 @@
     function selectTaxType(type) {
       if (type === 'national') {
         goToStep(2);
-      } else {
-        alert('「地方稅」檢索系統目前建置中，請先選擇「國稅」。');
       }
     }
 
@@ -850,7 +838,7 @@
         if (!currentSelectedItemKey) return;
 
         const docList = document.getElementById("docList");
-        docList.innerHTML = ""; // 修正點：每次重新渲染前先清空舊清單，避免重複疊加
+        docList.innerHTML = ""; 
 
         const identityVal = document.getElementById("identitySelect").value;
         const isAgent = document.getElementById("isAgent").checked;
@@ -887,25 +875,17 @@
             docs.push('授權委託書正本');
         }
 
-        docList.innerHTML = ""; // 每次重新渲染前先清空舊清單
+        docList.innerHTML = ""; 
 
         docs.forEach((doc, index) => {
             const li = document.createElement("li");
-            
-            // 檢查這條文字裡面有沒有包含換行或是以 * 開頭的備註
-            // 如果您原本的資料是用陣列分開的，我們在這裡判斷：
-            // 如果它是補充說明（例如原本想當成小字的），我們讓它跟前一個項目合併，或者獨立渲染成帶有小字的卡片
-            
-            // 這裡直接支援您在字串裡用 \n 或特定符號換行，或者我們維持獨立卡片但允許內部換行：
             let formattedText = doc;
             
-            // 如果字串裡面含有 *，我們把它轉換成帶有小字的 HTML 格式
             if (doc.includes("\n*") || doc.includes("*")) {
                 let parts = doc.split("*");
                 formattedText = parts[0] + `<br><span class='text-xs text-slate-600 block mt-2 leading-relaxed'>* ${parts.slice(1).join("*")}</span>`;
             }
 
-            // 每一項獨立一個「圖二風格」的白底綠框卡片
             li.className = "flex items-start gap-2 bg-white/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm mt-3 first:mt-0 list-none";
             li.innerHTML = `
                 <i class="fa-solid fa-circle-check text-emerald-600 mt-1 flex-shrink-0"></i> 
@@ -936,7 +916,7 @@
         }
     }
 
-function generateFormattedText() {
+    function generateFormattedText() {
         const itemData = systemData[currentSelectedItemKey];
         if (!itemData) return "";
 
@@ -977,18 +957,11 @@ function generateFormattedText() {
         const docListItems = document.querySelectorAll("#docList li");
         docListItems.forEach((li) => {
             let textContent = li.innerText.trim();
-            
-            // 移除原本 DOM 內可能帶有的圖示字元，避免重複
             let cleanText = textContent.replace(/^[✔☑-]\s*/, '');
-            
-            // 將內容依換行拆開，確保 * 開頭的備註直接緊接在主項目下方，不額外空行
             let lines = cleanText.split('\n').map(l => l.trim()).filter(l => l);
             
             if (lines.length > 0) {
-                // 第一行強制加上勾勾
                 text += "✔ " + lines[0] + "\n";
-                
-                // 處理後續的備註行（例如 * 註解）
                 for (let i = 1; i < lines.length; i++) {
                     text += lines[i] + "\n";
                 }
@@ -1012,86 +985,28 @@ function generateFormattedText() {
         });
     }
 
-    // 捲動監聽與回到頂部功能
-    // 捲動監聽與回到頂部功能
-  window.addEventListener('scroll', function() {
-    const btn = document.getElementById('backToTopBtn');
-    if (!btn) return;
-    
-    // 當向下滾動超過 200 像素時顯示按鈕，否則隱藏
-    if (window.scrollY > 200) {
-      btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-      btn.classList.add('opacity-100', 'translate-y-0');
-    } else {
-      btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-      btn.classList.remove('opacity-100', 'translate-y-0');
-    }
-  });
-
-  // 點擊後平滑滾動回頂部
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('backToTopBtn');
+      if (!btn) return;
+      
+      if (window.scrollY > 200) {
+        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.add('opacity-100', 'translate-y-0');
+      } else {
+        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.remove('opacity-100', 'translate-y-0');
+      }
     });
-  }
 
-    // 搜尋功能
-    function handleSearchInput() {
-      const query = document.getElementById('searchInput').value.trim();
-      const dropdown = document.getElementById('searchDropdown');
-      const resultsUl = document.getElementById('searchResults');
-      const clearBtn = document.getElementById('clearSearchBtn');
-
-      if (query.length > 0) {
-        clearBtn.classList.remove('hidden');
-      } else {
-        clearBtn.classList.add('hidden');
-        dropdown.classList.add('hidden');
-        return;
-      }
-
-      let matches = [];
-      for (let key in systemData) {
-        let item = systemData[key];
-        if (item.title.includes(query)) {
-          matches.push({ key: key, title: item.title });
-        }
-      }
-
-      resultsUl.innerHTML = "";
-      if (matches.length > 0) {
-        dropdown.classList.remove('hidden');
-        matches.forEach(m => {
-          const li = document.createElement('li');
-          li.className = "p-3 hover:bg-blue-50 cursor-pointer text-sm font-medium text-slate-700";
-          li.innerHTML = m.title;
-          li.onclick = function() {
-            dropdown.classList.add('hidden');
-            document.getElementById('searchInput').value = "";
-            clearBtn.classList.add('hidden');
-            selectItem(m.key);
-          };
-          resultsUl.appendChild(li);
-        });
-      } else {
-        dropdown.classList.remove('hidden');
-        resultsUl.innerHTML = `<li class="p-3 text-slate-400 text-sm text-center">查無相關項目</li>`;
-      }
-    }
-
-    function clearSearch() {
-      document.getElementById('searchInput').value = "";
-      document.getElementById('clearSearchBtn').classList.add('hidden');
-      document.getElementById('searchDropdown').classList.add('hidden');
-    }
-
-    function closeAllDropdowns() {
-      const dropdown = document.getElementById('searchDropdown');
-      if (dropdown) dropdown.classList.add('hidden');
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     }
   </script>
-<button 
+
+  <button 
     id="backToTopBtn" 
     onclick="scrollToTop()" 
     class="fixed right-5 bottom-6 z-50 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 translate-y-4 pointer-events-none focus:outline-none cursor-pointer"
