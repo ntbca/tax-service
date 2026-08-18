@@ -1014,6 +1014,37 @@ function generateFormattedText() {
         });
     }
 
+  <button 
+    id="backToTopBtn" 
+    onclick="scrollToTop()" 
+    class="fixed right-5 bottom-6 z-50 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 translate-y-4 pointer-events-none focus:outline-none"
+    title="回到最上方"
+  >
+    <i class="fa-solid fa-arrow-up text-lg"></i>
+  </button>
+
+  <script>
+    // 監聽畫面的滾動事件
+    window.addEventListener('scroll', function() {
+      const btn = document.getElementById('backToTopBtn');
+      // 當向下滾動超過 200 像素時（大約是往下捲動了一頁或一段距離），顯示按鈕
+      if (window.scrollY > 200) {
+        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.add('opacity-100', 'translate-y-0');
+      } else {
+        // 否則隱藏按鈕
+        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+        btn.classList.remove('opacity-100', 'translate-y-0');
+      }
+    });
+
+    // 點擊按鈕後平滑滾動回頂部
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   </script>
 </body>
 </html>
