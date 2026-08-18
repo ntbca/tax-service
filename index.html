@@ -188,20 +188,24 @@
             <i class="fa-solid fa-file-pen"></i> 申辦作業項目清單
           </div>
           <div class="p-4 flex-1 divide-y divide-slate-100 space-y-1 overflow-y-auto max-h-[600px] custom-scrollbar">
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+            <!-- 遺產稅延期申報 -->
+            <a href="javascript:void(0)" onclick="selectItem('estate_tax_extension')" class="block p-3 hover:bg-indigo-50 text-indigo-900 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 bg-indigo-50/50">
               <span class="flex-1">1. 遺產稅延期申報</span>
               <div class="flex items-center gap-2 flex-shrink-0">
                 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
-                <span class="text-xs text-slate-400">建置中</span>
+                <i class="fa-solid fa-chevron-right text-indigo-500 text-xs"></i>
               </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+
+            <!-- 贈與稅延期申報 -->
+            <a href="javascript:void(0)" onclick="selectItem('gift_tax_extension')" class="block p-3 hover:bg-indigo-50 text-indigo-900 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 bg-indigo-50/50">
               <span class="flex-1">2. 贈與稅延期申報</span>
               <div class="flex items-center gap-2 flex-shrink-0">
                 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
-                <span class="text-xs text-slate-400">建置中</span>
+                <i class="fa-solid fa-chevron-right text-indigo-500 text-xs"></i>
               </div>
             </a>
+
             <a href="javascript:void(0)" onclick="selectItem('withholding_setup')" class="block p-3 hover:bg-indigo-50 text-indigo-900 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 bg-indigo-50/50">
               <span class="flex-1">3. 扣繳單位設立、變更登記（統一編號編配）</span>
               <div class="flex items-center gap-2 flex-shrink-0">
@@ -209,13 +213,16 @@
                 <i class="fa-solid fa-chevron-right text-indigo-500 text-xs"></i>
               </div>
             </a>
-            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+
+            <!-- 查調即時通知 -->
+            <a href="javascript:void(0)" onclick="selectItem('instant_notify')" class="block p-3 hover:bg-indigo-50 text-indigo-900 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 bg-indigo-50/50">
               <span class="flex-1">4. 查調即時通知</span>
               <div class="flex items-center gap-2 flex-shrink-0">
                 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
-                <span class="text-xs text-slate-400">建置中</span>
+                <i class="fa-solid fa-chevron-right text-indigo-500 text-xs"></i>
               </div>
             </a>
+
           </div>
         </div>
 
@@ -555,6 +562,34 @@
                 { id: "donor", name: "贈與人", docs: ["ID_CARD"] }
             ]
         },
+
+// 新增至 systemData 物件中
+estate_tax_extension: { 
+    title: "遺產稅延期申報", 
+    hint: "※繼承人應為遺產贈與稅法第6條所規定之遺產稅納稅義務人：\n１、有遺囑執行人者，為遺囑執行人。\n２、無遺囑執行人者，為繼承人及受遺贈人。\n３、無遺囑執行人及繼承人者，為依法選定之遺產管理人。", 
+    options: [
+        { id: "local", name: "國人", docs: ["被繼承人死亡診斷證明書正本或載有死亡日期之戶口名簿影本", "繼承人與被繼承人關係證明", "國民身分證正本"] },
+        { id: "mainland", name: "大陸地區人民", docs: ["被繼承人死亡診斷證明書正本", "繼承人與被繼承人關係證明", "經內政部移民署核發之臺灣地區入出境許可證或居留證正本", "大陸地區公證處出具之親屬關係證明文件，及財團法人海峽交流基金會驗證之證明", "向被繼承人住所地法院表示繼承經准予備查之文件"] }
+    ]
+},
+gift_tax_extension: { 
+    title: "贈與稅延期申報", 
+    hint: "※納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業。", 
+    options: [
+        { id: "donor", name: "贈與人親辦", docs: ["國民身分證正、影本", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
+    ]
+},
+instant_notify: { 
+    title: "查調即時通知", 
+    hint: "※限納稅義務人本人或未成年人之法定代理人親自申請；若係由代理人提示委託書或授權書及身分證明文件申請者，則不予受理。", 
+    options: [
+        { id: "local", name: "國人", docs: ["國民身分證正本"] },
+        { id: "foreign", name: "外籍人士", docs: ["護照或經內政部移民署核發之居留證正本"] },
+        { id: "mainland", name: "大陸人士", docs: ["經內政部移民署核發之臺灣地區入出境許可證或居留證正本"] },
+        { id: "minor", name: "未成年子女", docs: ["法定代理人(或監護人)國民身分證及印章", "戶口名簿"] },
+        { id: "limited", name: "限制行為能力人", docs: ["國民身分證正本(無須取得法定代理人同意)"] },
+    ]
+},
         withholding_setup: {
             title: "扣繳單位設立、變更登記（統一編號編配）",
             options: official48Items.map(item => ({
@@ -582,10 +617,10 @@
       { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
       { path: "查詢作業 > 10. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與資料查詢"], key: "gift_tax", targetIdentity: "donor", isReady: true },
 
-      { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["遺產稅延期申報"], isReady: false },
-      { path: "申辦作業 > 2. 贈與稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["贈與稅延期申報"], isReady: false },
+      { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["遺產稅延期申報"], isReady: false },
+      { path: "申辦作業 > 2. 贈與稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["贈與稅延期申報"], isReady: false },
       { path: "申辦作業 > 3. 扣繳單位設立、變更登記（統一編號編配）", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["扣繳單位設立、變更登記（統一編號編配）", "扣繳單位設立", "統一編號編配"], key: "withholding_setup", targetIdentity: "1", isReady: true },
-      { path: "申辦作業 > 4. 查調即時通知", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", statusText: "建置中", keywords: ["查調即時通知"], isReady: false },
+      { path: "申辦作業 > 4. 查調即時通知", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800",  keywords: ["查調即時通知"], isReady: false },
 
       { path: "核發書證 > 1. 各項稅款補發稅單", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["各項稅款補發稅單", "補發稅單"], isReady: false },
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["補發遺產稅不動產公同共有同意移轉證明書", "遺產稅不動產移轉證明書"], isReady: false },
@@ -640,6 +675,16 @@
       { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢 > 營利事業或扣繳單位", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢", "扣繳單位稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
 
       { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與人查詢", "贈與查詢", "全國贈與"], key: "gift_tax", targetIdentity: "donor", isReady: true },
+
+     { path: "申辦作業 > 1. 遺產稅延期申報 > 死亡診斷證明書或載有死亡日期之戶口名簿", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["死亡診斷證明書","載有死亡日期之戶口名簿"], key: "estate_tax_extension", targetIdentity: "local", isReady: true },
+      { path: "申辦作業 >1. 遺產稅延期申報 > 大陸地區人民 > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["入出境許可證","居留證","大陸人士","大陸地區人民"], key: "estate_tax_extension", targetIdentity: "mainland", isReady: true }, 
+
+      { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與契約書", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["贈與契約書"], key: "gift_tax_extension", targetIdentity: "donor", isReady: true },
+
+      { path: "申辦作業 >4. 查調即時通知 > 外籍人士 > 護照或居留證", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["外籍人士","護照或居留證"], key: "instant_notify", targetIdentity: "foreign", isReady: true },
+      { path: "申辦作業 >4. 查調即時通知 > 大陸人士 > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["入出境許可證","居留證","大陸人士"], key: "instant_notify", targetIdentity: "mainland", isReady: true },
+      { path: "申辦作業 >4. 查調即時通知 > 未成年子女", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["未成年子女"], key: "instant_notify", targetIdentity: "minor", isReady: true },
+      { path: "申辦作業 >4. 查調即時通知 > 限制行為能力人", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["限制行為能力人"], key: "instant_notify", targetIdentity: "limited", isReady: true },
 
 
       ...official48Items.map(item => ({
@@ -926,22 +971,35 @@
 
         const isWithholding = (currentSelectedItemKey === "withholding_setup");
 
-        let systemHeader = "【國稅申辦作業系統】";
-        if (!isWithholding) {
-            systemHeader = "【國稅查詢作業系統】";
+// 透過檢查當前項目是否屬於申辦作業的清單項目來決定標題
+        const withholdingKeys = ["estate_tax_extension", "gift_tax_extension", "instant_notify", "withholding_setup"];
+        let systemHeader = "【國稅查詢作業系統】";
+        
+        if (withholdingKeys.includes(currentSelectedItemKey)) {
+            systemHeader = "【國稅申辦作業系統】";
         }
 
-        let text = `${systemHeader}\n\n`;
+
+       let text = `${systemHeader}\n\n`;
         text += "📌 【申請項目與條件】\n";
-        text += "• 查詢項目：" + itemData.title;
         
-        if (isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
-            text += " - " + identitySelect.options[identitySelect.selectedIndex].text;
-        }
-        text += "\n";
-      
-        if (!isWithholding && identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) {
-            text += "• 申請人身分：" + identitySelect.options[identitySelect.selectedIndex].text + "\n";
+        // 取得目前選中的選項文字（例如：業別名稱或身分名稱）
+        let selectedOptionText = (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) 
+            ? identitySelect.options[identitySelect.selectedIndex].text 
+            : "";
+
+        // 1. 查詢項目維持單純的標題
+        text += "• 查詢項目：" + itemData.title + "\n";
+        
+        // 2. 判斷如果是扣繳單位（isWithholding），顯示「申請人業別」；其他項目則維持原本的「申請人身分」
+        if (isWithholding) {
+            if (selectedOptionText) {
+                text += "• 申請人業別：" + selectedOptionText + "\n";
+            }
+        } else {
+            if (selectedOptionText) {
+                text += "• 申請人身分：" + selectedOptionText + "\n";
+            }
         }
 
         if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
@@ -1006,13 +1064,10 @@
     }
   </script>
 
-  <button 
-    id="backToTopBtn" 
-    onclick="scrollToTop()" 
-    class="fixed right-5 bottom-6 z-50 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 translate-y-4 pointer-events-none focus:outline-none cursor-pointer"
-    title="回到最上方"
-  >
+  <!-- 回最上方按鈕元件 (補強) -->
+  <button id="backToTopBtn" onclick="scrollToTop()" class="fixed right-5 bottom-6 z-50 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 translate-y-4 pointer-events-none">
     <i class="fa-solid fa-arrow-up text-lg"></i>
   </button>
+
 </body>
 </html>
