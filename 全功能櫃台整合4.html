@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全功能櫃檯各項作業應備文件查詢系統</title>
+  
+  <!-- FontAwesome 圖示離線樣式 -->
+
+  <style>
+
+/* 移除項目清單中所有連結的底線 */
+a {
+    text-decoration: none !important;
+}
+    /* ========================================== */
+    /* Tailwind CSS 實用類別內嵌對應樣式              */
+    /* ========================================== */
+    *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e2e8f0; }
+    html { line-height: 1.5; -webkit-text-size-adjust: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    body { margin: 0; line-height: inherit; }
+    h1, h2, h3, p, ul { margin: 0; }
+    ul { list-style: none; padding: 0; }
+    button, input { font-family: inherit; font-size: 100%; line-height: 1.5; color: inherit; margin: 0; padding: 0; background: transparent; }
+    button { cursor: pointer; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* 彈性與排版基礎 */
+    .flex { display: flex; }
+    .inline-flex { display: inline-flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .flex-1 { flex: 1 1 0%; }
+    .flex-shrink-0 { flex-shrink: 0; }
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .space-y-1 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.25rem; }
+    .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+    .space-y-4 > :not([hidden]) ~ :not([hidden]) { margin-top: 1rem; }
+    .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 1.5rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .hidden { display: none !important; }
+
+#clearSearchBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  /* 確保按鈕定位正確 */
+  position: absolute;
+  right: 1rem;
+}
+
+    /* 寬高與限制 */
+    .w-full { width: 100%; }
+    .min-h-screen { min-height: 100vh; }
+    .max-w-md { max-width: 28rem; }
+    .max-w-4xl { max-width: 56rem; }
+    .max-w-7xl { max-width: 80rem; }
+    .max-w-\[1920px\] { max-width: 1920px; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .h-\[700px\] { height: 700px; }
+    .max-h-\[600px\] { max-height: 600px; }
+    .max-h-96 { max-height: 24rem; }
+    .w-5 { width: 1.25rem; }
+    .h-5 { height: 1.25rem; }
+    .w-7 { width: 1.75rem; }
+    .h-7 { height: 1.75rem; }
+    .w-12 { width: 3rem; }
+    .h-12 { height: 3rem; }
+    .w-20 { width: 5rem; }
+    .h-20 { height: 5rem; }
+
+    /* 顏色與背景 */
+    .bg-white { background-color: #ffffff; }
+    .bg-slate-50 { background-color: #f8fafc; }
+    .bg-slate-100 { background-color: #f1f5f9; }
+    .bg-slate-200 { background-color: #e2e8f0; }
+    .bg-slate-700 { background-color: #334155; }
+    .bg-slate-800 { background-color: #1e293b; }
+    .bg-blue-50 { background-color: #eff6ff; }
+    .bg-blue-100 { background-color: #dbeafe; }
+    .bg-blue-600 { background-color: #2563eb; }
+    .bg-blue-800 { background-color: #1e40af; }
+    .bg-indigo-50 { background-color: #eef2ff; }
+    .bg-indigo-50\/50 { background-color: rgba(238, 242, 255, 0.5); }
+    .bg-indigo-100 { background-color: #e0e7ff; }
+    .bg-indigo-800 { background-color: #3730a3; }
+    .bg-teal-50 { background-color: #f0fdf4; }
+    .bg-teal-100 { background-color: #ccfbf1; }
+    .bg-teal-800 { background-color: #115e59; }
+    .bg-emerald-50 { background-color: #ecfdf5; }
+    .bg-amber-50 { background-color: #fffbeb; }
+    .bg-orange-100 { background-color: #ffedd5; }
+    .bg-red-50 { background-color: #fef2f2; }
+    .bg-red-100 { background-color: #fee2e2; }
+    .bg-red-600 { background-color: #dc2626; }
+
+    .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+    .from-blue-900 { --tw-gradient-from: #1e3a8a; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(30, 58, 138, 0)); }
+    .to-indigo-900 { --tw-gradient-to: #31105e; }
+
+    /* 文字顏色 */
+    .text-white { color: #ffffff; }
+    .text-slate-300 { color: #cbd5e1; }
+    .text-slate-400 { color: #94a3b8; }
+    .text-slate-500 { color: #64748b; }
+    .text-slate-700 { color: #334155; }
+    .text-slate-800 { color: #1e293b; }
+    .text-blue-200 { color: #bfdbfe; }
+    .text-blue-400 { color: #60a5fa; }
+    .text-blue-600 { color: #2563eb; }
+    .text-blue-700 { color: #1d4ed8; }
+    .text-blue-900 { color: #1e3a8a; }
+    .text-indigo-500 { color: #6366f1; }
+    .text-indigo-700 { color: #4338ca; }
+    .text-indigo-900 { color: #312e81; }
+    .text-teal-700 { color: #0f766e; }
+    .text-emerald-600 { color: #059669; }
+    .text-emerald-900 { color: #065f46; }
+    .text-amber-900 { color: #78350f; }
+    .text-amber-950 { color: #451a03; }
+    .text-orange-800 { color: #9a3412; }
+    .text-red-800 { color: #991b1b; }
+
+    /* 字體大小與樣式 */
+    .text-xs { font-size: 0.75rem; line-height: 1rem; }
+    .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+    .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+    .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .font-extrabold { font-weight: 800; }
+    .tracking-wide { letter-spacing: 0.025em; }
+    .tracking-wider { letter-spacing: 0.05em; }
+
+    /* 邊框與圓角 */
+    .border { border-width: 1px; }
+    .border-2 { border-width: 2px; }
+    .border-t { border-top-width: 1px; }
+    .border-b { border-bottom-width: 1px; }
+    .border-slate-100 { border-color: #f1f5f9; }
+    .border-slate-200 { border-color: #e2e8f0; }
+    .border-slate-300 { border-color: #cbd5e1; }
+    .border-slate-700 { border-color: #334155; }
+    .border-blue-100 { border-color: #dbeafe; }
+    .border-blue-400 { border-color: #60a5fa; }
+    .border-blue-600 { border-color: #2563eb; }
+    .border-indigo-200 { border-color: #c7d2fe; }
+    .border-teal-200 { border-color: #99f6e4; }
+    .border-emerald-200 { border-color: #a7f3d0; }
+    .border-emerald-300 { border-color: #6ee7b7; }
+    .border-amber-200 { border-color: #fde68a; }
+    .border-red-200 { border-color: #fecaca; }
+
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-2xl { border-radius: 1rem; }
+    .rounded-full { border-radius: 9999px; }
+
+    /* 間距與邊框陰影 */
+    .p-2 { padding: 0.5rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-3\.5 { padding: 0.875rem; }
+    .p-4 { padding: 1rem; }
+    .p-5 { padding: 1.25rem; }
+    .p-6 { padding: 1.5rem; }
+    .p-8 { padding: 2rem; }
+    .p-12 { padding: 3rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .pl-5 { padding-left: 1.25rem; }
+    .pl-11 { padding-left: 2.75rem; }
+    .pr-10 { padding-right: 2.5rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-8 { margin-bottom: 2rem; }
+    .pt-2 { padding-top: 0.5rem; }
+    .pb-3 { padding-bottom: 0.75rem; }
+    .pb-4 { padding-bottom: 1rem; }
+
+    .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+    .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+    .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+    /* 互動與效果 */
+    .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .transition-colors { transition-property: background-color, border-color, color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .duration-300 { transition-duration: 300ms; }
+    .cursor-pointer { cursor: pointer; }
+    .pointer-events-none { pointer-events: none; }
+    .relative { position: relative; }
+    .absolute { position: absolute; }
+    .fixed { position: fixed; }
+    .top-full { top: 100%; }
+    .left-0 { left: 0px; }
+    .right-0 { right: 0px; }
+    .left-4 { left: 1rem; }
+    .right-4 { right: 1.5rem; }
+    .bottom-6 { bottom: 1.5rem; }
+    .right-5 { right: 1.25rem; }
+    .z-50 { z-index: 50; }
+    .overflow-hidden { overflow: hidden; }
+    .overflow-y-auto { overflow-y: auto; }
+    .whitespace-pre-line { white-space: pre-line; }
+
+    /* 滑鼠懸停與焦點狀態模擬 */
+    .hover\:bg-blue-50:hover { background-color: #eff6ff; }
+    .hover\:bg-blue-600:hover { background-color: #2563eb; }
+    .hover\:bg-indigo-50:hover { background-color: #eef2ff; }
+    .hover\:bg-teal-50:hover { background-color: #f0fdf4; }
+    .hover\:bg-slate-300:hover { background-color: #cbd5e1; }
+    .hover\:bg-slate-800:hover { background-color: #1e293b; }
+    .hover\:text-white:hover { color: #ffffff; }
+    .hover\:text-blue-700:hover { color: #1d4ed8; }
+    .hover\:text-indigo-700:hover { color: #4338ca; }
+    .hover\:text-teal-700:hover { color: #0f766e; }
+    .hover\:text-slate-600:hover { color: #475569; }
+    .hover\:shadow-2xl:hover { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    .hover\:-translate-y-2:hover { transform: translateY(-0.5rem); }
+
+    .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+    .focus\:border-blue-600:focus { border-color: #2563eb; }
+    .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
+    .focus\:ring-blue-200:focus { --tw-ring-color: #bfdbfe; }
+    .focus\:ring-blue-500:focus { --tw-ring-color: #3b82f6; }
+
+    /* 群組 Hover 互動 */
+    .group:hover .group-hover\:bg-white { background-color: #ffffff; }
+    .group:hover .group-hover\:text-white { color: #ffffff; }
+
+    /* 補上缺少的間距與定位控制 */
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+    .px-12 { padding-left: 3rem; padding-right: 3rem; }
+    
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-8 { margin-bottom: 2rem; }
+
+    .fixed { position: fixed; }
+    .absolute { position: absolute; }
+    .relative { position: relative; }
+    .bottom-6 { bottom: 1.5rem; }
+    .right-5 { right: 1.25rem; }
+    .z-50 { z-index: 50; }
+
+    .opacity-0 { opacity: 0; }
+    .opacity-100 { opacity: 1; }
+    .translate-y-4 { transform: translateY(1rem); }
+    .translate-y-0 { transform: translateY(0); }
+    .pointer-events-none { pointer-events: none; }
+    .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+    .duration-300 { transition-duration: 300ms; }
+
+.parent-container {
+    display: flex;
+    flex-direction: row; /* 確保水平並列 */
+    justify-content: space-between; /* 均分空間 */
+    flex-wrap: nowrap; /* 或 wrap，視畫面空間而定 */
+    gap: 20px; /* 區塊之間的間距，可依原設計微調 */
+}
+
+.section-box {
+    flex: 1; /* 或 width: 32%; */
+    /* 請勿修改字體大小 (font-size) 與 padding/margin */
+}
+
+    /* 全局限制最小字體 14px 與其他自定義樣式 */
+    html, body {
+      font-size: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    .text-min-14 {
+      font-size: clamp(14px, 1.2vw, 16px);
+    }
+    /* 自訂捲軸 */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 3px;
+    }
+    
+    /* 核心樣式：調整 Header 與版面配置對齊附圖 */
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #292562 100%);
+      color: white;
+      padding: 1.5rem 2.5rem;
+      text-align: left; /* 配合附圖文字靠左 */
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      background-color: #f4f6f9;
+    }
+
+/* 預設（視窗縮小或手機時）：直式排列 */
+  .custom-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  /* 當視窗寬度大於 1100px（電腦大螢幕）時：強制橫向三欄並排 */
+  @media (min-width: 1100px) {
+    .custom-card-container {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+/* 強制放大第三層內所有下拉選單的字體與行高 */
+select {
+    font-size: 1.125rem !important; /* 約 18px，可自行加大至 1.5rem (24px) */
+    line-height: 1.125 !important;
+}
+
+/* 讓特定容器內的所有清單項目自動排版（對齊第一行） */
+#docList li, 
+#docList a {
+    display: flex;
+    align-items: flex-start; /* 關鍵：改成對齊頂端第一行 */
+}
+
+/* 讓特定容器內的所有清單項目自動加上綠色圓圈勾勾 */
+#docList li::before, 
+#docList a::before {
+    content: "✔";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;          /* 稍微調小圓圈讓比例更好看 */
+    height: 20px;
+    background-color: #10b981;
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    margin-right: -6px;    /* 關鍵：縮小與字的間距（原本是 10px） */
+    margin-top: 2px;      /* 微調：讓勾勾與第一行文字完美水平對齊 */
+    flex-shrink: 0;
+}
+
+/* 強制讓注意事項的清單顯示預設圓點 */
+#alertInfoBox ul {
+    list-style-type: disc !important;
+    padding-left: 1.25rem !important; /* 確保有足夠的縮排空間放圓點 */
+}
+
+#alertInfoBox li {
+    display: list-item !important; /* 強制以清單項目模式顯示 */
+    list-style-type: disc !important;
+}
+
+  </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col justify-between" onclick="closeAllDropdowns()">
+
+  <!-- 頂部 Header：已調整為與附圖一致的靠左對齊與精簡間距 -->
+  <header class="w-full">
+    <div class="w-full max-w-7xl mx-auto">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-wide">全功能櫃檯各項作業應備文件查詢系統</h1>
+      <p class="text-blue-200 text-xl md:text-2xl mt-0.5">中區國稅局彰化分局</p>
+    </div>
+  </header>
+
+  <!-- 主要內容區塊 -->
+  <main class="flex-1 w-full max-w-[1920px] mx-auto p-4 md:p-8 flex flex-col justify-center items-center">
+
+    <!-- 第一層：選擇 國稅 -->
+<section id="step-1" class="w-full max-w-4xl py-8 flex flex-col items-center">
+    
+
+<!-- 按鈕外層容器（負責水平置中） -->
+<div class="flex justify-center w-full px-4">
+    
+<!-- 國稅按鈕 -->
+<button type="button" onclick="selectTaxType('national')" class="group relative bg-white border-2 border-blue-600 hover:bg-blue-600 rounded-2xl p-12 md:p-20 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col items-center justify-center cursor-pointer w-full max-w-md">
+  
+  <!-- 用 style 直接控制寬高、字體，以及絕對有效的下方間距 (margin-bottom) -->
+  <div style="width: 150px; height: 150px; font-size: 80px; margin-bottom: 30px;" class="bg-blue-100 group-hover:bg-white text-blue-600 rounded-full flex items-center justify-center transition-colors">
+    🏛️
+  </div>
+  
+  <span class="text-3xl md:text-5xl font-bold text-blue-900 group-hover:text-white transition-colors">點擊檢索國稅服務項目</span>
+</button>
+
+</div>
+</section>
+
+
+    <!-- 第二層：國稅三大類卡片區 + 全能深層搜尋列 -->
+    <section id="step-2" class="hidden w-full space-y-6">
+      
+      <!-- 返回按鈕與標題 -->
+      <div class="flex items-center justify-between border-b border-slate-300 pb-4">
+<button type="button" onclick="goBack()" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-bold text-min-14 transition-all cursor-pointer">
+    ⭠ 回首頁
+  </button>
+
+        <div class="text-xl md:text-2xl font-bold text-blue-900">
+          國稅服務項目
+        </div>
+      </div>
+
+<!-- 全能搜尋框 (完美支援自動顯示/隱藏清除按鈕) -->
+<div class="relative w-3/4 mx-auto mb-8">
+    <div class="relative flex items-center w-full">
+
+
+          <!-- 左側放大鏡圖標 -->
+          <span class="absolute left-4 text-blue-400 flex items-center pointer-events-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </span>
+
+          <!-- 搜尋輸入框（增加多種事件監聽與 pr-12 右側空間） -->
+          <input 
+            type="text" 
+            id="searchInput" 
+            oninput="handleSearchInput(); toggleClearButton();" 
+            onkeyup="toggleClearButton();"
+            onfocus="handleSearchInput(); toggleClearButton();"
+            placeholder="輸入關鍵書表或項目名稱 (如: 各稅核定資料、遺產稅延期申報、補發稅單...)" 
+            class="w-full pl-11 pr-12 py-3 bg-white border-2 border-blue-400 rounded-2xl shadow-md focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-200 text-slate-800 text-sm md:text-base transition-all"
+          >
+
+          <!-- 右側叉叉清除按鈕（拿掉 hidden，改用 JavaScript 在網頁載入時動態判斷，避免直接被蓋掉） -->
+          <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer text-lg font-bold">
+  ✖
+</button>
+        </div>
+
+        <!-- 搜尋建議下拉選單 -->
+        <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-96 overflow-y-auto custom-scrollbar">
+          <ul id="searchResults" class="divide-y divide-slate-100">
+            <!-- 動態注入搜尋結果 -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- 完整優化版的三欄式卡片結構 -->
+      <div class="custom-card-container">
+        
+        <!-- 1. 查詢作業 (藍色系) -->
+          <div class="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden flex flex-col h-[700px] flex-1">
+            <div class="bg-blue-800 text-white p-5 text-center font-bold text-lg md:text-xl flex items-center justify-center gap-2 shadow-sm">
+              <i class="fa-solid fa-magnifying-glass"></i> 查詢作業項目清單
+            </div>
+
+          <div class="p-2 flex-1 overflow-y-auto space-y-1 custom-scrollbar">
+            <a href="javascript:void(0)" onclick="selectItem('tax_history')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">1. 各稅核定資料</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('tax_arrears')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">2. 納稅欠稅及退稅資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('income_list')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">3. 個人綜合所得稅各類所得資料清單查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('property_list')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">4. 個人財產歸戶資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('deceased_data')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">5. 被繼承人財產、所得及贈與資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('creditor_data')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">6. 債權人查調債務人課稅資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('tax_status')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">7. 綜合所得稅稅籍查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('small_business')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">8. 小規模營利事業營業額核定資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('business_reg')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">9. 營業人暨扣繳單位稅籍查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('gift_tax')" class="block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">10. 全國贈與資料查詢</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 卡片 2：申辦作業項目清單 -->
+          <div class="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden flex flex-col h-[700px] flex-1">
+            <div class="bg-indigo-800 text-white p-5 text-center font-bold text-lg md:text-xl flex items-center justify-center gap-2 shadow-sm">
+              <i class="fa-solid fa-file-pen"></i> 申辦作業項目清單
+            </div>
+
+          <div class="p-4 flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+            <a href="javascript:void(0)" onclick="selectItem('estate_tax_extension')" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 ">
+              <span class="flex-1">1. 遺產稅延期申報</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('gift_tax_extension')" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 ">
+              <span class="flex-1">2. 贈與稅延期申報</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('withholding_setup')" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 ">
+              <span class="flex-1">3. 扣繳單位設立、變更登記（統一編號編配）</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="selectItem('instant_notify')" class="block p-3 hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2 ">
+              <span class="flex-1">4. 查調即時通知</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-slate-400 font-bold">❯</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- 卡片 3：核發書證項目清單 -->
+          <div class="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden flex flex-col h-[700px] flex-1">
+            <div class="bg-teal-800 text-white p-5 text-center font-bold text-lg md:text-xl flex items-center justify-center gap-2 shadow-sm">
+              <i class="fa-solid fa-award"></i> 核發書證項目清單
+            </div>
+
+          <div class="p-4 flex-1 space-y-1 overflow-y-auto custom-scrollbar">
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">1. 各項稅款補發稅單</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">2. 補發遺產稅不動產公同共有同意移轉證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">3. 儲蓄免扣證</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">4. 中 (英) 文綜合所得稅納稅證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">5. 核發違章欠稅查復表</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">6. 核發扣繳稅繳納證明</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">7. 補發遺產稅證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">8. 補發贈與稅證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">9. 核發繳稅證明</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+            <a href="javascript:void(0)" onclick="showBuildingAlert()" class="block p-3 hover:bg-teal-50 text-slate-700 hover:text-teal-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
+              <span class="flex-1">10. 核發中、英文個人房屋土地交易所所得稅繳納證明書</span>
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
+                <span class="text-xs text-slate-400">建置中</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 第三層：細節篩選與應備文件結果頁 -->
+    <section id="step-3" class="hidden w-full max-w-4xl space-y-6">
+      
+      <!-- 返回第二頁按鈕與目前選擇標題 -->
+      <div class="flex items-center justify-between border-b border-slate-300 pb-4">
+        <!-- 將原本的 i 標籤換成 ⭠ -->
+        <button type="button" onclick="goToStep(2)" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-bold text-min-14 transition-all cursor-pointer">
+  ⭠ 重選服務項目
+        </button>
+        <div id="selectedItemTitle" class="text-xl md:text-2xl font-bold text-blue-900">
+          <!-- 動態寫入項目名稱 -->
+        </div>
+      </div>
+
+      <!-- 條件選單卡片 -->
+      <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-8 space-y-6">
+        
+        <!-- 動態紅框提示插槽 -->
+        <div id="customAlertBox" style="display: none;"></div>
+
+        <!-- 下拉選單 2：選擇身分／類別 -->
+        <div id="subGroup" class="mt-4 space-y-2">
+          <label id="identitySelectLabel" for="identitySelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>
+            請選擇申請人身分／案件類別：
+          </label>
+          
+<select id="identitySelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
+
+            <!-- 動態生成選項 -->
+          </select>
+        </div>
+
+<!-- 專屬扣繳單位的選擇業別下拉選單區塊 -->
+<div id="withholdingsSubGroup" class="mt-4 space-y-2 hidden">
+  <label id="identityLabel" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+    <!-- 刪除原本的 span，讓 JS 統一控制 -->
+    請選擇業別 (共 48 項) :
+  </label>
+
+  <select id="withholdingSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
+    <!-- 業別選項 -->
+  </select>
+</div>
+
+        <!-- 下拉選單 3：債權人執行名義選單 -->
+        <div id="executionGroup" class="mt-4 space-y-2 hidden">
+          <label for="executionSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">2</span>
+            請選擇執行名義種類：
+          </label>
+          <select id="executionSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
+            <option value="court_judgment">司法機關民事判決暨確定證明書</option>
+            <option value="payment_order">司法機關支付命令暨確定證明書</option>
+            <option value="creditor_cert">司法機關債權憑證</option>
+            <option value="promissory_note">司法機關本票准予強制執行民事裁定</option>
+            <option value="provisional_injunction">假扣押、假處分、假執行裁判 (收受裁定未逾30日)</option>
+            <option value="court_settlement">法院成立之和解筆錄或調解筆錄</option>
+            <option value="town_mediation">經法院核定之鄉鎮市調解委員會調解書</option>
+            <option value="notary_public">依公證法得為強制執行之公證書</option>
+            <option value="litigation_costs">訴訟費用額裁定暨確定證明書</option>
+            <option value="arbitration">仲裁判斷書及法院准許執行裁定書（約定免裁定者免附）</option>
+            <option value="other_law">依其他法律規定得為強制執行之名義</option>
+          </select>
+        </div>
+
+        <!-- 委任代理勾選框 -->
+        <div id="agentGroup" class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl">
+          <label class="flex items-center gap-3 cursor-pointer text-amber-900 font-medium">
+            <input type="checkbox" id="isAgent" onchange="renderChecklist()" class="w-5 h-5 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer">
+            <span id="agentGroupText">委託他人代理辦理（委任辦理請勾選）</span>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- 檢核結果顯示區 -->
+      <div id="resultBox" class="mt-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-6 md:p-8 shadow-md space-y-4">
+        <h3 class="text-xl font-bold text-emerald-900 border-b border-emerald-200 pb-3 flex items-center gap-2">
+          <i class="fa-solid fa-clipboard-check text-emerald-600"></i>
+          臨櫃洽辦應檢核／攜帶書表清單：
+        </h3>
+
+        <!-- 書表清單 -->
+        <ul id="docList" class="space-y-4 text-slate-800 text-min-14">
+          <!-- 動態載入 li -->
+        </ul>
+
+        <!-- 特別備註 -->
+        <div id="specialNotes" class="mt-4 hidden bg-red-50 p-4 rounded-xl border border-red-200 text-red-800 text-sm leading-relaxed font-medium whitespace-pre-line"></div>
+
+        <!-- 一鍵複製功能按鈕 -->
+        <div class="pt-2 flex flex-wrap gap-4">
+          <button type="button" onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-5 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-copy"></i> 複製清單內容
+          </button>
+        </div>
+
+        <!-- 注意事項說明區 -->
+        <div id="alertInfoBox" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
+          <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>以下單位應向銷售稅課/營業稅股申請編配營利事業統一編號：1.營利事業 2.員工消費合作社 3.藥局(僅依醫師處方調劑者除外) 4.報社、雜誌社 5.業餘或職業演藝團體。</li>
+            <li>外國營利事業在我國境內未設分支機構，而委託本國營利事業為營業代理人，該營業代理人無須辦理營業登記，但應向該管稽徵機關報備(所轄國稅局)。</li>
+            <li>律師、會計師、地政士、記帳士、技師、建築師、醫師診所、不動產估價師、保險經紀人及專利師等，申請編配統一編號時<b>免檢附加入同業公會之證明文件</b>。</li>
+          </ul>
+        </div>
+
+        <!-- 流程圖圖片區 -->
+        <div id="infoImgContainer" class="mt-4 text-center hidden">
+          <img id="infoImg" src="" alt="流程圖" class="max-w-full h-auto rounded-xl shadow-md mx-auto">
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="bg-slate-800 text-slate-300 py-4 px-4 text-center text-min-14 w-full border-t border-slate-700">
+    <p>了解更多，請至：1. 各地國稅局/稽徵所櫃檯辦理 | 2. 財政部稅務入口網 | 免付費電話：0800-000-321</p>
+  </footer>
+
+  <!-- JavaScript 核心邏輯 -->
+  <script>
+
+
+
+    const STD_ID = "負責人身分證正本";
+    const STD_TAX = "所在地全部所有權人最近一期房屋稅單影本或房屋稅籍證明文件（如為承租房屋請加附租賃合約書影本）";
+    const STD_EXAM = "考試及格證書/開業執照/執業執照影本";
+
+    const official48Items = [
+        { id: "1", name: "1. 律師或法律事務所", docs: [STD_EXAM, "公會核發之律師身分證明影本", STD_ID, STD_TAX], hint: "※ 事務所地址、電話、傳真異動者，應向公會陳報，取具「律師身分證明」文件。" },
+        { id: "2", name: "2. 以合署方式經營之律師或法律事務所", docs: [STD_EXAM, "公會核發之律師身分證明影本", "合署契約書影本", "以合署方式經營之律師或法律事務所全體律師名冊影本", STD_ID, STD_TAX], hint: "※ 事務所中每位合署律師皆需分別編配統一編號。\n※ 扣繳單位名稱：「○○律師(或法律)事務所○○○律師」" },
+        { id: "3", name: "3. 會計師事務所", docs: [STD_EXAM, "金融監督管理委員會(法人)或會計師公會全國聯合會(非法人)登錄核備文及事務所登錄事項表影本", STD_ID, STD_TAX], hint: "" },
+        { id: "4", name: "4. 合署會計師事務所", docs: [STD_EXAM, "會計師公會全國聯合會登錄核備文及事務所登錄事項表影本", "合署會計師事務所全體會計師名冊影本", STD_ID, STD_TAX], hint: "※ 事務所中每位合署會計師皆需分別編配統一編號。\n※ 扣繳單位名稱：「○○會計師事務所○○○會計師」（註：不強制加「合署」二字）" },
+        { id: "5", name: "5. 精算師事務所", docs: [STD_EXAM, STD_ID, STD_TAX], hint: "" },
+        { id: "6", name: "6. 土地登記代理人事務所", docs: [STD_EXAM, "所轄市政府地政處登錄核備文影本", STD_ID, STD_TAX], hint: "※ 目前已不核發專業代理人證書。" },
+        { id: "7", name: "7. 地政士事務所", docs: [STD_EXAM, "所轄市政府地政處登錄核備文影本", STD_ID, STD_TAX], hint: "" },
+        { id: "8", name: "8. 不動產估價師事務所", docs: [STD_EXAM, "所轄市政府地政處登錄核備文影本", STD_ID, STD_TAX], hint: "" },
+        { id: "9", name: "9. 技師事務所", docs: [STD_EXAM, "行政院公共工程委員會登錄核備文影本", STD_ID, STD_TAX], hint: "" },
+        { id: "10", name: "10. 建築師事務所", docs: [STD_EXAM, "所轄市政府工務局建管處核准立案證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "11", name: "11. 記帳及報稅代理人事務所", docs: [STD_EXAM, "所轄國稅局核準登錄執業證明書影本", STD_ID, STD_TAX], hint: "※ 目前已不核發記帳及報稅代理人登錄執業證明書。" },
+        { id: "12", name: "12. 記帳士事務所", docs: [STD_EXAM, "所轄國稅局核發之登錄(記)執行記帳士業務核准文影本", STD_ID, STD_TAX], hint: "" },
+        { id: "13", name: "13. 醫師診所", docs: [STD_EXAM, "行政院衛生署或所轄市政府衛生局核發開業執照影本", STD_ID, STD_TAX], hint: "※主管機關在中央為行政院衛生署；在直轄市為直轄市政府；在縣（市）為縣（市）政府" },
+        { id: "14", name: "14. 獸醫診所", docs: [STD_EXAM, "行政院農委會或所轄市政府衛生局核發開業執照影本", STD_ID, STD_TAX], hint: "※主管機關在中央為行政院農業委員會；在直轄市為直轄市政府；在縣（市）為縣（市）政府" },
+        { id: "15", name: "15. 國術館損傷技術員", docs: [STD_EXAM, STD_ID, STD_TAX], hint: "" },
+        { id: "16", name: "16. 補習班", docs: ["教育局核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "17", name: "17. 幼兒園", docs: ["教育局核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "18", name: "18. 安親班", docs: ["社會局核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "19", name: "19. 安養中心、養護所", docs: ["社會局核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "20", name: "20. 勞工退休準備金監督委員會", docs: ["所轄市政府勞動局核准設立公文影本", STD_ID, STD_TAX], hint: "※勞動局給號後由分局、稽徵所編配稅籍編號" },
+        { id: "21", name: "21. 職工福利委員會", docs: ["所轄市政府勞動局核准設立公文及福利機構登記證影本", STD_ID, STD_TAX], hint: "※勞動局不會給號\n※若為新設立、變更單位名稱或地址，另附「福利機構登記證」" },
+        { id: "22", name: "22. 職工退休基金管理委員會", docs: ["職工退休基金管理委員會章程及委員名冊影本", "職工退休辦法影本", STD_ID, STD_TAX], hint: "" },
+        { id: "23", name: "23. 民間互助會", docs: ["主管機關核准文件影本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>有立案者無須檢附</span>", "中華民國儲蓄互助社組織章程影本（儲蓄互助社適用）<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>有立案者無須檢附</span>", "社員名冊影本（儲蓄互助社適用）<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>有立案者無須檢附</span>", "會員證書影本（儲蓄互助社適用）", STD_ID, STD_TAX], hint: "※無立案證書但有房屋稅單者應檢附附件：1.中華民國儲蓄互助社會員證書 2.互助社組織章程 3.社員名冊 4.扣繳義務人身分證 5.房屋稅單等影本\n※無立案證書及房屋稅單者應檢附附件如上列1、2、3、4" },
+        { id: "24", name: "24. 大廈管理委員會/管理負責人", docs: ["新設立者需具所轄市政府建管處公寓大廈管理組織報備證明書影本", STD_ID, STD_TAX], hint: "※ 主委或管理負責人變更時需向主管機構報備。" },
+        { id: "25", name: "25. 各類文教機構團體協會", docs: ["內政部核准設立公文及立案證書影本", "理事長當選證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "26", name: "26. 非營利演藝團體", docs: ["臺北市政府文化局(或地方文化局)核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "27", name: "27. 人民團體、同業工會", docs: ["所轄市政府社會局核准設立公文及立案證書影本", "理事長當選證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "28", name: "28. 財團法人", docs: ["法院核備之設立公文及法人登記證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "29", name: "29. 保險經紀人事務所", docs: [STD_EXAM, STD_ID, STD_TAX], hint: "※保險經紀人管理規則第3條：經紀人非依本規則取得執業證照，不得經營或執行執業。\n※保險經紀人管理規則第7條：具備本規則所定經紀人資格……得以個人名義、……於取得執業證照後執行業務。\n※保險經紀人管理規則第8條：個人執業經紀人應檢附下列文件，向主管機關辦理許可登記：……" },
+        { id: "30", name: "30. 保險代理人事務所", docs: [STD_EXAM, STD_ID, STD_TAX], hint: "※保險代理人規則第3條：代理人非依本規則取得執業證照，不得經營或執行執業。\n※保險代理人管理規則第7條：具備本規則所定代理人資格……得以個人名義、……於取得執業證照後執行業務。\n※保險代理人管理規則第8條：個人執業代理人應檢附下列文件，向主管機關辦理許可登記：……" },
+        { id: "31", name: "31. 商標代理人", docs: [STD_ID, STD_TAX], hint: "" },
+        { id: "32", name: "32. 專利代理人事務所", docs: [STD_EXAM, "智產局專利代理人登錄證明/報備文件影本", STD_ID, STD_TAX], hint: "※ 負責人需具備專利代理人資格。" },
+        { id: "33", name: "33. 專利師事務所", docs: [STD_EXAM, "智產局專利師登錄事項證明影本", STD_ID, STD_TAX], hint: "※ 負責人需具備專利師資格。" },
+        { id: "34", name: "34. 民間公證人", docs: [STD_EXAM, "地方法院報備核准函影本", "加入同業公會文件影本", STD_ID, STD_TAX], hint: "※應就已成年之中華民國國民具有下列資格之一者適任之：\n1.經民間公證人考試及格者 \n2.曾任法官、檢察官，經銓敘合格者 \n3.曾任公設辯護人，經銓敘合格者 \n4.曾任法院之公證人，經銓敘合格，或曾任民間公證人者 \n5.經高等考試律師考試及格，並執行律師業務3年以者" },
+        { id: "35", name: "35. 破產財團(破產管理人)", docs: [STD_EXAM + "（破產管理人之職業執照）", "各地地方法院民事裁定書及確定證明書影本", STD_ID, STD_TAX], hint: "※扣繳單位為法院裁定之破產財團\n※負責人為法院裁定之破產管理人（以破產管理人之戶籍地為扣繳單位設籍地）" },
+        { id: "36", name: "36. 表演人", docs: [STD_EXAM + "（表演工作證）", STD_ID, STD_TAX], hint: "※ 扣繳單位名稱：「○○○表演人」" },
+        { id: "37", name: "37. 祭祀公業", docs: ["所轄區公所核准設立公文影本", "派下員名冊影本", "派下員系統表影本", "不動產清冊影本", STD_ID, STD_TAX], hint: "※ 有祠堂者向祠堂所在地國稅局申請。\n※無祠堂者向管理人戶籍地申請。" },
+        { id: "38", name: "38. 本國銀行受託保管外國公司投資信託基金專戶", docs: ["本國銀行營業執照影本", "金融監督管理委員會核準函影本", STD_ID, STD_TAX], hint: "" },
+        { id: "39", name: "39. 保管機構受託保管外國人(含外國法人)投資專戶", docs: ["保管機構營業執照影本", "委託書影本(需附中文譯本)", "臺灣證券交易所核發「境外華僑及外國人完成登記證明」影本", STD_ID, STD_TAX], hint: "※ 由臺灣證券交易所於發證時一併編配國稅局統一編號。" },
+        { id: "40", name: "40. 保管機構受託保管大陸地區投資人投資專戶", docs: ["保管機構營業執照影本", "委託書影本(需附中文譯本)", "臺灣證券交易所核發「大陸地區投資人完成登記證明」影本", STD_ID, STD_TAX], hint: "※ 由臺灣證券交易所於發證時一併編配國稅局統一編號。" },
+        { id: "41", name: "41. 外國營利事業在臺未設分支機構僅設辦事處", docs: ["經濟部核准設立公文影本", STD_ID, STD_TAX], hint: "※ 以經濟部核准之「公司在臺灣地區指派之訴訟及非訴訟代理人」為在臺負責人。\n※ 由經濟部編配統一編號。" },
+        { id: "42", name: "42. 外國營利事業投資國內未上市、櫃股票在臺開立新臺幣帳戶", docs: ["投審會核准文影本", "外國法人資格證明文件影本", "外國法人負責人身分證明文件影本", "經當地民間公證人公、認證出具之授權書影本(需附中文譯本)", "在臺代理人身分證明文件影本"], hint: "※向在臺代理人或代表人之戶籍所在地國稅局各分局、稽徵所編配統一編號。\n※依華僑及外國人投資證券管理辦法第10條 及臺灣證券交易所股份有限公司營業細則第77條之4 規定，外國營利事業投資國內上市、櫃股票，應依本表序號39規定辦理。" },
+        { id: "43", name: "43. 海外企業在臺申請第一上市(櫃)或登錄興櫃", docs: ["證券主管機關核准上市(櫃)或同意興櫃登錄核准函影本", "代理人出具經我國駐外單位認證之海外企業授權書影本(需附中文譯本)", "經我國駐外單位認證之海外企業負責人身分證明文件影本", "在臺代理人身分證明文件影本", STD_TAX + "（外國營利事業在臺有設籍地址，需檢附房屋稅單影本，如為承租，請加附租賃契約影本）"], hint: "※負責人及扣繳義務人均填海外企業之負責人，若在台無設籍地址則填海外企業所在國地址，房屋稅籍編號除縣市別為英文代碼外，數字欄均填9。\n※海外營利事業在臺有設籍地址，則向該址之國稅局各分局、稽徵所編配統一編號；若無，則向在臺代理人或代表人戶籍所在地國稅局各分局、稽徵所辦理" },
+        { id: "44", name: "44. 海外企業之海外法人股東在臺開立新臺幣帳戶", docs: ["海外企業在中華民國委任之專業代理機構出具股票持有證明書正本（註：此項依規定需正本）", "主管機關核准海外企業上市(櫃)或同意興櫃登錄之核准函影本", "經我國駐外單位認證之法人股東依註冊國法律組織登記且有效存在之證明文件影本", "經我國駐外單位認證之法人股東委託代理人之授權書影本(需附中文譯本)", "經我國駐外單位認證之法人股東負責人身分證明文件影本", "在臺代理人之身分證明文件影本", STD_TAX + "（海外企業之海外法人股東在臺有設籍地址，需檢附房屋稅單影本，如為承租，請加附租賃契約影本）"], hint: "※負責人及扣繳義務人均填海外法人股東之負責人，地址填海外法人股東所在國地址，房屋稅籍編號除縣市別為英文代碼外，數字欄均填9。\n※海外企業之海外法人股東，在臺有設籍地址，則向該址之國稅局各分局、稽徵所編配統一編號；若無，則向在臺代理人或代表人戶籍所在地國稅局各分局、稽徵所辦理" },
+        { id: "45", name: "45. 已參與發行海外存託憑證公司因辦理分割減資致海外存託憑證持有人持有國內未上市公司股票", docs: ["金管會核准分割減資公文影本", "存託機構指定之國內代理人營業執照影本", "存託機構指定之國內代理人之負責人、扣繳義務人及代理人身分證影本", "存託機構指定之國內代理人所在地最近1期房屋稅單影本", STD_ID, STD_TAX], hint: "※ 扣繳單位名稱：「存託機構受託XXX公司因分割致海外存託憑證持有人取得XXX公司股票集合專戶」" },
+        { id: "46", name: "46. 信託專戶-專案核准案件/一般信託案件", docs: ["專案核准案件：主管機關專案核准信託基金文件影本", "一般非專案案件：信託契約書影本", STD_ID], hint: "※ 專案核准案件每案編配一個統一編號；非專案案件每一受託人編配一個統一編號。" },
+        { id: "47", name: "47. 信託專戶-私募基金案件", docs: ["董事會議事錄影本", "投資說明書影本", "證券投資信託契約書影本", STD_ID], hint: "※ 扣繳單位名稱：投資說明書載明之基金登記名稱。" },
+        { id: "48", name: "48. 證券商經營財富管理帳戶/現金管理專戶", docs: ["金管會核准文件影本", "證券商許可證照影本", "中華民國證券商業同業公會會員證書影本", "財富或現金管理契約書影本", STD_TAX], hint: "※ 扣繳單位名稱：「○○證券商之客戶財富管理帳戶/○○證券商之客戶現金管理專戶」" }
+    ];
+
+    // 系統資料庫
+    const systemData = {
+        tax_history: {
+            title: "各稅核定資料",
+            options: [
+                { id: "indiv", name: "納稅義務人 (個人)", docs: ["ID_CARD"] },
+                { id: "corp_biz", name: "營利事業", role: "負責人", docs: ["主管機關核准設立文件影本（需加蓋營利事業及負責人印章）", "① 如為公司組織：檢附經濟部最新核准函影本+變更登記表影本。<br>\n② 非公司組織(商業登記)：檢附縣府最新核准函影本+商業登記抄本影本。", "ID_CARD_RESPONSIBLE"] },
+                { id: "corp_group", name: "機關團體", role: "負責人", docs: ["主管機關核准設立文件影本（需加蓋機關團體及負責人印章）", "法人登記證 / 立案證書 / 開業執照 / 執業執照影本", "ID_CARD_RESPONSIBLE"] }
+            ]
+        },
+        tax_arrears: {
+            title: "納稅欠稅及退稅資料查詢",
+            options: [
+                { id: "indiv", name: "納稅義務人 (個人)", docs: ["ID_CARD"] },
+                { id: "corp_biz", name: "營利事業", role: "負責人", docs: ["主管機關核准設立文件影本（需加蓋營利事業及負責人印章）", "① 如為公司組織：檢附經濟部最新核准函影本+變更登記表影本。<br>\n② 非公司組織(商業登記)：檢附縣府最新核准函影本+商業登記抄本影本。", "ID_CARD_RESPONSIBLE"] },
+                { id: "corp_group", name: "機關團體", role: "負責人", docs: ["主管機關核准設立文件影本（需加蓋機關團體及負責人印章）", "法人登記證 / 立案證書 / 開業執照 / 執業執照影本", "ID_CARD_RESPONSIBLE"] }
+            ]
+        },
+        income_list: {
+            title: "個人綜合所得稅各類所得資料清單查詢",
+            options: [
+                { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"] },
+                { id: "foreign", name: "外籍人士", docs: ["申請人護照正本，or內政部移民署核發之居留證正本(有效期間內)"] },
+                { id: "mainland", name: "大陸人士", docs: ["申請人內政部移民署核發之臺灣地區入出境許可證或居留證正本(有效期間內)"] },
+                { 
+                  id: "minor", 
+                  name: "查調未成年子女案件", 
+                  role: "法定代理人或監護人", 
+                  docs: [
+                    "ID_CARD_WITH_STAMP", 
+                    "附有詳細記事戶口名簿 或 詳細記事戶籍謄本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>① 倘父母離婚者，由擔任親權行使之父或母之一方代為申請時，應出具相關證明文件 ( 如父母雙方之協議書或法院判決書或戶口名簿等 ) 免附他方之授權書或委任書或同意書，惟經協議，由雙方共同行使或負擔時，仍應由為法定代理人之父母二人共同簽章代為申請。<br><br>② 因離婚而約定子女由一方監護，倘任監護之一方死亡者，由他方代為申請時，應出具相關證明文件，如父母雙方之協議書或法院判決書或戶口名簿等及任監護之一方之死亡診斷證明書或載有死亡日期之戶口名簿影本等，簽章代為申請，免附授權書。</span>"
+                  ] 
+                }
+            ]
+        },
+        property_list: {
+            title: "個人財產歸戶資料查詢",
+            options: [
+                { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"] },
+                { id: "foreign", name: "外籍人士", docs: ["護照正本，或內政部移民署核發之居留證正本(有效期間內)"] },
+                { id: "mainland", name: "大陸人士", docs: ["申請人內政部移民署核發之臺灣地區入出境許可證或居留證正本(有效期間內)"] },
+                {
+                  id: "minor", 
+                  name: "查調未成年子女案件", 
+                  role: "法定代理人或監護人", 
+                  docs: [
+                    "ID_CARD_WITH_STAMP", 
+                    "附有詳細記事戶口名簿 或 詳細記事戶籍謄本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>① 倘父母離婚者，由擔任親權行使之父或母之一方代為申請時，應出具相關證明文件 ( 如父母雙方之協議書或法院判決書或戶口名簿等 ) 免附他方之授權書或委任書或同意書，惟經協議，由雙方共同行使或負擔時，仍應由為法定代理人之父母二人共同簽章代為申請。<br><br>② 因離婚而約定子女由一方監護，倘任監護之一方死亡者，由他方代為申請時，應出具相關證明文件，如父母雙方之協議書或法院判決書或戶口名簿等及任監護之一方之死亡診斷證明書或載有死亡日期之戶口名簿影本等，簽章代為申請，免附授權書。</span>"
+                  ] 
+                }
+            ]
+        },
+        deceased_data: {
+            title: "被繼承人財產、所得及贈與資料查詢",
+            options: [
+                { id: "successor", name: "繼承人申請", role: "繼承人", docs: ["ID_CARD", "被繼承人除戶謄本或載有死亡日期之戶口名簿影本或死亡診斷證明書", "與被繼承人親屬關係證明文件", "繼承系統表正本"], img: "流程圖.jpg" }
+            ]
+        },
+        creditor_data: {
+            title: "債權人查調債務人課稅資料查詢",
+            options: [
+                { id: "creditor", name: "債權人本人或代理人", docs: ['債權人查調債務人財產及所得資料申請書','債權人身分證正本'] }
+            ]
+        },
+        tax_status: {
+            title: "綜合所得稅稅籍查詢",
+            options: [
+                { id: "indiv", name: "納稅義務人 (個人)", docs: ["ID_CARD"] },
+                { id: "mainland", name: "大陸人士", docs: ["內政部移民署核發之臺灣地區入出境許可證或居留證正本 ( 有效期間內 )"] }
+            ]
+        },
+        small_business: {
+            title: "小規模營利事業營業額核定資料查詢",
+            options: [
+                { id: "corp", name: "營利事業負責人", role: "負責人", docs: ["主管機關核准設立文件影本", "ID_CARD"] }
+            ]
+        },
+        business_reg: {
+            title: "營業人暨扣繳單位稅籍查詢",
+            options: [
+                { id: "corp", name: "營利事業或扣繳單位", role: "負責人", docs: ["主管機關核准設立文件影本", "ID_CARD"] }
+            ]
+        },
+        gift_tax: {
+            title: "全國贈與資料查詢",
+            options: [
+                { id: "donor", name: "贈與人", docs: ["ID_CARD"] }
+            ]
+        },
+        estate_tax_extension: { 
+            title: "遺產稅延期申報", 
+            hint: "※繼承人應為遺產贈與稅法第6條所規定之遺產稅納稅義務人：\n１、有遺囑執行人者，為遺囑執行人。\n２、無遺囑執行人者，為繼承人及受遺贈人。\n３、無遺囑執行人及繼承人者，為依法選定之遺產管理人。", 
+            options: [
+                { id: "local", name: "國人", docs: ["被繼承人死亡診斷證明書正本或載有死亡日期之戶口名簿影本", "繼承人與被繼承人關係證明", "國民身分證正本"] },
+                { id: "mainland", name: "大陸地區人民", docs: ["被繼承人死亡診斷證明書正本", "繼承人與被繼承人關係證明", "經內政部移民署核發之臺灣地區入出境許可證或居留證正本", "大陸地區公證處出具之親屬關係證明文件，及財團法人海峽交流基金會驗證之證明", "向被繼承人住所地法院表示繼承經准予備查之文件"] }
+            ]
+        },
+        gift_tax_extension: { 
+            title: "贈與稅延期申報", 
+            hint: "※納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業。", 
+            options: [
+                { id: "donor", name: "贈與人親辦", docs: ["國民身分證正、影本", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
+            ]
+        },
+        instant_notify: { 
+            title: "查調即時通知", 
+            hint: "※限納稅義務人本人或未成年人之法定代理人親自申請；若係由代理人提示委託書或授權書及身分證明文件申請者，則不予受理。", 
+            options: [
+                { id: "local", name: "國人", docs: ["國民身分證正本"] },
+                { id: "foreign", name: "外籍人士", docs: ["護照或經內政部移民署核發之居留證正本"] },
+                { id: "mainland", name: "大陸人士", docs: ["經內政部移民署核發之臺灣地區入出境許可證或居留證正本"] },
+                { id: "minor", name: "未成年子女", docs: ["法定代理人(或監護人)國民身分證及印章", "戶口名簿"] },
+                { id: "limited", name: "限制行為能力人", docs: ["國民身分證正本(無須取得法定代理人同意)"] },
+            ]
+        },
+        withholding_setup: {
+            title: "扣繳單位設立、變更登記（統一編號編配）",
+            options: official48Items.map(item => ({
+                id: item.id,
+                name: item.name,
+                docs: [
+                    '填寫 「扣繳單位設立（變更）登記申請書-統一編號編配通知書」（一式三份，請加蓋扣繳單位章及負責人章）* 如為變更或註銷登記者，請繳回原統一編號編配通知書正本（若遺失需附切結書）',
+                    ...item.docs
+                ],
+                note: item.hint
+            }))
+        }
+    };
+
+    // 完整的深層檢索資料庫
+    const deepSearchDatabase = [
+      { path: "查詢作業 > 1. 各稅核定資料", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料"], key: "tax_history", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢"], key: "tax_arrears", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人綜合所得稅各類所得資料清單查詢", "所得清單"], key: "income_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人財產歸戶資料查詢", "財產歸戶"], key: "property_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人財產、所得及贈與資料查詢", "被繼承人資料"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人課稅資料查詢", "債權人查調"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢", "綜所稅稅籍"], key: "tax_status", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業"], key: "small_business", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 10. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與資料查詢"], key: "gift_tax", targetIdentity: "donor", isReady: true },
+
+      { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["遺產稅延期申報"], isReady: false },
+      { path: "申辦作業 > 2. 贈與稅延期申報", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["贈與稅延期申報"], isReady: false },
+      { path: "申辦作業 > 3. 扣繳單位設立、變更登記（統一編號編配）", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["扣繳單位設立、變更登記（統一編號編配）", "扣繳單位設立", "統一編號編配"], key: "withholding_setup", targetIdentity: "1", isReady: true },
+      { path: "申辦作業 > 4. 查調即時通知", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800",  keywords: ["查調即時通知"], isReady: false },
+
+      { path: "核發書證 > 1. 各項稅款補發稅單", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["各項稅款補發稅單", "補發稅單"], isReady: false },
+      { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["補發遺產稅不動產公同共有同意移轉證明書", "遺產稅不動產移轉證明書"], isReady: false },
+      { path: "核發書證 > 3. 儲蓄免扣證", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["儲蓄免扣證"], isReady: false },
+      { path: "核發書證 > 4. 中 (英) 文綜合所得稅納稅證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["中 (英) 文綜合所得稅納稅證明書", "中英文綜所稅納稅證明書"], isReady: false },
+      { path: "核發書證 > 5. 核發違章欠稅查復表", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發違章欠稅查復表", "違章欠稅查復表"], isReady: false },
+      { path: "核發書證 > 6. 核發扣繳稅繳納證明", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發扣繳稅繳納證明", "扣繳稅繳納證明"], isReady: false },
+      { path: "核發書證 > 7. 補發遺產稅證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["補發遺產稅證明書", "遺產稅證明書"], isReady: false },
+      { path: "核發書證 > 8. 補發贈與稅證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["補發贈與稅證明書", "贈與稅證明書"], isReady: false },
+      { path: "核發書證 > 9. 核發繳稅證明", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發繳稅證明", "繳稅證明"], isReady: false },
+      { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所所得稅繳納證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", statusText: "建置中", keywords: ["核發中、英文個人房屋土地交易所所得稅繳納證明書", "房地合一所得稅繳納證明書"], isReady: false },
+
+      { path: "查詢作業 > 1. 各稅核定資料 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 營利事業", "營利事業核定資料", "公司各稅核定"], key: "tax_history", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 機關團體", "機關團體核定資料"], key: "tax_history", targetIdentity: "corp_group", isReady: true },
+
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢 營利事業", "營利事業欠稅查詢", "公司退稅查詢"], key: "tax_arrears", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢 機關團體", "機關團體欠稅查詢"], key: "tax_arrears", targetIdentity: "corp_group", isReady: true },
+
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 國民 (滿18歲以上)", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 國民", "成年人所得清單", "個人綜所稅各類所得資料清單查詢 國民"], key: "income_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 外籍人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 外籍人士", "外國人所得清單", "外籍人士綜所稅清單"], key: "income_list", targetIdentity: "foreign", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 外籍人士 > 護照、居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["護照", "居留證", "移民署"], key: "income_list", targetIdentity: "foreign", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 大陸人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 大陸人士", "大陸地區人民所得清單"], key: "income_list", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 大陸人士 > 出境許可證或居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["出境","居留", "出境許可證或居留證", "移民署"], key: "income_list", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 查調未成年子女案件 > 詳細記事戶口名簿", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["詳細記事戶口名簿", "戶口名簿", "未成年子女戶口名簿", "查調未成年子女案件 所得清單"], key: "income_list", targetIdentity: "minor", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 查調未成年子女案件 > 詳細記事戶籍謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["詳細記事戶籍謄本", "戶籍謄本", "未成年子女戶籍謄本", "查調未成年子女案件 所得清單"], key: "income_list", targetIdentity: "minor", isReady: true },
+
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 國民 (滿18歲以上)", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 國民", "成年人財產歸戶", "個人財產歸戶資料查詢 國民"], key: "property_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 外籍人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 外籍人士", "外國人財產歸戶"], key: "property_list", targetIdentity: "foreign", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 外籍人士 > 護照、居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["護照", "居留證", "移民署"], key: "property_list", targetIdentity: "foreign", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 大陸人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 大陸人士", "大陸地區人民財產歸戶"], key: "property_list", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 大陸人士 > 出境許可證或居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["出境","居留", "出境許可證或居留證", "移民署"], key: "property_list", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 查調未成年子女案件 > 詳細記事戶口名簿", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產查調未成年子女戶口名簿", "財產詳細記事戶口名簿", "財產戶口名簿"], key: "property_list", targetIdentity: "minor", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 查調未成年子女案件 > 詳細記事戶籍謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產查調未成年子女戶籍謄本", "財產詳細記事戶籍謄本", "財產戶籍謄本"], key: "property_list", targetIdentity: "minor", isReady: true },
+
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 死亡診斷證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["死亡診斷證明書", "死亡證明"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 被繼承人除戶謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人除戶謄本", "除戶謄本", "被繼承人除戶"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 載有死亡日期之戶口名簿影本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["載有死亡日期之戶口名簿", "死亡戶口名簿"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 與被繼承人親屬關係證明文件", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: [ "親屬關係證明文件", "親屬關係證明"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+      { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人申請 > 繼承系統表正本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承系統表正本", "繼承系統表", "系統表正本"], key: "deceased_data", targetIdentity: "successor", isReady: true },
+
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 債權人查調債務人財產及所得資料申請書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人財產及所得資料申請書", "債權人申請書"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關民事判決暨確定證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關民事判決暨確定證明書", "民事判決確定證明書", "法院判決"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關支付命令暨確定證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關支付命令暨確定證明書", "支付命令確定證明書", "支付命令"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關債權憑證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關債權憑證", "債權憑證"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+      { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人本人或代理人 > 司法機關本票准予強制執行民事裁定", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關本票准予強制執行民事裁定", "本票裁定", "本票強制執行裁定"], key: "creditor_data", targetIdentity: "creditor", isReady: true },
+
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 大陸人士", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢 大陸人士", "大陸地區人民綜所稅稅籍"], key: "tax_status", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 大陸人士 > 出境許可證或居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["出境許可證或居留證", "移民署"], key: "tax_status", targetIdentity: "mainland", isReady: true },
+
+      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢 > 營利事業負責人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業負責人", "小規模營業額核定"], key: "small_business", targetIdentity: "corp", isReady: true },
+
+      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢 > 營利事業或扣繳單位", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢", "扣繳單位稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
+
+      { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與人查詢", "贈與查詢", "全國贈與"], key: "gift_tax", targetIdentity: "donor", isReady: true },
+
+     { path: "申辦作業 > 1. 遺產稅延期申報 > 死亡診斷證明書或載有死亡日期之戶口名簿", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["死亡診斷證明書","載有死亡日期之戶口名簿"], key: "estate_tax_extension", targetIdentity: "local", isReady: true },
+      { path: "申辦作業 >1. 遺產稅延期申報 > 大陸地區人民 > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["入出境許可證","居留證","大陸人士","大陸地區人民"], key: "estate_tax_extension", targetIdentity: "mainland", isReady: true }, 
+
+      { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與契約書", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["贈與契約書"], key: "gift_tax_extension", targetIdentity: "donor", isReady: true },
+
+      { path: "申辦作業 >4. 查調即時通知 > 外籍人士 > 護照或居留證", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["外籍人士","護照或居留證"], key: "instant_notify", targetIdentity: "foreign", isReady: true },
+      { path: "申辦作業 >4. 查調即時通知 > 大陸人士 > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["入出境許可證","居留證","大陸人士"], key: "instant_notify", targetIdentity: "mainland", isReady: true },
+      { path: "申辦作業 >4. 查調即時通知 > 未成年子女", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["未成年子女"], key: "instant_notify", targetIdentity: "minor", isReady: true },
+      { path: "申辦作業 >4. 查調即時通知 > 限制行為能力人", badgeText: "申辦作業", badgeClass: "bg-indigo-100 text-indigo-800", keywords: ["限制行為能力人"], key: "instant_notify", targetIdentity: "limited", isReady: true },
+
+      ...official48Items.map(item => ({
+        path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
+        badgeText: "申辦作業",
+        badgeClass: "bg-indigo-100 text-indigo-800",
+        keywords: [item.name],
+        key: "withholding_setup",
+        targetIdentity: item.id,
+        isReady: true
+      }))
+    ];
+
+    let currentSelectedItemKey = "";
+
+    function goToStep(stepNum) {
+      const s1 = document.getElementById('step-1');
+      const s2 = document.getElementById('step-2');
+      const s3 = document.getElementById('step-3');
+
+      if (s1) s1.classList.add('hidden');
+      if (s2) s2.classList.add('hidden');
+      if (s3) s3.classList.add('hidden');
+
+      const target = document.getElementById(`step-${stepNum}`);
+      if (target) {
+        target.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      closeAllDropdowns();
+    }
+
+    function selectTaxType(type) {
+      if (type === 'national') {
+        goToStep(2);
+      }
+    }
+
+    function goBack() {
+      goToStep(1);
+    }
+
+    function showBuildingAlert() {
+      alert('該項目第三頁功能建置中，敬請期待！');
+    }
+
+    function handleSearchInput() {
+      const searchInput = document.getElementById('searchInput');
+      searchInput.style.height = 'auto';
+      searchInput.style.height = (searchInput.scrollHeight) + 'px';
+
+      const query = searchInput.value.trim().toLowerCase();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      const dropdown = document.getElementById('searchDropdown');
+      const resultsList = document.getElementById('searchResults');
+
+      if (query.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      const matches = deepSearchDatabase.filter(item => 
+        item.keywords.some(kw => kw.toLowerCase().includes(query))
+      );
+
+      if (matches.length > 0 && query !== '') {
+        resultsList.innerHTML = '';
+        matches.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'px-5 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between transition-colors border-b border-slate-50 last:border-b-0 gap-4';
+          
+          let rightSideHtml = `<div class="flex items-center gap-1.5 flex-shrink-0">`;
+          if (item.badgeText) {
+            rightSideHtml += `<span class="${item.badgeClass} text-xs px-2 py-0.5 rounded font-bold">${item.badgeText}</span>`;
+          }
+          if (item.statusText) {
+            rightSideHtml += `<span class="bg-slate-100 text-slate-500 text-xs px-2 py-0.5 rounded font-bold">${item.statusText}</span>`;
+          }
+          rightSideHtml += `</div>`;
+
+          li.innerHTML = `
+            <div class="flex items-start gap-3 min-w-0 flex-1">
+              <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm flex-shrink-0 mt-1"></i>
+              <span class="font-medium text-slate-800 text-min-14 whitespace-normal break-all">${item.path}</span>
+            </div>
+            ${rightSideHtml}
+          `;
+          li.onclick = () => {
+            searchInput.value = item.path; 
+            searchInput.style.height = 'auto';
+            searchInput.style.height = (searchInput.scrollHeight) + 'px';
+            closeAllDropdowns();
+            if (item.isReady) {
+              selectItem(item.key, item.targetIdentity);
+            } else {
+              showBuildingAlert();
+            }
+          };
+          resultsList.appendChild(li);
+        });
+        dropdown.classList.remove('hidden');
+      } else {
+        dropdown.classList.add('hidden');
+      }
+    }
+
+    function clearSearch() {
+      const searchInput = document.getElementById('searchInput');
+      searchInput.value = '';
+      searchInput.style.height = '52px';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      closeAllDropdowns();
+    }
+
+    function closeAllDropdowns() {
+      const dropdown = document.getElementById('searchDropdown');
+      if (dropdown) dropdown.classList.add('hidden');
+    }
+
+    function selectItem(itemKey, targetIdentity = null) {
+      currentSelectedItemKey = itemKey;
+      const data = systemData[itemKey];
+      if (!data) return;
+
+      document.getElementById('selectedItemTitle').textContent = data.title;
+
+      const identitySelect = document.getElementById("identitySelect");
+      identitySelect.innerHTML = "";
+      data.options.forEach(opt => {
+          const optionElem = document.createElement("option");
+          optionElem.value = opt.id;
+          optionElem.textContent = opt.name;
+          identitySelect.appendChild(optionElem);
+      });
+
+const identityLabel = document.getElementById("identitySelectLabel");
+const agentGroupText = document.getElementById("agentGroupText");
+
+// 修改後的 JavaScript 區塊
+if (itemKey === "withholding_setup") {
+    // 加上 display: inline-flex 以確保圓圈能正常佔位
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #4f46e5; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇業別 (共 48 項) :';
+    agentGroupText.textContent = '委託代理人申請(委託他人代辦請勾選)';
+} else {
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別 :';
+    agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
+}
+
+      const customAlertBox = document.getElementById("customAlertBox");
+      if (itemKey === "small_business") {
+          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
+          customAlertBox.innerHTML = "※請至本分局 銷售稅課辦理";
+          customAlertBox.style.display = "block";
+      } else if (itemKey === "gift_tax") {
+          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
+          customAlertBox.innerHTML = "※請至本分局 營所遺贈稅課辦理";
+          customAlertBox.style.display = "block";
+      } else {
+          customAlertBox.style.display = "none";
+      }
+
+      if (targetIdentity !== null && targetIdentity !== undefined) {
+        identitySelect.value = targetIdentity;
+      }
+
+      const executionGroup = document.getElementById("executionGroup");
+      if (itemKey === "creditor_data") {
+          executionGroup.classList.remove("hidden");
+      } else {
+          executionGroup.classList.add("hidden");
+      }
+
+      document.getElementById("isAgent").checked = false;
+      goToStep(3);
+      renderChecklist();
+    }
+
+    function getIdText(type, isAgent, role = "") {
+        const roleText = role ? `（${role}）` : "";
+        switch (type) {
+            case "ID_CARD":
+                return isAgent ? `申請人${roleText}身分證正本或正反面影本及印章` : `申請人${roleText}身分證正本`;
+            case "ID_CARD_RESPONSIBLE":
+                return isAgent ? `申請人（負責人）身分證正本或正反面影本及印章` : `申請人（負責人）身分證正本`;
+            case "ID_CARD_WITH_STAMP":
+                return isAgent ? `申請人${roleText}父母雙方國民身分證正本或身分證正反面影本及印章`  : `申請人${roleText}父母雙方國民身分證正本 ( 未到場者可附身分證正反面影本 ) 及印章`;
+            default:
+                return type;
+        }
+    }
+
+    function renderChecklist() {
+        if (!currentSelectedItemKey) return;
+
+        const docList = document.getElementById("docList");
+        docList.innerHTML = ""; 
+
+        const identityVal = document.getElementById("identitySelect").value;
+        const isAgent = document.getElementById("isAgent").checked;
+        const specialNotes = document.getElementById("specialNotes");
+        const alertInfoBox = document.getElementById("alertInfoBox");
+        const infoImgContainer = document.getElementById("infoImgContainer");
+        const infoImg = document.getElementById("infoImg");
+
+        const itemData = systemData[currentSelectedItemKey];
+        if (!itemData) return;
+
+        const selectedOpt = itemData.options.find(opt => opt.id === identityVal) || itemData.options[0];
+        if (!selectedOpt) return;
+
+        let docs = [];
+        selectedOpt.docs.forEach(docKey => {
+            if (docKey.startsWith("ID_CARD")) {
+                docs.push(getIdText(docKey, isAgent, selectedOpt.role));
+            } else {
+                docs.push(docKey);
+            }
+        });
+
+        if (currentSelectedItemKey === "creditor_data") {
+            const executionSelect = document.getElementById("executionSelect");
+            if (executionSelect && executionSelect.selectedIndex >= 0) {
+                docs.push(executionSelect.options[executionSelect.selectedIndex].text);
+            }
+        }
+
+        if (isAgent) {
+            docs.push('申請人身分證反面影本或正本');
+            docs.push('代理人國民身分證正本');
+            docs.push('授權委託書正本');
+        }
+
+        docs.forEach((doc) => {
+            const li = document.createElement("li");
+            let formattedText = doc;
+            
+            if (doc.includes("\n*") || doc.includes("*")) {
+                let parts = doc.split("*");
+                formattedText = parts[0] + `<br><span class='text-xs text-slate-600 block mt-2 leading-relaxed'>* ${parts.slice(1).join("*")}</span>`;
+            }
+
+            li.className = "flex items-start gap-2 bg-white/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm mt-3 first:mt-0 list-none";
+            li.innerHTML = `
+                <i class="fa-solid fa-circle-check text-emerald-600 mt-1 flex-shrink-0"></i> 
+                <span class="flex-1 font-medium text-slate-800">${formattedText}</span>
+            `;
+            docList.appendChild(li);
+        });
+
+        if (selectedOpt.note) {
+            specialNotes.textContent = selectedOpt.note;
+            specialNotes.classList.remove("hidden");
+        } else {
+            specialNotes.classList.add("hidden");
+        }
+
+        if (currentSelectedItemKey === "withholding_setup") {
+            alertInfoBox.classList.remove("hidden");
+        } else {
+            alertInfoBox.classList.add("hidden");
+        }
+
+        if (selectedOpt.img) {
+            infoImg.src = selectedOpt.img;
+            infoImgContainer.classList.remove("hidden");
+        } else {
+            infoImgContainer.classList.add("hidden");
+        }
+    }
+
+    function generateFormattedText() {
+        const itemData = systemData[currentSelectedItemKey];
+        if (!itemData) return "";
+
+        const identitySelect = document.getElementById("identitySelect");
+        const executionSelect = document.getElementById("executionSelect");
+        const isAgent = document.getElementById("isAgent").checked;
+
+        const isWithholding = (currentSelectedItemKey === "withholding_setup");
+        const withholdingKeys = ["estate_tax_extension", "gift_tax_extension", "instant_notify", "withholding_setup"];
+        let systemHeader = "【國稅查詢作業系統】";
+        
+        if (withholdingKeys.includes(currentSelectedItemKey)) {
+            systemHeader = "【國稅申辦作業系統】";
+        }
+
+        let text = `${systemHeader}\n\n`;
+        text += "📌 【申請項目與條件】\n";
+        
+        let selectedOptionText = (identitySelect.selectedIndex >= 0 && identitySelect.options[identitySelect.selectedIndex]) 
+            ? identitySelect.options[identitySelect.selectedIndex].text 
+            : "";
+
+        text += "• 查詢項目：" + itemData.title + "\n";
+        
+        if (isWithholding) {
+            if (selectedOptionText) {
+                text += "• 申請人業別：" + selectedOptionText + "\n";
+            }
+        } else {
+            if (selectedOptionText) {
+                text += "• 申請人身分：" + selectedOptionText + "\n";
+            }
+        }
+
+        if (currentSelectedItemKey === "creditor_data" && executionSelect.selectedIndex >= 0) {
+            text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
+        }
+
+        if (isAgent) {
+            text += "• 辦理方式：委託他人代理辦理\n";
+        }
+
+        text += "\n📋 【臨櫃洽辦應檢核／攜帶書表清單】\n";
+        
+        const docListItems = document.querySelectorAll("#docList li");
+        docListItems.forEach((li) => {
+            let textContent = li.innerText.trim();
+            let cleanText = textContent.replace(/^[✔☑-]\s*/, '');
+            let lines = cleanText.split('\n').map(l => l.trim()).filter(l => l);
+            
+            if (lines.length > 0) {
+                text += "✔ " + lines[0] + "\n";
+                for (let i = 1; i < lines.length; i++) {
+                    text += lines[i] + "\n";
+                }
+            }
+        });
+
+        const specialNotes = document.getElementById("specialNotes");
+        if (!specialNotes.classList.contains("hidden") && specialNotes.textContent.trim() !== "") {
+            text += "\n" + specialNotes.textContent + "\n";
+        }
+
+        return text;
+    }
+
+    function copyChecklist() {
+        const text = generateFormattedText();
+        navigator.clipboard.writeText(text).then(() => {
+            alert("已成功複製清單與選項內容！");
+        }).catch(() => {
+            alert("複製失敗，請手動複製。");
+        });
+    }
+
+window.addEventListener('scroll', function() {
+  const btn = document.getElementById('backToTopBtn');
+  if (!btn) return;
+  
+  if (window.scrollY > 200) {
+    btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+    btn.classList.add('opacity-100', 'translate-y-0');
+  } else {
+    // 修正這裡：把原本的 opacity-100 改成 remove，並正確加上隱藏樣式
+    btn.classList.remove('opacity-100', 'translate-y-0');
+    btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+  }
+});
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+
+// 清除搜尋按鈕
+function clearSearch() {
+  const searchInput = document.getElementById('searchInput'); // 已修正 ID
+  const clearBtn = document.getElementById('clearSearchBtn');
+  
+  if (searchInput) {
+    searchInput.value = '';
+    if (clearBtn) clearBtn.classList.add('hidden'); // 清除後隱藏按鈕
+    searchInput.focus();
+  }
+  closeAllDropdowns();
+}
+
+// 監聽輸入框變化以決定是否顯示按鈕（使用 DOM 載入後監聽或確保元素存在）
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInputElem = document.getElementById('searchInput');
+  if (searchInputElem) {
+    searchInputElem.addEventListener('input', function() {
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (clearBtn) {
+        if (this.value.length > 0) {
+          clearBtn.classList.remove('hidden');
+        } else {
+          clearBtn.classList.add('hidden');
+        }
+      }
+    });
+  }
+});
+  </script>
+
+
+<button id="backToTopBtn" onclick="scrollToTop()" class="fixed right-5 bottom-6 z-50 bg-blue-600 hover:bg-blue-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 opacity-0 translate-y-4 pointer-events-none text-3xl font-bold">
+  ↑
+</button>
+
+</body>
+</html>
