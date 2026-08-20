@@ -1217,13 +1217,12 @@ select {
 const identityLabel = document.getElementById("identitySelectLabel");
 const agentGroupText = document.getElementById("agentGroupText");
 
-// 修改後的 JavaScript 區塊
+// 修正後的 JavaScript 區塊 (移除 margin-right，交給外部 label 的 gap 統一控制間距)
 if (itemKey === "withholding_setup") {
-    // 加上 display: inline-flex 以確保圓圈能正常佔位
-    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #4f46e5; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇業別 (共 48 項) :';
+    identityLabel.innerHTML = '<span class="w-7 h-7 bg-indigo-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">1</span>請選擇業別 (共 48 項) :';
     agentGroupText.textContent = '委託代理人申請(委託他人代辦請勾選)';
 } else {
-    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別 :';
+    identityLabel.innerHTML = '<span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">1</span>請選擇申請人身分／案件類別 :';
     agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
 }
 
