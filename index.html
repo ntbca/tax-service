@@ -707,8 +707,8 @@ select {
 
         <!-- 下拉選單 2：選擇身分／類別 -->
         <div id="subGroup" class="mt-4 space-y-2">
-          <label id="identitySelectLabel" for="identitySelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>
+          <label id="identitySelectLabel" for="identitySelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-3">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">1</span>
             請選擇申請人身分／案件類別：
           </label>
           
@@ -718,12 +718,12 @@ select {
           </select>
         </div>
 
-<!-- 專屬扣繳單位的選擇業別下拉選單區塊 -->
-<div id="withholdingsSubGroup" class="mt-4 space-y-2 hidden">
-  <label id="identityLabel" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
-    <!-- 刪除原本的 span，讓 JS 統一控制 -->
-    請選擇業別 (共 48 項) :
-  </label>
+        <!-- 專屬扣繳單位的選擇業別下拉選單區塊 -->
+        <div id="withholdingsSubGroup" class="mt-4 space-y-2 hidden">
+          <label id="identityLabel" for="withholdingSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-3">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">2</span>
+            請選擇業別 (共 48 項) :
+          </label>
 
   <select id="withholdingSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
     <!-- 業別選項 -->
@@ -732,9 +732,10 @@ select {
 
         <!-- 下拉選單 3：債權人執行名義選單 -->
         <div id="executionGroup" class="mt-4 space-y-2 hidden">
-          <label for="executionSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">2</span>
+          <label for="executionSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-3">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">2</span>
             請選擇執行名義種類：
+          </label>
           </label>
           <select id="executionSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
             <option value="court_judgment">司法機關民事判決暨確定證明書</option>
