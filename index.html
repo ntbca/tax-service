@@ -1214,16 +1214,21 @@ select {
           identitySelect.appendChild(optionElem);
       });
 
-const identityLabel = document.getElementById("identitySelectLabel");
+// ✅ 改成下面這樣簡單控制顯示/隱藏與提示文字即可：
+const subGroup = document.getElementById("subGroup"); // 第一個選單外層
+const withholdingsSubGroup = document.getElementById("withholdingsSubGroup"); // 扣繳單位選單外層
 const agentGroupText = document.getElementById("agentGroupText");
 
-// 修正後的 JavaScript 區塊 (移除 margin-right，交給外部 label 的 gap 統一控制間距)
 if (itemKey === "withholding_setup") {
-    identityLabel.innerHTML = '<span class="w-7 h-7 bg-indigo-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">1</span>請選擇業別 (共 48 項) :';
-    agentGroupText.textContent = '委託代理人申請(委託他人代辦請勾選)';
+    // 如果是扣繳單位：隱藏選單 1，顯示扣繳單位專屬選單
+    if (subGroup) subGroup.classList.add("hidden");
+    if (withholdingsSubGroup) withholdingsSubGroup.classList.remove("hidden");
+    if (agentGroupText) agentGroupText.textContent = "委託代理人申請(委託他人代辦請勾選)";
 } else {
-    identityLabel.innerHTML = '<span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">1</span>請選擇申請人身分／案件類別 :';
-    agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
+    // 一般項目：顯示選單 1，隱藏扣繳單位選單
+    if (subGroup) subGroup.classList.remove("hidden");
+    if (withholdingsSubGroup) withholdingsSubGroup.classList.add("hidden");
+    if (agentGroupText) agentGroupText.textContent = "委託他人代理辦理（委任辦理請勾選）";
 }
 
       const customAlertBox = document.getElementById("customAlertBox");
