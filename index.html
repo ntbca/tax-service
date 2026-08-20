@@ -318,21 +318,37 @@ a {
       background-color: #f4f6f9;
     }
 
-/* 預設（視窗縮小或手機時）：直式排列 */
-  .custom-card-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-  }
+/* 預設（手機/小螢幕）：隨內容自動撐開高度，不產生卡片內捲軸 */
+.custom-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
 
-  /* 當視窗寬度大於 1100px（電腦大螢幕）時：強制橫向三欄並排 */
-  @media (min-width: 1100px) {
-    .custom-card-container {
-      flex-direction: row;
-      justify-content: space-between;
-    }
+.custom-card-container > div {
+  height: auto !important; /* 取消手機版固定 700px */
+}
+
+.custom-card-container .p-2,
+.custom-card-container .p-4 {
+  overflow-y: visible !important; /* 取消手機版內層捲軸，讓清單完整展開 */
+}
+
+/* 電腦版 (寬度 1100px 以上)：恢復三欄橫向排列與固定高度捲軸 */
+@media (min-width: 1100px) {
+  .custom-card-container {
+    flex-direction: row;
+    justify-content: space-between;
   }
+  .custom-card-container > div {
+    height: 700px !important;
+  }
+  .custom-card-container .p-2,
+  .custom-card-container .p-4 {
+    overflow-y: auto !important;
+  }
+}
 
 /* 強制放大第三層內所有下拉選單的字體與行高 */
 select {
