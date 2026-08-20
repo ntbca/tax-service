@@ -1219,10 +1219,10 @@ const agentGroupText = document.getElementById("agentGroupText");
 // 修改後的 JavaScript 區塊
 if (itemKey === "withholding_setup") {
     // 加上 display: inline-flex 以確保圓圈能正常佔位
-    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #4f46e5; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇業別 (共 48 項) :';
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #4f46e5; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">1</span>請選擇業別 (共 48 項) :';
     agentGroupText.textContent = '委託代理人申請(委託他人代辦請勾選)';
 } else {
-    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別 :';
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別 :';
     agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
 }
 
