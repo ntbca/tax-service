@@ -707,8 +707,8 @@ select {
 
         <!-- 下拉選單 2：選擇身分／類別 -->
         <div id="subGroup" class="mt-4 space-y-2">
-          <label id="identitySelectLabel" for="identitySelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-3">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">1</span>
+          <label id="identitySelectLabel" for="identitySelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>
             請選擇申請人身分／案件類別：
           </label>
           
@@ -718,12 +718,12 @@ select {
           </select>
         </div>
 
-        <!-- 專屬扣繳單位的選擇業別下拉選單區塊 -->
-        <div id="withholdingsSubGroup" class="mt-4 space-y-2 hidden">
-          <label id="identityLabel" for="withholdingSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-3">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">2</span>
-            請選擇業別 (共 48 項) :
-          </label>
+<!-- 專屬扣繳單位的選擇業別下拉選單區塊 -->
+<div id="withholdingsSubGroup" class="mt-4 space-y-2 hidden">
+  <label id="identityLabel" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+    <!-- 刪除原本的 span，讓 JS 統一控制 -->
+    請選擇業別 (共 48 項) :
+  </label>
 
   <select id="withholdingSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
     <!-- 業別選項 -->
@@ -732,10 +732,9 @@ select {
 
         <!-- 下拉選單 3：債權人執行名義選單 -->
         <div id="executionGroup" class="mt-4 space-y-2 hidden">
-          <label for="executionSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-3">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm flex-shrink-0">2</span>
+          <label for="executionSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">2</span>
             請選擇執行名義種類：
-          </label>
           </label>
           <select id="executionSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
             <option value="court_judgment">司法機關民事判決暨確定證明書</option>
@@ -1214,21 +1213,17 @@ select {
           identitySelect.appendChild(optionElem);
       });
 
-// ✅ 改成下面這樣簡單控制顯示/隱藏與提示文字即可：
-const subGroup = document.getElementById("subGroup"); // 第一個選單外層
-const withholdingsSubGroup = document.getElementById("withholdingsSubGroup"); // 扣繳單位選單外層
+const identityLabel = document.getElementById("identitySelectLabel");
 const agentGroupText = document.getElementById("agentGroupText");
 
+// 修改後的 JavaScript 區塊
 if (itemKey === "withholding_setup") {
-    // 如果是扣繳單位：隱藏選單 1，顯示扣繳單位專屬選單
-    if (subGroup) subGroup.classList.add("hidden");
-    if (withholdingsSubGroup) withholdingsSubGroup.classList.remove("hidden");
-    if (agentGroupText) agentGroupText.textContent = "委託代理人申請(委託他人代辦請勾選)";
+    // 加上 display: inline-flex 以確保圓圈能正常佔位
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #4f46e5; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇業別 (共 48 項) :';
+    agentGroupText.textContent = '委託代理人申請(委託他人代辦請勾選)';
 } else {
-    // 一般項目：顯示選單 1，隱藏扣繳單位選單
-    if (subGroup) subGroup.classList.remove("hidden");
-    if (withholdingsSubGroup) withholdingsSubGroup.classList.add("hidden");
-    if (agentGroupText) agentGroupText.textContent = "委託他人代理辦理（委任辦理請勾選）";
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 8px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別 :';
+    agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
 }
 
       const customAlertBox = document.getElementById("customAlertBox");
