@@ -961,26 +961,28 @@ select {
             title: "遺產稅延期申報", 
             hint: "※繼承人應為遺產贈與稅法第6條所規定之遺產稅納稅義務人：\n１、有遺囑執行人者，為遺囑執行人。\n２、無遺囑執行人者，為繼承人及受遺贈人。\n３、無遺囑執行人及繼承人者，為依法選定之遺產管理人。", 
             options: [
-                { id: "local", name: "國人", docs: ["被繼承人死亡診斷證明書正本或載有死亡日期之戶口名簿影本", "繼承人與被繼承人關係證明", "國民身分證正本"] },
+                { id: "local", name: "國人", docs: ["ID_CARD","被繼承人死亡診斷證明書正本或載有死亡日期之戶口名簿影本", "繼承人與被繼承人關係證明", ] },
                 { id: "mainland", name: "大陸地區人民", docs: ["被繼承人死亡診斷證明書正本", "繼承人與被繼承人關係證明", "經內政部移民署核發之臺灣地區入出境許可證或居留證正本", "大陸地區公證處出具之親屬關係證明文件，及財團法人海峽交流基金會驗證之證明", "向被繼承人住所地法院表示繼承經准予備查之文件"] }
             ]
         },
+
         gift_tax_extension: { 
             title: "贈與稅延期申報", 
             hint: "※納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業。", 
             options: [
-                { id: "donor", name: "贈與人親辦", docs: ["國民身分證正、影本", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
+                { id: "donor", name: "贈與人親辦", docs: ["ID_CARD_DONOR", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
             ]
         },
+
         instant_notify: { 
             title: "查調即時通知", 
             hint: "※限納稅義務人本人或未成年人之法定代理人親自申請；若係由代理人提示委託書或授權書及身分證明文件申請者，則不予受理。", 
             options: [
-                { id: "local", name: "國人", docs: ["國民身分證正本"] },
+                { id: "local", name: "國人", docs: ["ID_CARD"] },
                 { id: "foreign", name: "外籍人士", docs: ["護照或經內政部移民署核發之居留證正本"] },
                 { id: "mainland", name: "大陸人士", docs: ["經內政部移民署核發之臺灣地區入出境許可證或居留證正本"] },
                 { id: "minor", name: "未成年子女", docs: ["法定代理人(或監護人)國民身分證及印章", "戶口名簿"] },
-                { id: "limited", name: "限制行為能力人", docs: ["國民身分證正本(無須取得法定代理人同意)"] },
+                { id: "limited", name: "限制行為能力人", docs: ["ID_CARD_LIMITED"] },
             ]
         },
         withholding_setup: {
@@ -1260,6 +1262,10 @@ if (itemKey === "withholding_setup") {
         switch (type) {
             case "ID_CARD":
                 return isAgent ? `申請人${roleText}身分證正本或正反面影本及印章` : `申請人${roleText}身分證正本`;
+            case "ID_CARD_DONOR":
+                return isAgent ? `申請人身分證正本、正反面影本及印章` : `申請人身分證正本、正反面影本`;
+            case "ID_CARD_LIMITED":
+                return isAgent ? `申請人身分證正本或正反面影本及印章（無須取得法定代理人同意）` : `申請人身分證正本（無須取得法定代理人同意）`;
             case "ID_CARD_RESPONSIBLE":
                 return isAgent ? `申請人（負責人）身分證正本或正反面影本及印章` : `申請人（負責人）身分證正本`;
             case "ID_CARD_WITH_STAMP":
