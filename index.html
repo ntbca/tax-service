@@ -1275,7 +1275,7 @@ if (itemKey === "withholding_setup") {
         }
     }
 
-    function renderChecklist() {
+function renderChecklist() {
     if (!currentSelectedItemKey) return;
 
     const docList = document.getElementById("docList");
@@ -1310,13 +1310,9 @@ if (itemKey === "withholding_setup") {
         }
     }
 
-    // 【修改重點區域】
     if (isAgent) {
-        // 移除了原本的：docs.push('申請人身分證反面影本或正本');
         docs.push('代理人國民身分證正本');
         docs.push('授權委託書正本');
-
-        // 如果 selectedOpt.docs 裡面有原本非 ID_CARD 的「申請人身分證反面影本或正本」，順便進行過濾刪除
         docs = docs.filter(doc => doc !== '申請人身分證反面影本或正本');
     }
 
@@ -1337,8 +1333,10 @@ if (itemKey === "withholding_setup") {
         docList.appendChild(li);
     });
 
-    if (selectedOpt.note) {
-        specialNotes.textContent = selectedOpt.note;
+    // 💡【關鍵修正】：優先讀取大項目的 hint (itemData.hint)，如果沒有再去找 selectedOpt 裡的 hint/note
+    const hintText = itemData.hint || selectedOpt.hint || selectedOpt.note;
+    if (hintText) {
+        specialNotes.textContent = hintText;
         specialNotes.classList.remove("hidden");
     } else {
         specialNotes.classList.add("hidden");
@@ -1357,6 +1355,7 @@ if (itemKey === "withholding_setup") {
         infoImgContainer.classList.add("hidden");
     }
 }
+
 
 function generateFormattedText() {
         const itemData = systemData[currentSelectedItemKey];
