@@ -765,7 +765,7 @@ select {
       <div id="resultBox" class="mt-4 bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-6 md:p-8 shadow-md space-y-4">
         <h3 class="text-xl font-bold text-emerald-900 border-b border-emerald-200 pb-3 flex items-center gap-2">
           <i class="fa-solid fa-clipboard-check text-emerald-600"></i>
-          臨櫃洽辦應檢核／攜帶書表清單：
+          📖 臨櫃洽辦應檢核／攜帶書表清單：
         </h3>
 
         <!-- 書表清單 -->
@@ -778,8 +778,8 @@ select {
 
         <!-- 一鍵複製功能按鈕 -->
         <div class="pt-2 flex flex-wrap gap-4">
-          <button type="button" onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-5 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-copy"></i> 複製清單內容
+          <button type="button" onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-copy"></i>📋複製清單內容
           </button>
         </div>
 
@@ -1270,85 +1270,89 @@ if (itemKey === "withholding_setup") {
     }
 
     function renderChecklist() {
-        if (!currentSelectedItemKey) return;
+    if (!currentSelectedItemKey) return;
 
-        const docList = document.getElementById("docList");
-        docList.innerHTML = ""; 
+    const docList = document.getElementById("docList");
+    docList.innerHTML = ""; 
 
-        const identityVal = document.getElementById("identitySelect").value;
-        const isAgent = document.getElementById("isAgent").checked;
-        const specialNotes = document.getElementById("specialNotes");
-        const alertInfoBox = document.getElementById("alertInfoBox");
-        const infoImgContainer = document.getElementById("infoImgContainer");
-        const infoImg = document.getElementById("infoImg");
+    const identityVal = document.getElementById("identitySelect").value;
+    const isAgent = document.getElementById("isAgent").checked;
+    const specialNotes = document.getElementById("specialNotes");
+    const alertInfoBox = document.getElementById("alertInfoBox");
+    const infoImgContainer = document.getElementById("infoImgContainer");
+    const infoImg = document.getElementById("infoImg");
 
-        const itemData = systemData[currentSelectedItemKey];
-        if (!itemData) return;
+    const itemData = systemData[currentSelectedItemKey];
+    if (!itemData) return;
 
-        const selectedOpt = itemData.options.find(opt => opt.id === identityVal) || itemData.options[0];
-        if (!selectedOpt) return;
+    const selectedOpt = itemData.options.find(opt => opt.id === identityVal) || itemData.options[0];
+    if (!selectedOpt) return;
 
-        let docs = [];
-        selectedOpt.docs.forEach(docKey => {
-            if (docKey.startsWith("ID_CARD")) {
-                docs.push(getIdText(docKey, isAgent, selectedOpt.role));
-            } else {
-                docs.push(docKey);
-            }
-        });
-
-        if (currentSelectedItemKey === "creditor_data") {
-            const executionSelect = document.getElementById("executionSelect");
-            if (executionSelect && executionSelect.selectedIndex >= 0) {
-                docs.push(executionSelect.options[executionSelect.selectedIndex].text);
-            }
-        }
-
-        if (isAgent) {
-            docs.push('申請人身分證反面影本或正本');
-            docs.push('代理人國民身分證正本');
-            docs.push('授權委託書正本');
-        }
-
-        docs.forEach((doc) => {
-            const li = document.createElement("li");
-            let formattedText = doc;
-            
-            if (doc.includes("\n*") || doc.includes("*")) {
-                let parts = doc.split("*");
-                formattedText = parts[0] + `<br><span class='text-xs text-slate-600 block mt-2 leading-relaxed'>* ${parts.slice(1).join("*")}</span>`;
-            }
-
-            li.className = "flex items-start gap-2 bg-white/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm mt-3 first:mt-0 list-none";
-            li.innerHTML = `
-                <i class="fa-solid fa-circle-check text-emerald-600 mt-1 flex-shrink-0"></i> 
-                <span class="flex-1 font-medium text-slate-800">${formattedText}</span>
-            `;
-            docList.appendChild(li);
-        });
-
-        if (selectedOpt.note) {
-            specialNotes.textContent = selectedOpt.note;
-            specialNotes.classList.remove("hidden");
+    let docs = [];
+    selectedOpt.docs.forEach(docKey => {
+        if (docKey.startsWith("ID_CARD")) {
+            docs.push(getIdText(docKey, isAgent, selectedOpt.role));
         } else {
-            specialNotes.classList.add("hidden");
+            docs.push(docKey);
         }
+    });
 
-        if (currentSelectedItemKey === "withholding_setup") {
-            alertInfoBox.classList.remove("hidden");
-        } else {
-            alertInfoBox.classList.add("hidden");
-        }
-
-        if (selectedOpt.img) {
-            infoImg.src = selectedOpt.img;
-            infoImgContainer.classList.remove("hidden");
-        } else {
-            infoImgContainer.classList.add("hidden");
+    if (currentSelectedItemKey === "creditor_data") {
+        const executionSelect = document.getElementById("executionSelect");
+        if (executionSelect && executionSelect.selectedIndex >= 0) {
+            docs.push(executionSelect.options[executionSelect.selectedIndex].text);
         }
     }
 
-    function generateFormattedText() {
+    // 【修改重點區域】
+    if (isAgent) {
+        // 移除了原本的：docs.push('申請人身分證反面影本或正本');
+        docs.push('代理人國民身分證正本');
+        docs.push('授權委託書正本');
+
+        // 如果 selectedOpt.docs 裡面有原本非 ID_CARD 的「申請人身分證反面影本或正本」，順便進行過濾刪除
+        docs = docs.filter(doc => doc !== '申請人身分證反面影本或正本');
+    }
+
+    docs.forEach((doc) => {
+        const li = document.createElement("li");
+        let formattedText = doc;
+        
+        if (doc.includes("\n*") || doc.includes("*")) {
+            let parts = doc.split("*");
+            formattedText = parts[0] + `<br><span class='text-xs text-slate-600 block mt-2 leading-relaxed'>* ${parts.slice(1).join("*")}</span>`;
+        }
+
+        li.className = "flex items-start gap-2 bg-white/80 p-3.5 rounded-xl border border-emerald-200 shadow-sm mt-3 first:mt-0 list-none";
+        li.innerHTML = `
+            <i class="fa-solid fa-circle-check text-emerald-600 mt-1 flex-shrink-0"></i> 
+            <span class="flex-1 font-medium text-slate-800">${formattedText}</span>
+        `;
+        docList.appendChild(li);
+    });
+
+    if (selectedOpt.note) {
+        specialNotes.textContent = selectedOpt.note;
+        specialNotes.classList.remove("hidden");
+    } else {
+        specialNotes.classList.add("hidden");
+    }
+
+    if (currentSelectedItemKey === "withholding_setup") {
+        alertInfoBox.classList.remove("hidden");
+    } else {
+        alertInfoBox.classList.add("hidden");
+    }
+
+    if (selectedOpt.img) {
+        infoImg.src = selectedOpt.img;
+        infoImgContainer.classList.remove("hidden");
+    } else {
+        infoImgContainer.classList.add("hidden");
+    }
+}
+
+function generateFormattedText() {
         const itemData = systemData[currentSelectedItemKey];
         if (!itemData) return "";
 
@@ -1407,9 +1411,57 @@ if (itemKey === "withholding_setup") {
             }
         });
 
+        // 1. 費用/注意事項提示 (feeHint)
+        const feeHint = document.getElementById("feeHint");
+        if (feeHint && feeHint.style.display !== "none" && feeHint.textContent.trim() !== "") {
+            text += "\n" + feeHint.textContent.trim() + "\n";
+        }
+
+        // 2. 全域注意事項 (globalNotice)
+        const globalNotice = document.getElementById("globalNotice");
+        if (globalNotice && globalNotice.style.display !== "none") {
+            const noticeTitle = globalNotice.querySelector("strong") ? globalNotice.querySelector("strong").innerText : "💡 注意事項：";
+            const noticeItems = globalNotice.querySelectorAll("ul li");
+            
+            if (noticeItems.length > 0) {
+                text += "\n" + noticeTitle + "\n";
+                noticeItems.forEach(li => {
+                    text += "• " + li.innerText.trim() + "\n";
+                });
+            }
+        }
+
+        // 3. 特別備註 (specialNotes)
         const specialNotes = document.getElementById("specialNotes");
-        if (!specialNotes.classList.contains("hidden") && specialNotes.textContent.trim() !== "") {
-            text += "\n" + specialNotes.textContent + "\n";
+        if (specialNotes && !specialNotes.classList.contains("hidden") && specialNotes.textContent.trim() !== "") {
+            text += "\n📝 特別備註：\n" + specialNotes.textContent.trim() + "\n";
+        }
+
+        // 4. 自訂提示方塊 (customAlertBox)
+        const customAlertBox = document.getElementById("customAlertBox");
+        if (customAlertBox && customAlertBox.style.display !== "none" && customAlertBox.innerText.trim() !== "") {
+            let alertText = customAlertBox.innerHTML
+                .replace(/<br\s*[\/]?>/gi, "\n")  // 把 <br> 換成換行
+                .replace(/<[^>]+>/g, "")          // 剝除其他 HTML 標籤
+                .trim();
+
+            if (alertText) {
+                text += "\n⚠️ 提醒事項：\n" + alertText + "\n";
+            }
+        }
+
+        // 5. 注意事項說明區 (alertInfoBox)
+        const alertInfoBox = document.getElementById("alertInfoBox");
+        if (alertInfoBox && !alertInfoBox.classList.contains("hidden")) {
+            const infoTitle = alertInfoBox.querySelector("strong") ? alertInfoBox.querySelector("strong").innerText : "💡 注意事項：";
+            const infoItems = alertInfoBox.querySelectorAll("ul li");
+            
+            if (infoItems.length > 0) {
+                text += "\n" + infoTitle + "\n";
+                infoItems.forEach(li => {
+                    text += "• " + li.innerText.trim() + "\n";
+                });
+            }
         }
 
         return text;
@@ -1423,6 +1475,7 @@ if (itemKey === "withholding_setup") {
             alert("複製失敗，請手動複製。");
         });
     }
+
 
 window.addEventListener('scroll', function() {
   const btn = document.getElementById('backToTopBtn');
