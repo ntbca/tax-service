@@ -828,7 +828,7 @@ select {
 
 function getStdIdText() {
         const isAgentChecked = document.getElementById('isAgent')?.checked;
-        return isAgentChecked ? "負責人身分證正本或正反面影本" : "負責人身分證正本";
+        return isAgentChecked ? "申請人（負責人）身分證正本或正反面影本" : "申請人（負責人）身分證正本";
     }
     // STD_ID 保留為動態標記，於 renderChecklist() 時依是否委任代理再轉成實際文字
     const STD_ID = "STD_ID";
@@ -1009,9 +1009,9 @@ official48Items.forEach(item => {
 
         instant_notify: { 
             title: "查調即時通知", 
-            hint: "※ 限納稅義務人本人或未成年人之法定代理人親自申請；若係由代理人提示委託書或授權書及身分證明文件申請者，則不予受理。\n※ 僅供全功能櫃檯查調通知，5月申報期間不適用。", 
+            hint: "※ 限納稅義務人本人或未成年人之法定代理人親自申請；若係由代理人提示委託書或授權書及身分證明文件申請者，則不予受理。\n※ 僅供全功能櫃檯查調通知，5月申報期間不適用。",
             options: [
-                { id: "local", name: "國人(含限制行為能力人)", docs: ["ID_CARD"] },
+                { id: "local", name: "國人（含限制行為能力人）", docs: ["ID_CARD"] },
                 { id: "foreign", name: "外籍人士", docs: ["護照或經內政部移民署核發之居留證正本"] },
                 { id: "mainland", name: "大陸人士", docs: ["經內政部移民署核發之臺灣地區入出境許可證或居留證正本"] },
                 { id: "minor", name: "未成年人之法定代理人親自申請", docs: ["ID_CARD_WITH_STAMP", "附有詳細記事戶口名簿 或 詳細記事戶籍謄本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>① 倘父母離婚者，由擔任親權行使之父或母之一方代為申請時，應出具相關證明文件 ( 如父母雙方之協議書或法院判決書或戶口名簿等 ) 免附他方之授權書或委任書或同意書，惟經協議，由雙方共同行使或負擔時，仍應由為法定代理人之父母二人共同簽章代為申請。<br><br>② 因離婚而約定子女由一方監護，倘任監護之一方死亡者，由他方代為申請時，應出具相關證明文件，如父母雙方之協議書或法院判決書或戶口名簿等及任監護之一方之死亡診斷證明書或載有死亡日期之戶口名簿影本等，簽章代為申請，免附授權書。</span>"] },
@@ -1334,7 +1334,7 @@ function renderChecklist() {
     const agentGroup = document.getElementById("agentGroup"); // 請確保你的 HTML 中委任代辦的外框 ID 是 agentGroup
     const isAgentCheckbox = document.getElementById("isAgent");
 
-    if (currentSelectedItemKey === "instant_notify" && identityVal === "local") {
+    if (currentSelectedItemKey === "instant_notify" ) {
         if (agentGroup) agentGroup.classList.add("hidden");       // 隱藏委任代辦勾選區塊
         if (isAgentCheckbox) isAgentCheckbox.checked = false;   // 強制取消勾選，避免帶入代理狀態
     } else {
@@ -1358,7 +1358,7 @@ let docs = [];
     selectedOpt.docs.forEach(docKey => {
         // 💡 新增：若為扣繳單位，或遇到 STD_ID，就動態判斷是否勾選委任代辦
         if (currentSelectedItemKey === "withholding_setup" || docKey === "STD_ID") {
-            const resolvedStdId = isAgent ? "負責人身分證正本或正反面影本" : "負責人身分證正本";
+            const resolvedStdId = isAgent ? "申請人（負責人）身分證正本或正反面影本" : "申請人（負責人）身分證正本";
             docs.push(docKey.replace(/STD_ID/g, resolvedStdId));
         } else if (docKey.startsWith("ID_CARD")) {
             docs.push(getIdText(docKey, isAgent, selectedOpt.role));
