@@ -1581,7 +1581,7 @@ function generateFormattedText() {
         // 5. 注意事項說明區 (alertInfoBox)
         const alertInfoBox = document.getElementById("alertInfoBox");
         if (alertInfoBox && !alertInfoBox.classList.contains("hidden")) {
-            const infoTitle = alertInfoBox.querySelector("strong") ? alertInfoBox.querySelector("strong").innerText : "💡 注意事項：";
+            const infoTitle = alertInfoBox.querySelector("strong") ? alertInfoBox.querySelector("strong").innerText : "💡【注意事項】";
             const infoItems = alertInfoBox.querySelectorAll("ul li");
             
             if (infoItems.length > 0) {
