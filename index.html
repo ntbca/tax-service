@@ -789,14 +789,6 @@ select {
         <!-- 特別備註 -->
         <div id="specialNotes" class="mt-4 hidden bg-red-50 p-4 rounded-xl border border-red-200 text-red-800 text-sm leading-relaxed font-medium whitespace-pre-line"></div>
 
-        <div id="issuanceGlobalNotice" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
-          <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
-          <ul class="list-disc pl-5 space-y-1">
-            <li>納稅義務人為營利事業或機關團體，應檢附公司登記證明文件或商業登記證明文件或法人登記證影本（90年11月12日公司法修正後），得以 (1)中央或地方政府核發之核准函及公司申請設立或變更之登記表，或(2)公司法第392條規定之登記事項證明書(代替)，並應由申請人或代理人具結「與正本相符，如有不符願負法律責任」。</li>
-            <li>外國法人在臺未辦登記者，應檢附經我國當地駐外機構簽證之授權書及該法人組織於當地國核准設立之證明文件。若當地國核准設立之證明文件無法確認授權者之授權行為是否合法適格，應另檢附公司章程或其他證明文件以表彰其為該法人執行業務範圍之負責人、經理人身分。如文件為外文者，並應檢附駐外機構驗證或國內公證人認證之中譯本。</li>
-          </ul>
-        </div>
-
         <!-- 一鍵複製功能按鈕 -->
         <div class="pt-2 flex flex-wrap gap-4">
           <button type="button" onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
@@ -817,6 +809,14 @@ select {
             <li>以下單位應向銷售稅課/營業稅股申請編配營利事業統一編號：1.營利事業 2.員工消費合作社 3.藥局(僅依醫師處方調劑者除外) 4.報社、雜誌社 5.業餘或職業演藝團體</li>
             <li>外國營利事業在我國境內未設分支機構，而委託本國營利事業為營業代理人，該營業代理人無須辦理營業登記，但應向該管稽徵機關報備(所轄國稅局)</li>
             <li>律師、會計師、地政士、記帳士、技師、建築師、醫師診所、不動產估價師、保險經紀人及專利師等，申請編配統一編號時<b>免檢附加入同業公會之證明文件</b></li>
+          </ul>
+        </div>
+
+        <div id="issuanceGlobalNotice" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
+          <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>納稅義務人為營利事業或機關團體，應檢附公司登記證明文件或商業登記證明文件或法人登記證影本（90年11月12日公司法修正後），得以 (1)中央或地方政府核發之核准函及公司申請設立或變更之登記表，或(2)公司法第392條規定之登記事項證明書(代替)，並應由申請人或代理人具結「與正本相符，如有不符願負法律責任」。</li>
+            <li>外國法人在臺未辦登記者，應檢附經我國當地駐外機構簽證之授權書及該法人組織於當地國核准設立之證明文件。若當地國核准設立之證明文件無法確認授權者之授權行為是否合法適格，應另檢附公司章程或其他證明文件以表彰其為該法人執行業務範圍之負責人、經理人身分。如文件為外文者，並應檢附駐外機構驗證或國內公證人認證之中譯本。</li>
           </ul>
         </div>
 
@@ -1598,7 +1598,7 @@ let docs = [];
             : selectedOpt.hint;
     }
 
-    // 顯示或隱藏備註區塊
+    // hint 一律維持原位置的紅色備註框。
     if (combinedHint.trim() !== '') {
         specialNotes.textContent = combinedHint;
         specialNotes.classList.remove("hidden");
