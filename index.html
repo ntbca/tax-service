@@ -397,12 +397,14 @@ select {
 }
 
 /* 強制讓注意事項的清單顯示預設圓點 */
-#alertInfoBox ul {
+#alertInfoBox ul,
+#issuanceGlobalNotice ul {
     list-style-type: disc !important;
     padding-left: 1.25rem !important; /* 確保有足夠的縮排空間放圓點 */
 }
 
-#alertInfoBox li {
+#alertInfoBox li,
+#issuanceGlobalNotice li {
     display: list-item !important; /* 強制以清單項目模式顯示 */
     list-style-type: disc !important;
 }
@@ -1242,6 +1244,42 @@ withholding_setup: {
       { path: "申辦作業 >4. 查調即時通知 > 未成年人之法定代理人親自申請", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["未成年子女","未成年人之法定代理人"], key: "instant_notify", targetIdentity: "minor", isReady: true },
       { path: "申辦作業 >4. 查調即時通知 > 未成年人之法定代理人親自申請 > 詳細記事戶口名簿、戶籍謄本", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["查調戶口名簿", "詳細記事戶口名簿", "戶口名簿","查調戶籍謄本", "詳細記事戶籍謄本", "戶籍謄本"], key: "instant_notify", targetIdentity: "minor", isReady: true },
 
+      // 核發書證：身分層級搜尋（關鍵字僅使用身分及其同義詞）
+      { path: "核發書證 > 1. 各項稅款補發稅單 > 外籍人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item1", targetIdentity: "foreign_citizen", isReady: true },
+      { path: "核發書證 > 1. 各項稅款補發稅單 > 大陸人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item1", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "核發書證 > 1. 各項稅款補發稅單 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item1", targetIdentity: "corp_biz", isReady: true },
+      { path: "核發書證 > 1. 各項稅款補發稅單 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item1", targetIdentity: "corp_group", isReady: true },
+
+      { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 大陸人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item2", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 大陸籍配偶", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸籍配偶", "大陸配偶"], key: "issuance_item2", targetIdentity: "mainland_spouse", isReady: true },
+      { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 外籍人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item2", targetIdentity: "foreign_citizen", isReady: true },
+
+      { path: "核發書證 > 3. 儲蓄免扣證 > 外籍人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item3", targetIdentity: "foreign_citizen", isReady: true },
+      { path: "核發書證 > 3. 儲蓄免扣證 > 大陸人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item3", targetIdentity: "mainland_citizen", isReady: true },
+
+      { path: "核發書證 > 5. 核發違章欠稅查復表 > 外籍人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item5", targetIdentity: "foreign_citizen", isReady: true },
+      { path: "核發書證 > 5. 核發違章欠稅查復表 > 大陸人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item5", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "核發書證 > 5. 核發違章欠稅查復表 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item5", targetIdentity: "corp_biz", isReady: true },
+      { path: "核發書證 > 5. 核發違章欠稅查復表 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item5", targetIdentity: "corp_group", isReady: true },
+
+      { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item6", targetIdentity: "corp_biz", isReady: true },
+      { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item6", targetIdentity: "corp_group", isReady: true },
+      { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 房東", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["房東", "出租人"], key: "issuance_item6", targetIdentity: "landlord", isReady: true },
+
+      { path: "核發書證 > 7. 補發遺產稅證明書 > 大陸人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item7", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "核發書證 > 7. 補發遺產稅證明書 > 大陸籍配偶", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸籍配偶", "大陸配偶"], key: "issuance_item7", targetIdentity: "mainland_spouse", isReady: true },
+      { path: "核發書證 > 7. 補發遺產稅證明書 > 外籍人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item7", targetIdentity: "foreign_citizen", isReady: true },
+
+      { path: "核發書證 > 8. 補發贈與稅證明書 > 外籍人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item8", targetIdentity: "foreign_citizen", isReady: true },
+      { path: "核發書證 > 8. 補發贈與稅證明書 > 大陸人士", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item8", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "核發書證 > 8. 補發贈與稅證明書 > 贈與人已死亡，由繼承人提出申請查詢者", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["贈與人已死亡", "繼承人"], key: "issuance_item8", targetIdentity: "heir_gift", isReady: true },
+
+      { path: "核發書證 > 9. 核發繳稅證明 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item9", targetIdentity: "corp_biz", isReady: true },
+      { path: "核發書證 > 9. 核發繳稅證明 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item9", targetIdentity: "corp_group", isReady: true },
+
+      { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所得稅繳納證明書 > 無居留證之外僑", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["無居留證之外僑", "外僑"], key: "issuance_item10", targetIdentity: "foreign_no_permit", isReady: true },
+      { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所得稅繳納證明書 > 申請人如屬未成年者", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["未成年者", "未成年人", "法定代理人", "監護人"], key: "issuance_item10", targetIdentity: "minor", isReady: true },
+
 
       ...official48Items.map(item => ({
         path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
@@ -1613,8 +1651,11 @@ let docs = [];
     }
 
     const issuanceGlobalNotice = document.getElementById("issuanceGlobalNotice");
-    const isIssuanceCorp = isIssuance && ["corp_biz", "corp_group"].includes(identityVal);
-    issuanceGlobalNotice.classList.toggle("hidden", !isIssuanceCorp);
+    const selectedIdentityName = selectedOpt.name || "";
+    const isBusinessEntity = ["corp_biz", "corp_group", "corp"].includes(identityVal)
+        || selectedIdentityName.includes("營利事業")
+        || selectedIdentityName.includes("機關團體");
+    issuanceGlobalNotice.classList.toggle("hidden", !isBusinessEntity);
 
     if (selectedOpt.img) {
         infoImg.src = selectedOpt.img;
