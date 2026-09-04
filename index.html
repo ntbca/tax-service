@@ -1101,28 +1101,28 @@ withholding_setup: {
 
     // 發證作業沿用全功能櫃台共用介面、樣式與清單功能。
     Object.assign(systemData, {
-        issuance_item1: { title: "各項稅款補發稅單 (跨區局)", hint: "※ 提供納稅義務人申請補發稅單繳清稅款之用。\n※ 補發時均不得展延限繳日期。", options: [
+        issuance_item1: { title: "各項稅款補發稅單", hint: "※ 提供納稅義務人申請補發稅單繳清稅款之用。\n※ 補發時均不得展延限繳日期。", options: [
             { id: "local_citizen", name: "納稅義務人(個人)-國民", docs: ["ID_CARD"] },
             { id: "foreign_citizen", name: "納稅義務人(個人)-外籍人士", docs: ["ID_CARD_FOREIGN_INCOME"] },
             { id: "mainland_citizen", name: "納稅義務人(個人)-大陸人士", docs: ["ID_CARD_MAINLAND_STANDARD"] },
             { id: "corp_biz", name: "營利事業", docs: issuanceCommon.corp_biz },
             { id: "corp_group", name: "機關團體", docs: issuanceCommon.corp_group },
         ]},
-        issuance_item2: { title: "補發遺產稅不動產公同共有同意移轉證明書 (跨區局)", options: [
+        issuance_item2: { title: "補發遺產稅不動產公同共有同意移轉證明書", options: [
             { id: "local_citizen", name: "繼承人-國民（滿18歲以上）", role: "繼承人", docs: issuanceCommon.heir_Proof },
             { id: "mainland_citizen", name: "繼承人-大陸人士", docs: issuanceCommon.mainland_citizen_HeirProof },
             { id: "mainland_spouse", name: "繼承人-大陸籍配偶", docs: issuanceCommon.mainland_spouse_HeirProof },
             { id: "foreign_citizen", name: "繼承人-外籍人士", docs: issuanceCommon.foreign_HeirProof },
         ]},
-        issuance_item3: { title: "儲蓄免扣稅納稅證明 (跨區局)", hint: "※  同一申報戶內配偶及受扶養親屬，應合併申請一份儲蓄免扣證", options: [
-            { id: "local_citizen", name: "納稅義務人(個人)-國民", role: "納稅義務人", docs: ["ID_CARD"] },
+        issuance_item3: { title: "儲蓄免扣稅納稅證明", hint: "※ 同一申報戶內配偶及受扶養親屬，應合併申請一份儲蓄免扣證\n※ 舊證用完，換發新證者必須攜帶舊證", options: [
+            { id: "local_citizen", name: "納稅義務人(個人)-國民", role: "納稅義務人", docs: ["ID_CARD"+"或戶口名簿正本"] },
             { id: "foreign_citizen", name: "納稅義務人(個人)-外籍人士", role: "納稅義務人", docs: ["ID_CARD_FOREIGN_INCOME"] },
             { id: "mainland_citizen", name: "納稅義務人(個人)-大陸人士", role: "納稅義務人", docs: ["ID_CARD_MAINLAND_STANDARD"] }
         ]},
-        issuance_item4: { title: "中(英)文綜合所得稅納稅證明書 (跨區局)",hint:"※ 申請核發中、英文綜合所得稅納稅證明書，申請人需為納稅義務人本人，若為配偶或受扶養親屬申請時，仍應檢附委任書或授權書。\n※ 英文綜合所得稅納稅證明如須記載納稅義務人本人及配偶英文姓名，應請申請人提供相關資料(如護照或居留證)，俾利作業。\n※ 納稅義務人為申請喪失國籍所需之綜合所得稅納稅證明案件，應依內政部要求之格式處理，本項作業不提供是項服務，請向申請人向其最後設籍之國稅局另案申請。", options: [
+        issuance_item4: { title: "中(英)文綜合所得稅納稅證明書",hint:"※ 申請核發中、英文綜合所得稅納稅證明書，申請人需為納稅義務人本人，若為配偶或受扶養親屬申請時，仍應檢附委任書或授權書。\n※ 英文綜合所得稅納稅證明如須記載納稅義務人本人及配偶英文姓名，應請申請人提供相關資料(如護照或居留證)，俾利作業。\n※ 納稅義務人為申請喪失國籍所需之綜合所得稅納稅證明案件，應依內政部要求之格式處理，本項作業不提供是項服務，請向申請人向其最後設籍之國稅局另案申請。", options: [
             { id: "local_citizen", name: "納稅義務人", docs: ["ID_CARD"+" (※ 申請「英文」納稅證明請另檢附「護照」或居留證)"] }
         ]},
-        issuance_item5: { title: "核發違章欠稅查復表 (跨區局)", options: [
+        issuance_item5: { title: "核發違章欠稅查復表", options: [
             { id: "local_citizen", name: "納稅義務人(個人)-國民", docs: ["ID_CARD"] },
             { id: "foreign_citizen", name: "納稅義務人(個人)-外籍人士", docs: ["ID_CARD_FOREIGN_INCOME"] },
             { id: "mainland_citizen", name: "納稅義務人(個人)-大陸人士", docs: ["ID_CARD_MAINLAND_STANDARD"] },
@@ -1134,24 +1134,24 @@ withholding_setup: {
             { id: "corp_group", name: "機關團體", docs: issuanceCommon.corp_group },
             { id: "landlord", name: "房東", docs: ["ID_CARD", "房屋稅單或租賃契約影本"] }
         ]},
-        issuance_item7: { title: "補發遺產稅證明書 (跨區局)", hint:"※ 死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，檢附國外出具之相關證明文件，應經我國當地駐外機構簽證\n※ 提供補發之證明書計有遺產稅繳清證明書、遺產稅免稅證明書、遺產稅逾核課期間案件同意移轉證明書、遺產稅不計入遺產總額證明書等四種", options: [
+        issuance_item7: { title: "補發遺產稅證明書", hint:"※ 死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，檢附國外出具之相關證明文件，應經我國當地駐外機構簽證\n※ 提供補發之證明書計有遺產稅繳清證明書、遺產稅免稅證明書、遺產稅逾核課期間案件同意移轉證明書、遺產稅不計入遺產總額證明書等四種", options: [
             { id: "local_citizen", name: "繼承人-國民（滿18歲以上）", role: "繼承人", docs: issuanceCommon.heir_Proof },
             { id: "mainland_citizen", name: "繼承人-大陸人士", docs: issuanceCommon.mainland_citizen_HeirProof },
             { id: "mainland_spouse", name: "繼承人-大陸籍配偶", docs: issuanceCommon.mainland_spouse_HeirProof },
             { id: "foreign_citizen", name: "繼承人-外籍人士", docs: issuanceCommon.foreign_HeirProof },
         ]},
-        issuance_item8: { title: "補發贈與稅證明書 (跨區局)", hint:"※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種", options: [
+        issuance_item8: { title: "補發贈與稅證明書", hint:"※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種", options: [
             { id: "local_citizen", name: "贈與人-國民", role:"贈與人", docs: ["ID_CARD"] },
             { id: "foreign_citizen", name: "贈與人-外籍人士", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
             { id: "mainland_citizen", name: "贈與人-大陸人士", docs: ["ID_CARD_MAINLAND_NOTIFY"] },
             { id: "heir_gift", name: "贈與人已死亡，由繼承人提出申請查詢者", docs: ["需附被繼承人死亡除戶資料（如死亡診斷證明書或載有死亡日期之戶口名簿影本等），如非配偶或民法第1138條第一順位繼承人，應另檢附加蓋申請人印章之繼承系統表", "納稅義務人（繼承人）身分證正本"] }
         ]},
-        issuance_item9: { title: "核發繳稅證明 (跨區局)", hint:"※ 本項目核發採用繳納方式不包含營業稅留抵繳稅、退稅抵欠、實物抵繳及劃解轉正之案件\n※ 無條碼現金繳稅案件，需繳納稅款轉入劃解檔後才能核發", options: [
+        issuance_item9: { title: "核發繳稅證明", hint:"※ 本項目核發採用繳納方式不包含營業稅留抵繳稅、退稅抵欠、實物抵繳及劃解轉正之案件\n※ 無條碼現金繳稅案件，需繳納稅款轉入劃解檔後才能核發", options: [
             { id: "individual", name: "納稅義務人-個人", docs: ["ID_CARD"] },
             { id: "corp_biz", name: "納稅義務人-營利事業", docs: issuanceCommon.corp_biz },
             { id: "corp_group", name: "納稅義務人-機關團體", docs: issuanceCommon.corp_group },
         ]},
-        issuance_item10: { title: "核發中、英個人房屋土地交易所得稅納稅繳稅證明 (跨區局)", options: [
+        issuance_item10: { title: "核發中、英個人房屋土地交易所得稅納稅繳稅證明", options: [
             { id: "taxpayer", name: "納稅義務人", docs: ["ID_CARD_INDIVIDUAL"] },
             { id: "foreign_no_permit", name: "無居留證之外僑", docs: ["護照正本（有效期間內）"] },
             { id: "minor", name: "申請人如屬未成年者", role: "法定代理人或監護人", docs: issuanceCommon.minor }
@@ -1233,6 +1233,18 @@ withholding_setup: {
 
       { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與人查詢", "贈與查詢", "全國贈與"], key: "gift_tax", targetIdentity: "donor", isReady: true },
 
+
+      ...official48Items.map(item => ({
+        path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
+        badgeText: "申辦作業",
+        badgeClass: "bg-purple-100 text-purple-900",
+        keywords: [item.name],
+        key: "withholding_setup",
+        targetIdentity: item.id,
+        isReady: true
+      })),
+
+
      { path: "申辦作業 > 1. 遺產稅延期申報 > 死亡診斷證明書或載有死亡日期之戶口名簿", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["死亡診斷證明書","載有死亡日期之戶口名簿"], key: "estate_tax_extension", targetIdentity: "local", isReady: true },
       { path: "申辦作業 >1. 遺產稅延期申報 > 大陸地區人民 > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["入出境許可證","居留證","大陸人士","大陸地區人民"], key: "estate_tax_extension", targetIdentity: "mainland", isReady: true }, 
 
@@ -1281,15 +1293,6 @@ withholding_setup: {
       { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所得稅繳納證明書 > 申請人如屬未成年者", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["未成年者", "未成年人", "法定代理人", "監護人"], key: "issuance_item10", targetIdentity: "minor", isReady: true },
 
 
-      ...official48Items.map(item => ({
-        path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
-        badgeText: "申辦作業",
-        badgeClass: "bg-purple-100 text-purple-900",
-        keywords: [item.name],
-        key: "withholding_setup",
-        targetIdentity: item.id,
-        isReady: true
-      }))
     ];
 
     let currentSelectedItemKey = "";
