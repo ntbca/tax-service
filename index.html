@@ -533,6 +533,13 @@ select {
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer text-lg font-bold">
   ✖
 </button>
+
+          <!-- 搜尋建議下拉選單：定位於搜尋框下方並浮於其他內容上層 -->
+          <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-96 overflow-y-auto custom-scrollbar">
+            <ul id="searchResults" class="divide-y divide-slate-100">
+              <!-- 動態注入搜尋結果 -->
+            </ul>
+          </div>
         </div>
 
         <!-- 跨轄區／跨區局說明 -->
@@ -547,12 +554,6 @@ select {
           </div>
         </div>
 
-        <!-- 搜尋建議下拉選單 -->
-        <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-96 overflow-y-auto custom-scrollbar">
-          <ul id="searchResults" class="divide-y divide-slate-100">
-            <!-- 動態注入搜尋結果 -->
-          </ul>
-        </div>
       </div>
 
       <!-- 完整優化版的三欄式卡片結構 -->
