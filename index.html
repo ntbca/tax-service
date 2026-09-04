@@ -349,8 +349,54 @@ a {
   overflow-y: visible !important; /* 取消手機版內層捲軸，讓清單完整展開 */
 }
 
+/* 第二頁搜尋列下方的跨區說明：窄畫面直排 */
+.service-note-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.service-note-item {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.service-note-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  padding: 0.6rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.service-note-text {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: 0.35rem 0;
+  color: #475569;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  text-align: left;
+}
+
 /* 電腦版 (寬度 1100px 以上)：恢復三欄橫向排列與固定高度捲軸 */
 @media (min-width: 1100px) {
+  .service-note-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
   .custom-card-container {
     flex-direction: row;
     justify-content: space-between;
@@ -461,7 +507,7 @@ select {
       </div>
 
 <!-- 全能搜尋框 (完美支援自動顯示/隱藏清除按鈕) -->
-<div class="relative w-3/4 mx-auto mb-8">
+<div class="relative w-full mx-auto mb-8">
     <div class="relative flex items-center w-full">
 
 
@@ -487,6 +533,18 @@ select {
           <button type="button" id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-4 text-slate-400 hover:text-slate-600 cursor-pointer text-lg font-bold">
   ✖
 </button>
+        </div>
+
+        <!-- 跨轄區／跨區局說明 -->
+        <div class="service-note-grid">
+          <div class="service-note-item">
+            <span class="service-note-label bg-red-100 text-red-800">跨轄區</span>
+            <span class="service-note-text">表示設籍中部五縣市之納稅義務人，可洽詢所轄分局、稽徵所辦理。</span>
+          </div>
+          <div class="service-note-item">
+            <span class="service-note-label bg-orange-100 text-orange-800">跨區局</span>
+            <span class="service-note-text">表示無論設籍何處之納稅義務人，可洽詢全國任一國稅局、分局、稽徵所辦理。</span>
+          </div>
         </div>
 
         <!-- 搜尋建議下拉選單 -->
