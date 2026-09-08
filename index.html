@@ -1062,7 +1062,7 @@ official48Items.forEach(item => {
                 { id: "mainland", name: "大陸地區人民", docs: ["ID_CARD_MAINLAND_HEIR", ...common.estate], img: "流程圖.jpg"},
                 { id: "mainland_spouse", name: "大陸籍配偶", docs: ["ID_CARD_MAINLAND_SPOUSE", ...common.estate], img: "流程圖.jpg"},
                 { id: "foreign", name: "外籍人士", docs: ["ID_CARD_FOREIGN_HEIR", ...common.estate], img: "流程圖.jpg"},
-
+                { id: "minor", name: "未成年人" , docs: [...common.minor ], img: "流程圖.jpg" },
 
             ]
         },
@@ -1070,6 +1070,7 @@ official48Items.forEach(item => {
             title: "債權人查調債務人課稅資料查詢",
             hint: "※ 每查調一位債務人之一種資料（所得財產資料分開計算），每項收費250元\n※ 申請查調案件經受理查調結果，如無債務人之財產或所得資料，已繳交之服務費無法退還\n※ 債權人需自行提供債務人身分證字號或統一編號",
             options: [
+                { id: "citizen", name: "國民 (滿18歲以上)", docs: ['債權人查調債務人財產及所得資料申請書', "ID_CARD"],  },
                 { id: "corp_biz", name: "營利事業", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_biz], hint: "※ 債權人為金融機構或總公司已申請證件電子化，需填寫最新主管機關核准文號：______________" },
                 { id: "corp_group", name: "機關團體", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_group] },
                 { id: "condo_committee", name: "公寓大廈管理委員會", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_CONDO', '應檢附原取得執行名義時，呈送法院經認定具當事人資格之證明文件'] },
