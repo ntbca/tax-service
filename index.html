@@ -62,9 +62,13 @@ a {
       box-shadow: 0 0 0 2px #ffffff !important;
     }
 
-    .search-result-button {
+    .search-result-option {
       width: 100%;
       text-align: left;
+    }
+    .search-result-option[aria-selected="true"] {
+      background-color: #dbeafe;
+      box-shadow: inset 4px 0 0 #2563eb;
     }
 
     /* 彈性與排版基礎 */
@@ -596,6 +600,9 @@ select {
             onkeyup="toggleClearButton();"
             onfocus="handleSearchInput(); toggleClearButton();"
             onkeydown="handleSearchKeydown(event)"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-haspopup="listbox"
             aria-controls="searchResults"
             aria-expanded="false"
             aria-describedby="searchHelp searchStatus"
@@ -605,15 +612,15 @@ select {
           >
 
           <!-- 右側叉叉清除按鈕（拿掉 hidden，改用 JavaScript 在網頁載入時動態判斷，避免直接被蓋掉） -->
-          <span id="searchHelp" class="sr-only">輸入關鍵字後會顯示符合的服務項目；可按向下方向鍵移到搜尋結果，或按 Escape 關閉結果。</span>
+          <span id="searchHelp" class="sr-only">輸入關鍵字後會顯示符合的服務項目；用上下方向鍵選擇、Enter 確認、Escape 關閉，Tab 離開搜尋區。</span>
           <span id="searchStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></span>
           <button type="button" id="clearSearchBtn" aria-label="清除搜尋內容" title="清除搜尋內容" onclick="clearSearch()" class="hidden absolute right-4 text-slate-700 hover:text-slate-800 cursor-pointer text-lg font-bold">
   ✖
 </button>
 
           <!-- 搜尋建議下拉選單：定位於搜尋框下方並浮於其他內容上層 -->
-          <div id="searchDropdown" role="region" aria-label="搜尋結果" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-96 overflow-y-auto custom-scrollbar">
-            <ul id="searchResults" class="divide-y divide-slate-100">
+          <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 max-h-96 overflow-y-auto custom-scrollbar">
+            <ul id="searchResults" role="listbox" aria-label="搜尋結果" class="divide-y divide-slate-100">
               <!-- 動態注入搜尋結果 -->
             </ul>
           </div>
@@ -1552,6 +1559,8 @@ withholding_setup: {
     let currentSelectedItemKey = "";
     let currentStep = 1;
     let stepHistoryEnabled = true;
+    let currentSearchMatches = [];
+    let activeSearchIndex = -1;
 
     function displayStep(stepNum) {
       const s1 = document.getElementById('step-1');
@@ -1630,15 +1639,19 @@ withholding_setup: {
         !frontHiddenItemKeys.has(item.key) &&
         item.keywords.some(kw => kw.toLowerCase().includes(query))
       );
+      currentSearchMatches = matches;
+      activeSearchIndex = -1;
+      searchInput.removeAttribute('aria-activedescendant');
 
       if (matches.length > 0 && query !== '') {
         resultsList.innerHTML = '';
-        matches.forEach(item => {
+        matches.forEach((item, index) => {
           const displayPath = getFrontDisplayPath(item);
           const li = document.createElement('li');
-          const resultButton = document.createElement('button');
-          resultButton.type = 'button';
-          resultButton.className = 'search-result-button px-5 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between transition-colors border-b border-slate-50 last:border-b-0 gap-4';
+          li.id = `search-option-${index}`;
+          li.setAttribute('role', 'option');
+          li.setAttribute('aria-selected', 'false');
+          li.className = 'search-result-option px-5 py-3 hover:bg-blue-50 cursor-pointer flex items-center justify-between transition-colors border-b border-slate-50 last:border-b-0 gap-4';
           
           let rightSideHtml = `<div class="flex items-center gap-1.5 flex-shrink-0">`;
           if (item.badgeText) {
@@ -1649,51 +1662,24 @@ withholding_setup: {
           }
           rightSideHtml += `</div>`;
 
-          resultButton.innerHTML = `
+          li.innerHTML = `
             <div class="flex items-start gap-3 min-w-0 flex-1">
               <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm flex-shrink-0 mt-1"></i>
               <span class="font-medium text-slate-800 text-min-14 whitespace-normal break-all">${displayPath}</span>
             </div>
             ${rightSideHtml}
           `;
-          resultButton.addEventListener('click', () => {
-            searchInput.value = displayPath; 
-            searchInput.style.height = 'auto';
-            searchInput.style.height = (searchInput.scrollHeight) + 'px';
-            closeAllDropdowns();
-            if (item.isReady) {
-              selectItem(item.key, item.targetIdentity);
-            } else {
-              showBuildingAlert();
-            }
-          });
-          resultButton.addEventListener('keydown', (event) => {
-            const resultButtons = [...resultsList.querySelectorAll('button')];
-            const currentIndex = resultButtons.indexOf(event.currentTarget);
-
-            if (event.key === 'Escape') {
-              event.preventDefault();
-              event.stopPropagation();
-              closeSearchAndReturnFocus();
-            } else if (event.key === 'ArrowDown') {
-              event.preventDefault();
-              resultButtons[Math.min(currentIndex + 1, resultButtons.length - 1)]?.focus();
-            } else if (event.key === 'ArrowUp') {
-              event.preventDefault();
-              if (currentIndex <= 0) {
-                searchInput.focus();
-              } else {
-                resultButtons[currentIndex - 1]?.focus();
-              }
-            }
-          });
-          li.appendChild(resultButton);
+          li.addEventListener('mousedown', event => event.preventDefault());
+          li.addEventListener('click', () => selectSearchResult(index));
+          li.addEventListener('mousemove', () => setActiveSearchOption(index, false));
           resultsList.appendChild(li);
         });
         dropdown.classList.remove('hidden');
         searchInput.setAttribute('aria-expanded', 'true');
         document.getElementById('searchStatus').textContent = `找到 ${matches.length} 項結果。`;
       } else {
+        currentSearchMatches = [];
+        activeSearchIndex = -1;
         dropdown.classList.add('hidden');
         searchInput.setAttribute('aria-expanded', 'false');
         document.getElementById('searchStatus').textContent = query ? '找不到符合的服務項目。' : '';
@@ -1705,11 +1691,60 @@ withholding_setup: {
         event.preventDefault();
         closeSearchAndReturnFocus();
       } else if (event.key === 'ArrowDown') {
-        const firstResult = document.querySelector('#searchResults button');
-        if (firstResult) {
+        if (currentSearchMatches.length > 0) {
           event.preventDefault();
-          firstResult.focus();
+          const nextIndex = activeSearchIndex < currentSearchMatches.length - 1
+            ? activeSearchIndex + 1
+            : 0;
+          setActiveSearchOption(nextIndex);
         }
+      } else if (event.key === 'ArrowUp') {
+        if (currentSearchMatches.length > 0) {
+          event.preventDefault();
+          const previousIndex = activeSearchIndex > 0
+            ? activeSearchIndex - 1
+            : currentSearchMatches.length - 1;
+          setActiveSearchOption(previousIndex);
+        }
+      } else if (event.key === 'Enter' && activeSearchIndex >= 0) {
+        event.preventDefault();
+        selectSearchResult(activeSearchIndex);
+      } else if (event.key === 'Tab') {
+        closeAllDropdowns();
+      }
+    }
+
+    function setActiveSearchOption(index, announce = true) {
+      const searchInput = document.getElementById('searchInput');
+      const options = [...document.querySelectorAll('#searchResults [role="option"]')];
+      if (!options[index]) return;
+
+      options.forEach((option, optionIndex) => {
+        option.setAttribute('aria-selected', optionIndex === index ? 'true' : 'false');
+      });
+      activeSearchIndex = index;
+      searchInput.setAttribute('aria-activedescendant', options[index].id);
+      options[index].scrollIntoView({ block: 'nearest' });
+
+      if (announce) {
+        const status = document.getElementById('searchStatus');
+        status.textContent = `${index + 1} / ${options.length}：${getFrontDisplayPath(currentSearchMatches[index])}`;
+      }
+    }
+
+    function selectSearchResult(index) {
+      const item = currentSearchMatches[index];
+      if (!item) return;
+
+      const searchInput = document.getElementById('searchInput');
+      searchInput.value = getFrontDisplayPath(item);
+      searchInput.style.height = 'auto';
+      searchInput.style.height = `${searchInput.scrollHeight}px`;
+      closeAllDropdowns();
+      if (item.isReady) {
+        selectItem(item.key, item.targetIdentity);
+      } else {
+        showBuildingAlert();
       }
     }
 
@@ -1734,7 +1769,14 @@ withholding_setup: {
       const dropdown = document.getElementById('searchDropdown');
       if (dropdown) dropdown.classList.add('hidden');
       const searchInput = document.getElementById('searchInput');
-      if (searchInput) searchInput.setAttribute('aria-expanded', 'false');
+      if (searchInput) {
+        searchInput.setAttribute('aria-expanded', 'false');
+        searchInput.removeAttribute('aria-activedescendant');
+      }
+      document.querySelectorAll('#searchResults [role="option"]').forEach(option => {
+        option.setAttribute('aria-selected', 'false');
+      });
+      activeSearchIndex = -1;
     }
 
     function selectItem(itemKey, targetIdentity = null) {
