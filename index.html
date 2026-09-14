@@ -51,12 +51,25 @@ a {
     }
     .skip-link:focus { transform: translateY(0); }
 
-    /* 無障礙：所有鍵盤可操作元件都有一致、高可見的焦點 */
-    a:focus-visible,
-    button:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    [tabindex="-1"]:focus-visible {
+    /* 一般滑鼠／觸控不顯示黃色重點框，但表單仍保留柔和的輸入中狀態 */
+    a:focus,
+    button:focus,
+    [tabindex="-1"]:focus {
+      outline: none;
+    }
+    input:focus,
+    select:focus {
+      border-color: #2563eb;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+    }
+
+    /* 使用 Tab、方向鍵等鍵盤導覽時，顯示一致且高可見的焦點 */
+    html.keyboard-navigation a:focus,
+    html.keyboard-navigation button:focus,
+    html.keyboard-navigation input:focus,
+    html.keyboard-navigation select:focus,
+    html.keyboard-navigation [tabindex="-1"]:focus {
       outline: 3px solid #f59e0b !important;
       outline-offset: 3px !important;
       box-shadow: 0 0 0 2px #ffffff !important;
@@ -299,9 +312,10 @@ a {
     .print-friendly-btn:hover {
       background-color: #4338ca;
     }
-    .print-friendly-btn:focus-visible {
-      outline: 3px solid rgba(99, 102, 241, 0.35);
-      outline-offset: 2px;
+    html.keyboard-navigation .print-friendly-btn:focus {
+      outline: 3px solid #f59e0b !important;
+      outline-offset: 3px !important;
+      box-shadow: 0 0 0 2px #ffffff !important;
     }
     .hover\:text-teal-700:hover { color: #0f766e; }
     .hover\:text-slate-600:hover { color: #475569; }
@@ -2260,6 +2274,23 @@ function generateFormattedText() {
         }, 200);
     }
 
+
+// 依實際輸入方式切換焦點提示，不推測使用者身分或設備。
+document.addEventListener('keydown', function(event) {
+  const navigationKeys = [
+    'Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+    'Home', 'End', 'PageUp', 'PageDown'
+  ];
+  if (navigationKeys.includes(event.key)) {
+    document.documentElement.classList.add('keyboard-navigation');
+  }
+}, true);
+
+document.addEventListener('pointerdown', function(event) {
+  if (event.pointerType === 'mouse' || event.pointerType === 'touch' || event.pointerType === 'pen') {
+    document.documentElement.classList.remove('keyboard-navigation');
+  }
+}, true);
 
 window.addEventListener('scroll', function() {
   const btn = document.getElementById('backToTopBtn');
