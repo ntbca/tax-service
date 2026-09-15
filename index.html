@@ -84,6 +84,66 @@ a {
       box-shadow: inset 4px 0 0 #2563eb;
     }
 
+    /* 頁面內系統對話框：外觀比照瀏覽器提示框，避免手機瀏覽器抑制 alert() */
+    .notification-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(15, 23, 42, 0.62);
+    }
+    .notification-dialog {
+      width: min(100%, 24rem);
+      padding: 1.5rem;
+      color: #0f172a;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.75rem;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+      text-align: center;
+    }
+    .notification-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 3.25rem;
+      height: 3.25rem;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+      border-radius: 9999px;
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .notification-icon.success { background: #15803d; }
+    .notification-icon.error { background: #b91c1c; }
+    .notification-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .notification-message {
+      margin: 0.75rem 0 1.25rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .notification-confirm {
+      min-width: 7rem;
+      min-height: 2.75rem;
+      padding: 0.6rem 1.5rem;
+      color: #ffffff;
+      background: #1d4ed8;
+      border: 0;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .notification-confirm:hover { background: #1e40af; }
+
 
     /* 彈性與排版基礎 */
     .flex { display: flex; }
@@ -1010,6 +1070,16 @@ select {
     <p>了解更多，請至：1. 各地國稅局/稽徵所櫃檯辦理 | 2. 財政部稅務入口網 | 免付費電話：0800-000-321</p>
   </footer>
 
+  <!-- 自訂系統通知框：不會被手機瀏覽器的原生提示限制影響 -->
+  <div id="notificationDialog" class="notification-backdrop hidden" role="alertdialog" aria-modal="true" aria-labelledby="notificationTitle" aria-describedby="notificationMessage">
+    <div class="notification-dialog" role="document">
+      <div id="notificationIcon" class="notification-icon success" aria-hidden="true">✓</div>
+      <h2 id="notificationTitle" class="notification-title">系統通知</h2>
+      <p id="notificationMessage" class="notification-message"></p>
+      <button type="button" id="notificationConfirmBtn" class="notification-confirm">確定</button>
+    </div>
+  </div>
+
   <!-- JavaScript 核心邏輯 -->
   <script>
 
@@ -1640,7 +1710,7 @@ withholding_setup: {
     }
 
     function showBuildingAlert() {
-      alert('該項目第三頁功能建置中，敬請期待！');
+      showNotificationDialog('該項目第三頁功能建置中，敬請期待！', 'error', document.activeElement);
     }
 
     function handleSearchInput() {
@@ -2295,23 +2365,80 @@ function generateFormattedText() {
         return copied;
     }
 
+    let notificationReturnFocus = null;
+
+    function closeNotificationDialog() {
+        const dialog = document.getElementById("notificationDialog");
+        if (!dialog || dialog.classList.contains("hidden")) return;
+
+        dialog.classList.add("hidden");
+        document.body.style.overflow = "";
+
+        const focusTarget = notificationReturnFocus;
+        notificationReturnFocus = null;
+        if (focusTarget && focusTarget.isConnected && typeof focusTarget.focus === "function") {
+            focusTarget.focus({ preventScroll: true });
+        }
+    }
+
+    function handleNotificationDialogKeydown(event) {
+        if (event.key === "Escape") {
+            event.preventDefault();
+            closeNotificationDialog();
+            return;
+        }
+
+        // 通知框內只有一個操作按鈕，Tab／Shift+Tab 都留在「確定」。
+        if (event.key === "Tab") {
+            event.preventDefault();
+            document.getElementById("notificationConfirmBtn")?.focus();
+        }
+    }
+
+    function bindNotificationDialog() {
+        const dialog = document.getElementById("notificationDialog");
+        const confirmButton = document.getElementById("notificationConfirmBtn");
+        if (!dialog || !confirmButton) return;
+
+        confirmButton.removeEventListener("click", closeNotificationDialog);
+        confirmButton.addEventListener("click", closeNotificationDialog);
+        dialog.removeEventListener("keydown", handleNotificationDialogKeydown);
+        dialog.addEventListener("keydown", handleNotificationDialogKeydown);
+    }
+
+    function showNotificationDialog(message, type = "success", returnFocus = null) {
+        const dialog = document.getElementById("notificationDialog");
+        const messageElement = document.getElementById("notificationMessage");
+        const icon = document.getElementById("notificationIcon");
+        const confirmButton = document.getElementById("notificationConfirmBtn");
+
+        if (!dialog || !messageElement || !icon || !confirmButton) {
+            if (returnFocus && returnFocus.isConnected) returnFocus.focus({ preventScroll: true });
+            return;
+        }
+
+        notificationReturnFocus = returnFocus || document.activeElement;
+        messageElement.textContent = message;
+        icon.textContent = type === "success" ? "✓" : "!";
+        icon.classList.toggle("success", type === "success");
+        icon.classList.toggle("error", type !== "success");
+        dialog.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+
+        // 等對話框完成顯示後再移動焦點，手機返回頁面後也能可靠執行。
+        window.requestAnimationFrame(() => confirmButton.focus({ preventScroll: true }));
+    }
+
     function copyChecklist(triggerButton = null) {
         const status = document.getElementById("checklistStatus");
         const focusTarget = triggerButton || document.activeElement;
-
-        const restoreFocus = () => {
-            if (focusTarget && focusTarget.isConnected && typeof focusTarget.focus === "function") {
-                focusTarget.focus({ preventScroll: true });
-            }
-        };
 
         const notifyResult = (copied) => {
             const message = copied
                 ? "已成功複製清單與選項內容！"
                 : "複製失敗，請手動複製。";
             if (status) status.textContent = message;
-            window.alert(message);
-            restoreFocus();
+            showNotificationDialog(message, copied ? "success" : "error", focusTarget);
         };
 
         try {
@@ -2366,7 +2493,7 @@ function generateFormattedText() {
         const printWindow = window.open("", "_blank", "width=900,height=700");
 
         if (!printWindow) {
-            alert("無法開啟列印視窗，請允許瀏覽器顯示彈出式視窗後再試一次。");
+            showNotificationDialog("無法開啟列印視窗，請允許瀏覽器顯示彈出式視窗後再試一次。", "error", document.activeElement);
             return;
         }
 
@@ -2484,6 +2611,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   bindCopyChecklistButton();
+  bindNotificationDialog();
 
   const searchInputElem = document.getElementById('searchInput');
   if (searchInputElem) {
@@ -2522,6 +2650,7 @@ window.addEventListener('popstate', (event) => {
 // 手機瀏覽器從上一頁快取（bfcache）還原時，重新綁定按鈕並同步第三頁狀態。
 window.addEventListener('pageshow', (event) => {
   bindCopyChecklistButton();
+  bindNotificationDialog();
   if (event.persisted) {
     restoreStepFromHistory(history.state);
   }
