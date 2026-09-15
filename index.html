@@ -84,22 +84,6 @@ a {
       box-shadow: inset 4px 0 0 #2563eb;
     }
 
-    .action-toast {
-      position: fixed;
-      left: 50%;
-      bottom: 1.5rem;
-      z-index: 100;
-      width: min(calc(100% - 2rem), 32rem);
-      padding: 0.9rem 1.2rem;
-      border-radius: 0.75rem;
-      color: #ffffff;
-      font-weight: 700;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.28);
-      transform: translateX(-50%);
-    }
-    .action-toast-success { background-color: #047857; }
-    .action-toast-error { background-color: #b91c1c; }
 
     /* 彈性與排版基礎 */
     .flex { display: flex; }
@@ -1025,8 +1009,6 @@ select {
   <footer class="bg-slate-800 text-slate-300 py-4 px-4 text-center text-min-14 w-full border-t border-slate-700">
     <p>了解更多，請至：1. 各地國稅局/稽徵所櫃檯辦理 | 2. 財政部稅務入口網 | 免付費電話：0800-000-321</p>
   </footer>
-
-  <div id="actionToast" class="action-toast action-toast-success hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <!-- JavaScript 核心邏輯 -->
   <script>
@@ -2313,44 +2295,24 @@ function generateFormattedText() {
         return copied;
     }
 
-    async function writeTextToClipboard(text) {
-        // 先在點擊事件當下同步複製，避免手機返回／前進後 Clipboard Promise 卡住。
-        if (legacyCopyText(text)) {
-            return true;
-        }
-
-        // 傳統方式不受支援時才使用新版 API，並設定逾時避免永久等待。
-        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-            const clipboardAttempt = navigator.clipboard.writeText(text)
-                .then(() => true)
-                .catch(() => false);
-            const timeout = new Promise(resolve => {
-                window.setTimeout(() => resolve(false), 1500);
-            });
-            return await Promise.race([clipboardAttempt, timeout]);
-        }
-        return false;
-    }
-
-    let actionToastTimer = null;
-
-    function showActionToast(message, type = "success") {
-        const toast = document.getElementById("actionToast");
-        if (!toast) return;
-
-        if (actionToastTimer) window.clearTimeout(actionToastTimer);
-        toast.textContent = message;
-        toast.classList.remove("hidden", "action-toast-success", "action-toast-error");
-        toast.classList.add(type === "error" ? "action-toast-error" : "action-toast-success");
-
-        actionToastTimer = window.setTimeout(() => {
-            toast.classList.add("hidden");
-        }, 3000);
-    }
-
-    async function copyChecklist(triggerButton = null) {
+    function copyChecklist(triggerButton = null) {
         const status = document.getElementById("checklistStatus");
         const focusTarget = triggerButton || document.activeElement;
+
+        const restoreFocus = () => {
+            if (focusTarget && focusTarget.isConnected && typeof focusTarget.focus === "function") {
+                focusTarget.focus({ preventScroll: true });
+            }
+        };
+
+        const notifyResult = (copied) => {
+            const message = copied
+                ? "已成功複製清單與選項內容！"
+                : "複製失敗，請手動複製。";
+            if (status) status.textContent = message;
+            window.alert(message);
+            restoreFocus();
+        };
 
         try {
             // 產生文字也納入錯誤處理，避免返回後狀態不完整時靜默中斷。
@@ -2359,17 +2321,30 @@ function generateFormattedText() {
                 throw new Error("No checklist content");
             }
 
-            const copied = await writeTextToClipboard(text);
-            if (!copied) throw new Error("Clipboard copy returned false");
-            if (status) status.textContent = "已成功複製清單與選項內容。";
-            showActionToast("已成功複製清單與選項內容！");
-        } catch (error) {
-            if (status) status.textContent = "複製失敗，請手動複製。";
-            showActionToast("複製失敗，請手動複製。", "error");
-        } finally {
-            if (focusTarget && focusTarget.isConnected && typeof focusTarget.focus === "function") {
-                focusTarget.focus({ preventScroll: true });
+            // 手機上先同步複製，並在這次點擊事件結束前立即顯示原生通知框。
+            if (legacyCopyText(text)) {
+                notifyResult(true);
+                return;
             }
+
+            // 少數不支援傳統複製的瀏覽器，才使用新版剪貼簿 API。
+            if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+                let finished = false;
+                const finishOnce = (copied) => {
+                    if (finished) return;
+                    finished = true;
+                    notifyResult(copied);
+                };
+                navigator.clipboard.writeText(text)
+                    .then(() => finishOnce(true))
+                    .catch(() => finishOnce(false));
+                window.setTimeout(() => finishOnce(false), 1500);
+                return;
+            }
+
+            notifyResult(false);
+        } catch (error) {
+            notifyResult(false);
         }
     }
 
