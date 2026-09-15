@@ -2228,12 +2228,15 @@ function generateFormattedText() {
     function legacyCopyText(text) {
         const textarea = document.createElement("textarea");
         textarea.value = text;
-        textarea.setAttribute("readonly", "");
         textarea.setAttribute("aria-hidden", "true");
         textarea.style.position = "fixed";
-        textarea.style.left = "-9999px";
+        textarea.style.left = "0";
         textarea.style.top = "0";
+        textarea.style.width = "1px";
+        textarea.style.height = "1px";
+        textarea.style.fontSize = "16px";
         textarea.style.opacity = "0";
+        textarea.style.pointerEvents = "none";
         document.body.appendChild(textarea);
 
         textarea.focus();
@@ -2250,16 +2253,22 @@ function generateFormattedText() {
     }
 
     async function writeTextToClipboard(text) {
-        // HTTPS 與部分瀏覽器先使用新版 API。
-        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-            try {
-                await navigator.clipboard.writeText(text);
-                return true;
-            } catch (error) {
-                // 手機返回／前進、file:// 或權限改變後，改用傳統方式。
-            }
+        // 先在點擊事件當下同步複製，避免手機返回／前進後 Clipboard Promise 卡住。
+        if (legacyCopyText(text)) {
+            return true;
         }
-        return legacyCopyText(text);
+
+        // 傳統方式不受支援時才使用新版 API，並設定逾時避免永久等待。
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+            const clipboardAttempt = navigator.clipboard.writeText(text)
+                .then(() => true)
+                .catch(() => false);
+            const timeout = new Promise(resolve => {
+                window.setTimeout(() => resolve(false), 1500);
+            });
+            return await Promise.race([clipboardAttempt, timeout]);
+        }
+        return false;
     }
 
     async function copyChecklist() {
