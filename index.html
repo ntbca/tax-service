@@ -84,6 +84,23 @@ a {
       box-shadow: inset 4px 0 0 #2563eb;
     }
 
+    .action-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 1.5rem;
+      z-index: 100;
+      width: min(calc(100% - 2rem), 32rem);
+      padding: 0.9rem 1.2rem;
+      border-radius: 0.75rem;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.28);
+      transform: translateX(-50%);
+    }
+    .action-toast-success { background-color: #047857; }
+    .action-toast-error { background-color: #b91c1c; }
+
     /* 彈性與排版基礎 */
     .flex { display: flex; }
     .inline-flex { display: inline-flex; }
@@ -962,7 +979,7 @@ select {
 
         <!-- 複製與列印功能按鈕 -->
         <div class="pt-2 flex flex-wrap gap-4">
-          <button type="button" onclick="copyChecklist()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
+          <button type="button" id="copyChecklistBtn" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-copy"></i>📋複製清單內容
           </button>
           <button type="button" onclick="printChecklist()" class="print-friendly-btn text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
@@ -1008,6 +1025,8 @@ select {
   <footer class="bg-slate-800 text-slate-300 py-4 px-4 text-center text-min-14 w-full border-t border-slate-700">
     <p>了解更多，請至：1. 各地國稅局/稽徵所櫃檯辦理 | 2. 財政部稅務入口網 | 免付費電話：0800-000-321</p>
   </footer>
+
+  <div id="actionToast" class="action-toast action-toast-success hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <!-- JavaScript 核心邏輯 -->
   <script>
@@ -1612,7 +1631,10 @@ withholding_setup: {
       displayStep(stepNum);
       if (stepHistoryEnabled) {
         try {
-          history.pushState({ appStep: stepNum }, '', `#step-${stepNum}`);
+          const stepState = stepNum === 3
+            ? { appStep: stepNum, ...getThirdStepState() }
+            : { appStep: stepNum };
+          history.pushState(stepState, '', `#step-${stepNum}`);
         } catch (error) {
           stepHistoryEnabled = false;
         }
@@ -1799,10 +1821,11 @@ withholding_setup: {
       activeSearchIndex = -1;
     }
 
-    function selectItem(itemKey, targetIdentity = null) {
+    function selectItem(itemKey, targetIdentity = null, options = {}) {
       currentSelectedItemKey = itemKey;
       const data = systemData[itemKey];
       if (!data) return;
+      const restoredState = options.restoredState || null;
 
       document.getElementById('selectedItemTitle').textContent = data.title;
 
@@ -1849,6 +1872,9 @@ if (itemKey === "withholding_setup") {
       if (targetIdentity !== null && targetIdentity !== undefined) {
         identitySelect.value = targetIdentity;
       }
+      if (restoredState && restoredState.identityValue) {
+        identitySelect.value = restoredState.identityValue;
+      }
 
       const executionGroup = document.getElementById("executionGroup");
       if (itemKey === "creditor_data") {
@@ -1857,8 +1883,16 @@ if (itemKey === "withholding_setup") {
           executionGroup.classList.add("hidden");
       }
 
-      document.getElementById("isAgent").checked = false;
-      goToStep(3);
+      if (restoredState && restoredState.executionValue) {
+          document.getElementById("executionSelect").value = restoredState.executionValue;
+      }
+
+      document.getElementById("isAgent").checked = Boolean(restoredState && restoredState.isAgent);
+      if (options.recordHistory === false) {
+          displayStep(3);
+      } else {
+          goToStep(3);
+      }
       renderChecklist();
     }
 
@@ -2079,6 +2113,33 @@ let docs = [];
     if (checklistStatus) {
         checklistStatus.textContent = `已更新清單，共 ${docs.length} 項應備文件。`;
     }
+
+    syncThirdStepHistory();
+}
+
+function getThirdStepState() {
+    const identitySelect = document.getElementById("identitySelect");
+    const executionSelect = document.getElementById("executionSelect");
+    const isAgent = document.getElementById("isAgent");
+    return {
+        itemKey: currentSelectedItemKey || "",
+        identityValue: identitySelect ? identitySelect.value : "",
+        executionValue: executionSelect ? executionSelect.value : "",
+        isAgent: Boolean(isAgent && isAgent.checked)
+    };
+}
+
+function syncThirdStepHistory() {
+    if (!stepHistoryEnabled || currentStep !== 3) return;
+    try {
+        history.replaceState(
+            { ...(history.state || {}), appStep: 3, ...getThirdStepState() },
+            '',
+            '#step-3'
+        );
+    } catch (error) {
+        stepHistoryEnabled = false;
+    }
 }
 
 
@@ -2271,30 +2332,57 @@ function generateFormattedText() {
         return false;
     }
 
-    async function copyChecklist() {
-        const text = generateFormattedText();
-        const status = document.getElementById("checklistStatus");
-        const triggerButton = document.activeElement;
+    let actionToastTimer = null;
 
-        if (!text.trim()) {
-            if (status) status.textContent = "目前沒有可複製的清單內容。";
-            alert("目前沒有可複製的清單內容。");
-            return;
-        }
+    function showActionToast(message, type = "success") {
+        const toast = document.getElementById("actionToast");
+        if (!toast) return;
+
+        if (actionToastTimer) window.clearTimeout(actionToastTimer);
+        toast.textContent = message;
+        toast.classList.remove("hidden", "action-toast-success", "action-toast-error");
+        toast.classList.add(type === "error" ? "action-toast-error" : "action-toast-success");
+
+        actionToastTimer = window.setTimeout(() => {
+            toast.classList.add("hidden");
+        }, 3000);
+    }
+
+    async function copyChecklist(triggerButton = null) {
+        const status = document.getElementById("checklistStatus");
+        const focusTarget = triggerButton || document.activeElement;
 
         try {
+            // 產生文字也納入錯誤處理，避免返回後狀態不完整時靜默中斷。
+            const text = generateFormattedText();
+            if (!text || !text.trim()) {
+                throw new Error("No checklist content");
+            }
+
             const copied = await writeTextToClipboard(text);
             if (!copied) throw new Error("Clipboard copy returned false");
             if (status) status.textContent = "已成功複製清單與選項內容。";
-            alert("已成功複製清單與選項內容！");
+            showActionToast("已成功複製清單與選項內容！");
         } catch (error) {
             if (status) status.textContent = "複製失敗，請手動複製。";
-            alert("複製失敗，請手動複製。");
+            showActionToast("複製失敗，請手動複製。", "error");
         } finally {
-            if (triggerButton && triggerButton.isConnected && typeof triggerButton.focus === "function") {
-                triggerButton.focus({ preventScroll: true });
+            if (focusTarget && focusTarget.isConnected && typeof focusTarget.focus === "function") {
+                focusTarget.focus({ preventScroll: true });
             }
         }
+    }
+
+    function handleCopyChecklistClick(event) {
+        event.preventDefault();
+        copyChecklist(event.currentTarget);
+    }
+
+    function bindCopyChecklistButton() {
+        const button = document.getElementById("copyChecklistBtn");
+        if (!button) return;
+        button.removeEventListener("click", handleCopyChecklistClick);
+        button.addEventListener("click", handleCopyChecklistClick);
     }
 
     function printChecklist() {
@@ -2420,6 +2508,8 @@ document.addEventListener('DOMContentLoaded', () => {
     stepHistoryEnabled = false;
   }
 
+  bindCopyChecklistButton();
+
   const searchInputElem = document.getElementById('searchInput');
   if (searchInputElem) {
     searchInputElem.addEventListener('input', function() {
@@ -2435,11 +2525,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+function restoreStepFromHistory(state) {
+  const stepNum = Number(state && state.appStep);
+  if (![1, 2, 3].includes(stepNum)) return;
+
+  if (stepNum === 3 && state.itemKey && systemData[state.itemKey]) {
+    selectItem(state.itemKey, state.identityValue || null, {
+      recordHistory: false,
+      restoredState: state
+    });
+  } else {
+    displayStep(stepNum);
+  }
+}
+
 // 手機返回手勢、瀏覽器上一頁與 Alt+← 都會觸發此事件。
 window.addEventListener('popstate', (event) => {
-  const stepNum = Number(event.state && event.state.appStep);
-  if ([1, 2, 3].includes(stepNum)) {
-    displayStep(stepNum);
+  restoreStepFromHistory(event.state);
+});
+
+// 手機瀏覽器從上一頁快取（bfcache）還原時，重新綁定按鈕並同步第三頁狀態。
+window.addEventListener('pageshow', (event) => {
+  bindCopyChecklistButton();
+  if (event.persisted) {
+    restoreStepFromHistory(history.state);
   }
 });
   </script>
