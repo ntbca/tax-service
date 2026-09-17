@@ -2111,7 +2111,7 @@ let docs = [];
                 docs.push('委任書或授權書正本<br>- 如係在大陸地區委託時，應檢附大陸地區公證處出具之證明文件，及取得財團法人海峽交流基金會驗證之證明');
             } else if (identityVal === "guardian_declared") {
                 docs.push('由監護人出具之委任書或授權書正本');
-            } else if (["minor") {
+            } else if (["minor"].includes(identityVal)) {
                 docs.push('由法定代理人共同或監護人委任第三人代理時，應檢附共同授權書或委任書(授權書或委任書上委任人簽章部分，應有法定代理人二人共同或監護人之簽章');
             } else {
                 docs.push('委任書或授權書正本');
