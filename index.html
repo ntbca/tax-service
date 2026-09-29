@@ -291,6 +291,7 @@ a {
     .text-orange-800 { color: #9a3412; }
     .text-orange-700 { color: #c2410c !important; }
     .text-red-800 { color: #991b1b; }
+    .text-red-600 { color: #dc2626; }
     .text-purple-900 {  color: #581c87 !important;  }
 
     /* 字體大小與樣式 */
@@ -1166,7 +1167,7 @@ function getStdIdText() {
         { id: "13", name: "13. 醫師診所", docs: [STD_EXAM, "行政院衛生署或所轄市政府衛生局核發開業執照影本", STD_ID, STD_TAX], hint: "※ 主管機關在中央為行政院衛生署；在直轄市為直轄市政府；在縣（市）為縣（市）政府" },
         { id: "14", name: "14. 獸醫診所", docs: [STD_EXAM, "行政院農委會或所轄市政府衛生局核發開業執照影本", STD_ID, STD_TAX], hint: "※ 主管機關在中央為行政院農業委員會；在直轄市為直轄市政府；在縣（市）為縣（市）政府" },
         { id: "15", name: "15. 國術館損傷技術員", docs: [STD_EXAM, STD_ID, STD_TAX], hint: "" },
-        { id: "16", name: "16. 補習班", docs: ["教育局核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
+        { id: "16", name: "16. 補習班", docs: ["教育局核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "※ 倘組織型態為合夥者，另檢附合夥契約書影本" },
         { id: "17", name: "17. 幼兒園", docs: ["教育局核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
         { id: "18", name: "18. 安親班", docs: ["各直轄市、縣(市)政府教育局(處)核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
         { id: "19", name: "19. 安養中心、養護所", docs: ["各直轄市、縣(市)政府教育局(處)核准設立公文及立案證書影本", STD_ID, STD_TAX], hint: "" },
@@ -1185,8 +1186,8 @@ function getStdIdText() {
         { id: "32", name: "32. 專利代理人事務所", docs: [STD_EXAM, "智產局專利代理人登錄證明/報備文件影本", STD_ID, STD_TAX], hint: "※ 負責人需具備專利代理人資格" },
         { id: "33", name: "33. 專利師事務所", docs: [STD_EXAM, "智產局專利師登錄事項證明影本/報備文件影本", STD_ID, STD_TAX], hint: "※ 負責人需具備專利師資格" },
         { id: "34", name: "34. 民間公證人", docs: [STD_EXAM, "地方法院報備核准函影本", "加入同業公會文件影本", STD_ID, STD_TAX], hint: "※ 應就已成年之中華民國國民具有下列資格之一者適任之：\n1.經民間公證人考試及格者 \n2.曾任法官、檢察官，經銓敘合格者 \n3.曾任公設辯護人，經銓敘合格者 \n4.曾任法院之公證人，經銓敘合格，或曾任民間公證人者 \n5.經高等考試律師考試及格，並執行律師業務3年以者" },
-        { id: "35", name: "35. 破產財團(破產管理人)", docs: [STD_EXAM + "（破產管理人之職業執照）", "各地地方法院民事裁定書及確定證明書影本", STD_ID, STD_TAX], hint: "※ 扣繳單位為法院裁定之破產財團\n※ 負責人為法院裁定之破產管理人（以破產管理人之戶籍地為扣繳單位設籍地）" },
-        { id: "36", name: "36. 表演人", docs: [STD_EXAM + "（表演工作證）", STD_ID, STD_TAX], hint: "※ 扣繳單位名稱：「○○○表演人」" },
+        { id: "35", name: "35. 破產財團(破產管理人)", docs: [STD_EXAM , "破產管理人之職業執照", "各地地方法院民事裁定書及確定證明書影本", STD_ID, STD_TAX], hint: "※ 扣繳單位為法院裁定之破產財團\n※ 負責人為法院裁定之破產管理人（以破產管理人之戶籍地為扣繳單位設籍地）" },
+        { id: "36", name: "36. 表演人", docs: ["表演工作證", STD_ID, STD_TAX], hint: "※ 扣繳單位名稱：「○○○表演人」" },
         { id: "37", name: "37. 祭祀公業", docs: ["所轄區公所核准設立公文影本", "派下員名冊影本", "派下員系統表影本", "不動產清冊影本", STD_ID, STD_TAX], hint: "※ 有祠堂者，向祠堂所在地國稅局各分局、稽徵所申請統一編號\n※ 無祠堂者，向管理人戶籍所在地國稅局各分局、稽徵所辦理" },
         { id: "38", name: "38. 本國銀行受託保管外國公司投資信託基金專戶", docs: ["本國銀行營業執照影本", "金融監督管理委員會核準函影本", STD_ID, STD_TAX], hint: "" },
         { id: "39", name: "39. 保管機構受託保管外國人(含外國法人)投資專戶", docs: ["保管機構營業執照影本", "委託書影本(需附中文譯本)", "臺灣證券交易所核發「境外華僑及外國人完成登記證明」影本", STD_ID, STD_TAX], hint: "※ 參考條文：\n華僑及外國人投資證券管理辦法第10條及臺灣證券交易所股份有限公司營業細則第77條之4 規定，外國公司投資國內上市、櫃股票，首先須向臺灣證券交易所辦理登記，再委託國內代理人（通常即為國內保管銀行、證券商）或代表人申請辦理登記，並指定我國國內保管機構，委託辦理後續交易確認及交割等相關事宜" },
@@ -1194,9 +1195,9 @@ function getStdIdText() {
         { id: "41", name: "41. 外國營利事業在臺未設分支機構僅設辦事處", docs: ["經濟部核准設立公文影本", STD_ID, STD_TAX], hint: "※ 以經濟部核准之「公司在臺灣地區指派之訴訟及非訴訟代理人」為在臺負責人\n※ 由經濟部編配統一編號" },
         { id: "42", name: "42. 外國營利事業投資國內未上市、櫃股票在臺開立新臺幣帳戶", docs: ["投審會核准文影本", "外國法人資格證明文件影本", "外國法人負責人身分證明文件影本", "經當地民間公證人公、認證出具之授權書影本(需附中文譯本)", "在臺代理人身分證明文件影本"], hint: "※ 向在臺代理人或代表人之戶籍所在地國稅局各分局、稽徵所編配統一編號\n※ 依華僑及外國人投資證券管理辦法第10條 及臺灣證券交易所股份有限公司營業細則第77條之4 規定，外國營利事業投資國內上市、櫃股票，應依本表序號39規定辦理" },
         { id: "43", name: "43. 海外企業在臺申請第一上市(櫃)或登錄興櫃", docs: ["證券主管機關核准上市(櫃)或同意興櫃登錄核准函影本", "代理人出具經我國駐外單位認證之海外企業授權書影本(需附中文譯本)", "經我國駐外單位認證之海外企業負責人身分證明文件影本", "在臺代理人身分證明文件影本", STD_TAX + "（外國營利事業在臺有設籍地址，需檢附房屋稅單影本，如為承租，請加附租賃契約影本）"], hint: "※ 負責人及扣繳義務人均填海外企業之負責人，若在台無設籍地址則填海外企業所在國地址，房屋稅籍編號除縣市別為英文代碼外，數字欄均填9\n※ 海外營利事業在臺有設籍地址，則向該址之國稅局各分局、稽徵所編配統一編號；若無，則向在臺代理人或代表人戶籍所在地國稅局各分局、稽徵所辦理" },
-        { id: "44", name: "44. 海外企業之海外法人股東在臺開立新臺幣帳戶", docs: ["海外企業在中華民國委任之專業代理機構出具股票持有證明書正本（註：此項依規定需正本）", "主管機關核准海外企業上市(櫃)或同意興櫃登錄之核准函影本", "經我國駐外單位認證之法人股東依註冊國法律組織登記且有效存在之證明文件影本", "經我國駐外單位認證之法人股東委託代理人之授權書影本(需附中文譯本)", "經我國駐外單位認證之法人股東負責人身分證明文件影本", "在臺代理人之身分證明文件影本", STD_TAX + "（海外企業之海外法人股東在臺有設籍地址，需檢附房屋稅單影本，如為承租，請加附租賃契約影本）"], hint: "※ 負責人及扣繳義務人均填海外法人股東之負責人，地址填海外法人股東所在國地址，房屋稅籍編號除縣市別為英文代碼外，數字欄均填9\n※ 海外企業之海外法人股東，在臺有設籍地址，則向該址之國稅局各分局、稽徵所編配統一編號；若無，則向在臺代理人或代表人戶籍所在地國稅局各分局、稽徵所辦理" },
-        { id: "45", name: "45. 已參與發行海外存託憑證公司因辦理分割減資致海外存託憑證持有人持有國內未上市公司股票", docs: ["金管會核准分割減資公文影本", "存託機構指定之國內代理人營業執照影本", "存託機構指定之國內代理人之負責人、扣繳義務人及代理人身分證影本", "存託機構指定之國內代理人所在地最近1期房屋稅單影本", STD_ID, STD_TAX], hint: "※ 扣繳單位名稱：「存託機構受託XXX公司因分割致海外存託憑證持有人取得XXX公司股票集合專戶」" },
-        { id: "46", name: "46. 信託專戶-專案核准案件/一般信託案件", docs: ["① 專案核准案件(符合所得稅法第3條之4第5項、第6項規定經主管機關專案核准案件，每一專案編配一個扣繳單位統一編號)：<br>檢附主管機關專案核准信託基金文件影本<br><br>② 非專案核准案件(每一受託人編配一個扣繳單位統一編號)：<br>檢附信託契約書影本", STD_ID], hint: "" },
+        { id: "44", name: "44. 海外企業之海外法人股東在臺開立新臺幣帳戶", docs: ["海外企業在中華民國委任之專業代理機構出具股票持有證明書正本（註：此項依規定需正本）", "主管機關核准海外企業上市(櫃)或同意興櫃登錄之核准函影本", "經我國駐外單位認證之法人股東依註冊國法律組織登記且有效存在之證明文件影本", "經我國駐外單位認證之法人股東委託代理人之授權書影本(需附中文譯本)", "經我國駐外單位認證之法人股東負責人身分證明文件影本", "在臺代理人之身分證明文件影本", "海外企業之海外法人股東在臺有設籍地址，需檢附房屋稅單影本，如為承租，請加附租賃契約影本"], hint: "※ 負責人及扣繳義務人均填海外法人股東之負責人，地址填海外法人股東所在國地址，房屋稅籍編號除縣市別為英文代碼外，數字欄均填9\n※ 海外企業之海外法人股東，在臺有設籍地址，則向該址之國稅局各分局、稽徵所編配統一編號；若無，則向在臺代理人或代表人戶籍所在地國稅局各分局、稽徵所辦理" },
+        { id: "45", name: "45. 已參與發行海外存託憑證公司因辦理分割減資致海外存託憑證持有人持有國內未上市公司股票", docs: ["金管會核准分割減資公文影本", "存託機構指定之國內代理人營業執照影本", "存託機構指定之國內代理人之負責人、扣繳義務人及代理人身分證影本", "存託機構指定之國內代理人所在地最近1期房屋稅單影本", STD_ID, STD_TAX], hint: "※ 扣繳單位名稱：「存託機構受託保管XXX公司因分割致海外存託憑證持有人取得XXX公司股票集合專戶」" },
+        { id: "46", name: "46. 信託專戶-專案核准案件/一般信託案件", docs: ["① 專案核准案件(符合所得稅法第3條之4第5項、第6項規定經主管機關專案核准案件，每一專案編配一個扣繳單位統一編號)：<br>檢附主管機關專案核准信託基金文件影本<br><br>② 非專案核准案件(每一受託人編配一個扣繳單位統一編號)：<br>檢附信託契約書影本", "受託人身分證正本或正反面影本"], hint: "" },
         { id: "47", name: "47. 信託專戶-私募基金案件", docs: ["董事會議事錄影本", "投資說明書影本", "證券投資信託契約書影本", STD_ID], hint: "※ 扣繳單位名稱：投資說明書載明之基金登記名稱(於基金募集完成前申請者，應加「籌備」字樣)" },
         { id: "48", name: "48. 證券商經營財富管理帳戶/現金管理專戶", docs: ["金管會核准文件影本", "證券商許可證照影本", "中華民國證券商業同業公會會員證書影本", "財富或現金管理契約書影本", STD_TAX], hint: "※ 扣繳單位名稱：「○○證券商之客戶財富管理帳戶/○○證券商之客戶現金管理專戶」" }
     ];
@@ -1223,15 +1224,15 @@ official48Items.forEach(item => {
         ],
         minor: [
             "ID_CARD_WITH_STAMP",
-            "附有詳細記事戶口名簿 或 詳細記事戶籍謄本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>① 倘父母離婚者，由擔任親權行使之父或母之一方代為申請時，應出具相關證明文件 ( 如父母雙方之協議書或法院判決書或戶口名簿等 ) 免附他方之授權書或委任書或同意書，惟經協議，由雙方共同行使或負擔時，仍應由為法定代理人之父母二人共同簽章代為申請。<br><br>② 因離婚而約定子女由一方監護，倘任監護之一方死亡者，由他方代為申請時，應出具相關證明文件，如父母雙方之協議書或法院判決書或戶口名簿等及任監護之一方之死亡診斷證明書或載有死亡日期之戶口名簿影本等，簽章代為申請，免附授權書。<br><br>③ 父母均不能行使或死亡時，依民法第1094條規定順位之法定監護人或法院依聲請選定之監護人代為申請時，應出具相關證明文件，如司法機關之裁定書暨其確定證明書，簽章代為申請，免附授權書。</span>"
+            "附有詳細記事戶口名簿 或 詳細記事戶籍謄本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>① 倘父母離婚者，由擔任親權行使之父或母之一方代為申請時，應出具相關證明文件 ( 如父母雙方之協議書或法院判決書或戶口名簿等 ) 免附他方之授權書或委任書或同意書，惟經協議，由雙方共同行使或負擔時，仍應由為法定代理人之父母二人共同簽章代為申請。<br><br>② 因離婚而約定子女由一方監護，倘任監護之一方死亡者，由他方代為申請時，應出具相關證明文件，如父母雙方之協議書或法院判決書或戶口名簿等及任監護之一方之死亡診斷證明書或載有死亡日期之戶口名簿影本等，簽章代為申請，免附授權書。<br><br>③父母均不能行使或死亡時，依民法第1094條規定順位之法定監護人或法院依聲請選定之監護人代為申請時，應出具相關證明文件，如司法機關之裁定書暨其確定證明書，簽章代為申請，免附授權書。</span>"
         ],
         estate: [
-            "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者免附戶籍謄本）*註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", 
+            "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者<u>免附<b>除戶相關資料</b></u> ）※註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", 
             "與被繼承人親屬關係證明文件",
             "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"
         ],
           estate_foreign: [
-            "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者免附戶籍謄本）*註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", 
+            "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者<u>免附<b>除戶相關資料</b></u> ）※註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", 
             "與被繼承人親屬關係證明文件（國外出具之與被繼承人親屬關係證明文件，且經我國當地駐外機構簽證證明）",
             "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"
         ],
@@ -1259,9 +1260,9 @@ official48Items.forEach(item => {
         income_list: {
             title: "個人綜合所得稅各類所得資料清單查詢",
             options: [
-                { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"] },
-                { id: "foreign", name: "外籍人士", docs: ["ID_CARD_FOREIGN_INCOME"] },
-                { id: "mainland", name: "大陸人士", docs: ["ID_CARD_MAINLAND_STANDARD"] },
+                { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"], img: "所得財產.jpg" },
+                { id: "foreign", name: "外籍人士", docs: ["ID_CARD_FOREIGN_INCOME"], img: "所得財產.jpg" },
+                { id: "mainland", name: "大陸人士", docs: ["ID_CARD_MAINLAND_STANDARD"], img: "所得財產.jpg" },
                 {
                   id: "incarcerated_trustee",
                   name: "受在監者委託查調之受託人",
@@ -1283,6 +1284,7 @@ official48Items.forEach(item => {
                 { 
                   id: "minor", 
                   name: "查調未成年子女案件", 
+                  role: "法定代理人或監護人", 
                   docs: [...common.minor]
                 }
             ]
@@ -1290,9 +1292,9 @@ official48Items.forEach(item => {
         property_list: {
             title: "個人財產歸戶資料查詢",
             options: [
-                { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"] },
-                { id: "foreign", name: "外籍人士", docs: ["ID_CARD_FOREIGN_PROPERTY"] },
-                { id: "mainland", name: "大陸人士", docs: ["ID_CARD_MAINLAND_STANDARD"] },
+                { id: "citizen", name: "國民 (滿18歲以上)", docs: ["ID_CARD"], img: "所得財產.jpg" },
+                { id: "foreign", name: "外籍人士", docs: ["ID_CARD_FOREIGN_PROPERTY"], img: "所得財產.jpg" },
+                { id: "mainland", name: "大陸人士", docs: ["ID_CARD_MAINLAND_STANDARD"], img: "所得財產.jpg" },
                 {
                   id: "incarcerated_trustee",
                   name: "受在監者委託查調之受託人",
@@ -1314,6 +1316,7 @@ official48Items.forEach(item => {
                 {
                   id: "minor", 
                   name: "查調未成年子女案件", 
+                  role: "法定代理人或監護人", 
                   docs: [...common.minor]
                 }
             ]
@@ -1326,7 +1329,7 @@ official48Items.forEach(item => {
                 { id: "mainland", name: "繼承人（大陸地區人民）", docs: ["ID_CARD_MAINLAND_HEIR", ...common.estate], img: "流程圖.jpg"},
                 { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: ["ID_CARD_MAINLAND_SPOUSE", ...common.estate], img: "流程圖.jpg"},
                 { id: "foreign", name: "繼承人（外籍人士）", docs: ["ID_CARD_FOREIGN_HEIR", ...common.estate_foreign], img: "流程圖.jpg"},
-                { id: "minor", name: "繼承人（未成年人）" , docs: [...common.minor , ...common.estate], img: "流程圖.jpg" },
+                { id: "minor", name: "繼承人（未成年人）" , role:"法定代理人或監護人", docs: [...common.minor , ...common.estate], img: "流程圖.jpg" },
 
             ]
         },
@@ -1338,7 +1341,7 @@ official48Items.forEach(item => {
                 { id: "corp_biz", name: "債權人（營利事業）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_biz], hint: "※ 債權人為金融機構或總公司已申請證件電子化，需填寫最新主管機關核准文號：______________" },
                 { id: "corp_group", name: "債權人（機關團體）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_group] },
                 { id: "condo_committee", name: "債權人（公寓大廈管理委員會）", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_CONDO', '應檢附原取得執行名義時，呈送法院經認定具當事人資格之證明文件'] },
-                { id: "minor", name: "債權人（未成年人）" , docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_WITH_STAMP', ] },
+                { id: "minor", name: "債權人（未成年人）" , role:"法定代理人或監護人", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_WITH_STAMP', ] },
 
             ]
         },
@@ -1417,11 +1420,11 @@ withholding_setup: {
     const issuanceCommon = {
         corp_biz: ["主管機關最新核准設立文件影本（需加蓋營利事業及負責人印章）<br>\n① 如為公司組織：檢附經濟部最新核准函影本+變更登記表影本<br>\n② 非公司組織(商業登記)：檢附縣府最新核准函影本+商業登記抄本影本", "ID_CARD_CORP_BIZ"],
         corp_group: ["主管機關最新核准設立文件影本（需加蓋機關團體及負責人印章）", "法人登記證 / 立案證書 / 開業執照 / 執業執照影本", "ID_CARD_CORP_GROUP"],
-        heir_Proof: ["ID_CARD", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者免附戶籍謄本）*註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
-        mainland_citizen_HeirProof: ["ID_CARD_MAINLAND_HEIR", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者免附戶籍謄本）*註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
-        mainland_spouse_HeirProof: ["ID_CARD_MAINLAND_SPOUSE", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者免附戶籍謄本）*註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
-        foreign_HeirProof: ["ID_CARD_FOREIGN_HEIR", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者免附戶籍謄本）*註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件（國外出具之與被繼承人親屬關係證明文件，且經我國當地駐外機構簽證證明）", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
-        minor: ["ID_CARD_WITH_STAMP", "附有詳細記事戶口名簿 或 詳細記事戶籍謄本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>① 倘父母離婚者，由擔任親權行使之父或母之一方代為申請時，應出具相關證明文件 ( 如父母雙方之協議書或法院判決書或戶口名簿等 ) 免附他方之授權書或委任書或同意書，惟經協議，由雙方共同行使或負擔時，仍應由為法定代理人之父母二人共同簽章代為申請。<br><br>② 因離婚而約定子女由一方監護，倘任監護之一方死亡者，由他方代為申請時，應出具相關證明文件，如父母雙方之協議書或法院判決書或戶口名簿等及任監護之一方之死亡診斷證明書或載有死亡日期之戶口名簿影本等，簽章代為申請，免附授權書。<br><br>③ 父母均不能行使或死亡時，依民法第1094條規定順位之法定監護人或法院依聲請選定之監護人代為申請時，應出具相關證明文件，如司法機關之裁定書暨其確定證明書，簽章代為申請，免附授權書。</span>"]
+        heir_Proof: ["ID_CARD", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者<u>免附<b>除戶相關資料</b></u> ）※註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
+        mainland_citizen_HeirProof: ["ID_CARD_MAINLAND_HEIR", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者<u>免附<b>除戶相關資料</b></u> ）※註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
+        mainland_spouse_HeirProof: ["ID_CARD_MAINLAND_SPOUSE", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者<u>免附<b>除戶相關資料</b></u> ）※註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
+        foreign_HeirProof: ["ID_CARD_FOREIGN_HEIR", "被繼承人死亡除戶資料（如：死亡診斷證明書或載有死亡日期之戶口名簿影本；已辦竣死亡登記者<u>免附<b>除戶相關資料</b></u> ）※註：如已備妥相關儲戶書證影本一併出示，可加速臨櫃查驗與審核時間", "與被繼承人親屬關係證明文件（國外出具之與被繼承人親屬關係證明文件，且經我國當地駐外機構簽證證明）", "如非配偶或民法第1138條第一順位繼承人時，尚應檢附與被繼承人之關係證明及加蓋申請人印章之繼承系統表正本"],
+        minor: ["ID_CARD_WITH_STAMP", "附有詳細記事戶口名簿 或 詳細記事戶籍謄本<br><span class='text-xs text-slate-600 block mt-1.5 leading-relaxed'>① 倘父母離婚者，由擔任親權行使之父或母之一方代為申請時，應出具相關證明文件 ( 如父母雙方之協議書或法院判決書或戶口名簿等 ) 免附他方之授權書或委任書或同意書，惟經協議，由雙方共同行使或負擔時，仍應由為法定代理人之父母二人共同簽章代為申請。<br><br>② 因離婚而約定子女由一方監護，倘任監護之一方死亡者，由他方代為申請時，應出具相關證明文件，如父母雙方之協議書或法院判決書或戶口名簿等及任監護之一方之死亡診斷證明書或載有死亡日期之戶口名簿影本等，簽章代為申請，免附授權書。<br><br>③父母均不能行使或死亡時，依民法第1094條規定順位之法定監護人或法院依聲請選定之監護人代為申請時，應出具相關證明文件，如司法機關之裁定書暨其確定證明書，簽章代為申請，免附授權書。</span>"]
     };
 
     // 發證作業沿用全功能櫃台共用介面、樣式與清單功能。
@@ -1439,12 +1442,12 @@ withholding_setup: {
             { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof },
             { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof },
         ]},
-        issuance_item3: { title: "儲蓄免扣稅納稅證明", hint: "※ 同一申報戶內配偶及受扶養親屬，應合併申請一份儲蓄免扣證\n※ 舊證用完，換發新證者必須攜帶舊證", options: [
+        issuance_item3: { title: "儲蓄免扣稅納稅證明", hint: "※ 同一申報戶內配偶及受扶養親屬，應合併申請一份儲蓄免扣證\n※ 換發新證者，舊證需繳回", options: [
             { id: "local_citizen", name: "納稅義務人（個人）-國民", role: "納稅義務人", docs: ["ID_CARD"+"或戶口名簿正本"] },
             { id: "foreign_citizen", name: "納稅義務人（個人）-外籍人士", role: "納稅義務人", docs: ["ID_CARD_FOREIGN_INCOME"] },
             { id: "mainland_citizen", name: "納稅義務人（個人）-大陸人士", role: "納稅義務人", docs: ["ID_CARD_MAINLAND_STANDARD"] }
         ]},
-        issuance_item4: { title: "中(英)文綜合所得稅納稅證明書",hint:"※ 申請核發中、英文綜合所得稅納稅證明書，申請人需為納稅義務人本人，若為配偶或受扶養親屬申請時，仍應檢附委任書或授權書。\n※ 英文綜合所得稅納稅證明如須記載納稅義務人本人及配偶英文姓名，<b>申請人應提供</b>相關資料(如護照或居留證)，俾利作業\n※ 納稅義務人為申請喪失國籍所需之綜合所得稅納稅證明案件，應依內政部要求之格式處理，本項作業不提供是項服務，<b>請申請人向</b>最後設籍之國稅局另案申請", options: [
+        issuance_item4: { title: "中(英)文綜合所得稅納稅證明書",hint:"※ 申請核發中、英文綜合所得稅納稅證明書，申請人需為納稅義務人本人，若為配偶或受扶養親屬申請時，仍應檢附委任書或授權書。\n※ 英文綜合所得稅納稅證明如須另記載配偶、受扶養親屬英文姓名或戶籍地址，應請申請人提供相關資料(如護照或居留證或至中華郵政網站查詢英譯地址)，俾利作業\n※ 納稅義務人為申請喪失國籍所需之綜合所得稅納稅證明案件，應依內政部要求之格式處理，本項作業不提供是項服務，<b>請申請人向</b>最後設籍之國稅局另案申請", options: [
             { id: "local_citizen", name: "納稅義務人", docs: ["ID_CARD"+" (※ 申請<u><b>英文</b></u>納稅證明請另檢附<u><b>護照</b></u>或居留證)"] }
         ]},
         issuance_item5: { title: "核發違章欠稅查復表", options: [
@@ -1452,7 +1455,11 @@ withholding_setup: {
             { id: "foreign_citizen", name: "納稅義務人（個人）-外籍人士", docs: ["ID_CARD_FOREIGN_INCOME"] },
             { id: "mainland_citizen", name: "納稅義務人（個人）-大陸人士", docs: ["ID_CARD_MAINLAND_STANDARD"] },
             { id: "corp_biz", name: "營利事業", docs: issuanceCommon.corp_biz },
-            { id: "corp_group", name: "機關團體", docs: issuanceCommon.corp_group },
+            { id: "corp_group", name: "機關團體", docs: [
+                issuanceCommon.corp_group[0],
+                "法人登記證 / 立案證書 / 開業執照 / 表演登記證影本",
+                issuanceCommon.corp_group[2]
+            ] },
         ]},
         issuance_item6: { title: "核發扣繳稅款繳納證明", options: [
             { id: "corp_biz", name: "營利事業", docs: issuanceCommon.corp_biz },
@@ -1479,7 +1486,7 @@ withholding_setup: {
         issuance_item10: { title: "核發中、英個人房屋土地交易所得稅納稅繳稅證明", options: [
             { id: "taxpayer", name: "納稅義務人", docs: ["ID_CARD_INDIVIDUAL"] },
             { id: "foreign_no_permit", name: "無居留證之外僑", docs: ["護照正本（有效期間內）"] },
-            { id: "minor", name: "申請人如屬未成年者", docs: issuanceCommon.minor }
+            { id: "minor", name: "申請人如屬未成年者", role: "法定代理人或監護人", docs: issuanceCommon.minor }
         ]}
     });
     // 完整的深層檢索資料庫
@@ -1955,6 +1962,14 @@ if (itemKey === "withholding_setup") {
           customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
           customAlertBox.innerHTML = "※ 營業人 請至本分局銷售稅課辦理";
           customAlertBox.style.display = "block";
+      } else if (itemKey === "issuance_item7") {
+          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
+          customAlertBox.innerHTML = "※ 倘繼承人死亡，請逕洽原申報管轄國稅局分局、稽徵所遺贈稅課(股)辦理";
+          customAlertBox.style.display = "block";
+      } else if (itemKey === "issuance_item8") {
+          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
+          customAlertBox.innerHTML = "※ 請逕洽原申報管轄國稅局分局、稽徵所遺贈稅課(股)辦理";
+          customAlertBox.style.display = "block";
 
       } else {
           customAlertBox.style.display = "none";
@@ -2021,7 +2036,7 @@ if (itemKey === "withholding_setup") {
             case "ID_CARD_MAINLAND_NOTIFY":
                 return isAgent ? `經內政部移民署核發之臺灣地區入出境許可證或居留證正本` : `經內政部移民署核發之臺灣地區入出境許可證或居留證正本`;
             case "ID_CARD_WITH_STAMP":
-                return isAgent ? `申請人之法定代理人(父母雙方)或監護人身分證正本或正反面影本及印章`  : `申請人之法定代理人(父母雙方)或監護人身分證正本（如由法定代理人之一方(父或母)代為查詢時，應檢附委任一方之授權書或委任書或同意書，未到場者可附身分證正反面影本及印章)`;
+                return isAgent ? `申請人之法定代理人（父母雙方）或監護人身分證正本或正反面影本及印章`  : `申請人之法定代理人（父母雙方）或監護人身分證正本（如由法定代理人之一方(父或母)代為查詢時，應檢附委任一方之授權書或委任書或同意書，未到場者可附身分證正反面影本及印章）`;
             case "ID_CARD_GUARDIAN":
                 return isAgent ? `監護人之身分證正本或正反面影本加印章` : `監護人之身分證正本`;
             case "ID_CARD_CONDO":
@@ -2111,8 +2126,6 @@ let docs = [];
                 docs.push('委任書或授權書正本<br>- 如係在大陸地區委託時，應檢附大陸地區公證處出具之證明文件，及取得財團法人海峽交流基金會驗證之證明');
             } else if (identityVal === "guardian_declared") {
                 docs.push('由監護人出具之委任書或授權書正本');
-            } else if (["minor"].includes(identityVal)) {
-                docs.push('由法定代理人共同或監護人委任第三人代理時，應檢附共同授權書或委任書(授權書或委任書上委任人簽章部分，應有法定代理人二人共同或監護人之簽章');
             } else {
                 docs.push('委任書或授權書正本');
             }
@@ -2125,7 +2138,10 @@ let docs = [];
         const li = document.createElement("li");
         let formattedText = doc;
         
-        if (doc.includes("\n*") || doc.includes("*")) {
+        if (doc.includes("※註：")) {
+            const parts = doc.split("※註：");
+            formattedText = parts[0] + `<br><span class='text-red-600 block mt-2 leading-relaxed'>※註：${parts.slice(1).join("※註：")}</span>`;
+        } else if (doc.includes("\n*") || doc.includes("*")) {
             let parts = doc.split("*");
             formattedText = parts[0] + `<br><span class='text-xs text-slate-600 block mt-2 leading-relaxed'>* ${parts.slice(1).join("*")}</span>`;
         }
@@ -2321,7 +2337,7 @@ function generateFormattedText() {
         // 2. 全域注意事項 (globalNotice)
         const globalNotice = document.getElementById("globalNotice");
         if (globalNotice && globalNotice.style.display !== "none") {
-            const noticeTitle = globalNotice.querySelector("strong") ? globalNotice.querySelector("strong").innerText : "💡 注意事項：";
+            const noticeTitle = "💡 【注意事項】";
             const noticeItems = globalNotice.querySelectorAll("ul li");
             
             if (noticeItems.length > 0) {
@@ -2352,7 +2368,7 @@ function generateFormattedText() {
         // 5. 注意事項說明區 (alertInfoBox)
         const alertInfoBox = document.getElementById("alertInfoBox");
         if (alertInfoBox && !alertInfoBox.classList.contains("hidden")) {
-            const infoTitle = alertInfoBox.querySelector("strong") ? alertInfoBox.querySelector("strong").innerText : "💡 注意事項：";
+            const infoTitle = "💡 【注意事項】";
             const infoItems = alertInfoBox.querySelectorAll("ul li");
             
             if (infoItems.length > 0) {
@@ -2365,7 +2381,7 @@ function generateFormattedText() {
 
         const issuanceGlobalNotice = document.getElementById("issuanceGlobalNotice");
         if (issuanceGlobalNotice && !issuanceGlobalNotice.classList.contains("hidden")) {
-            const noticeTitle = issuanceGlobalNotice.querySelector("strong").innerText;
+            const noticeTitle = "💡 【注意事項】";
             text += "\n" + noticeTitle + "\n";
             issuanceGlobalNotice.querySelectorAll("ul li").forEach(li => {
                 text += "• " + li.innerText.trim() + "\n";
