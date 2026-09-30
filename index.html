@@ -1380,6 +1380,7 @@ official48Items.forEach(item => {
                 { id: "mainland", name: "繼承人（大陸地區人民）", docs: ["ID_CARD_MAINLAND_HEIR", ...common.estate], img: "流程圖.jpg"},
                 { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: ["ID_CARD_MAINLAND_SPOUSE", ...common.estate], img: "流程圖.jpg"},
                 { id: "foreign", name: "繼承人（外籍人士）", docs: ["ID_CARD_FOREIGN_HEIR", ...common.estate], img: "流程圖.jpg"},
+                { id: "minor", name: "繼承人（未成年人）" , role:"法定代理人或監護人", docs: [...common.minor , ...common.estate], img: "流程圖.jpg" },
             ]
         },
 
@@ -1467,10 +1468,11 @@ withholding_setup: {
             { id: "landlord", name: "房東", docs: ["ID_CARD", "房屋稅單或租賃契約影本"] }
         ]},
         issuance_item7: { title: "補發遺產稅證明書", hint:"※ 死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，檢附國外出具之相關證明文件，應經我國當地駐外機構簽證\n※ 提供補發之證明書計有遺產稅繳清證明書、遺產稅免稅證明書、遺產稅逾核課期間案件同意移轉證明書、遺產稅不計入遺產總額證明書等四種", options: [
-            { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof },
-            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof },
-            { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof },
-            { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof },
+            { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof , img: "流程圖.jpg"},
+            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof , img: "流程圖.jpg"},
+            { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof , img: "流程圖.jpg"},
+            { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof , img: "流程圖.jpg"},
+          { id: "minor", name: "繼承人（未成年人）" , role:"法定代理人或監護人", docs: [...common.minor , ...common.estate], img: "流程圖.jpg" },
         ]},
         issuance_item8: { title: "補發贈與稅證明書", hint:"※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種", options: [
             { id: "local_citizen", name: "贈與人（國民）", role:"贈與人", docs: ["ID_CARD"] },
