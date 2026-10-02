@@ -1740,8 +1740,23 @@ withholding_setup: {
         aliases: uniqueStrings(preservedKeywords)
       };
 
-      // 關鍵字維持原資料；第三欄補成完整名稱，不新增「納稅義務人」等關鍵字。
+      // 關鍵字維持原資料；第三欄補成完整名稱，但不新增「納稅義務人」等關鍵字。
       item.keywords = preservedKeywords;
+
+      // 建立實際供搜尋排序使用的索引。
+      // 搜尋來源：作業區、第 2 欄作業名稱、第 4 欄起文件／細項、以及原有 keywords。
+      // 第 3 欄完整申請人名稱僅供顯示，不進入搜尋索引。
+      item._normalizedSearchFields = [
+        { value: normalizeSearchText(item.searchFields.section), weight: 20 },
+        { value: normalizeSearchText(item.searchFields.title), weight: 100 },
+        // 第 3 欄「申請人」只作為畫面顯示，不作為搜尋詞來源。
+        // 因此即使顯示為「納稅義務人（外籍人士）」，也不會因此新增「納稅義務人」的可搜尋詞。
+        { value: normalizeSearchText(item.searchFields.detail), weight: 80 },
+        ...item.searchFields.aliases.map(alias => ({
+          value: normalizeSearchText(alias),
+          weight: 60
+        }))
+      ].filter(field => field.value);
 
     });
 
