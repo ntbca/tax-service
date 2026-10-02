@@ -2550,30 +2550,61 @@ function generateFormattedText() {
         button.addEventListener("click", handleCopyChecklistClick);
     }
 
-    function printChecklist() {
-        // 直接沿用複製清單的文字來源，確保兩者內容完全一致
-        const text = generateFormattedText();
-        const printWindow = window.open("", "_blank", "width=900,height=700");
+    ```javascript
+function printChecklist() {
+    // 清單文字仍沿用原本的產生方式
+    const text = generateFormattedText();
 
-        if (!printWindow) {
-            showNotificationDialog("無法開啟列印視窗，請允許瀏覽器顯示彈出式視窗後再試一次。", "error", document.activeElement);
-            return;
-        }
+    // 取得目前畫面上的流程圖
+    const infoImg = document.getElementById("infoImg");
+    const infoImgContainer = document.getElementById("infoImgContainer");
 
-        printWindow.document.open();
-        printWindow.document.write(`<!DOCTYPE html>
+    // 判斷目前是否有可列印的圖片
+    const hasImage =
+        infoImg &&
+        infoImg.src &&
+        !infoImgContainer?.classList.contains("hidden");
+
+    const printWindow = window.open("", "_blank", "width=900,height=700");
+
+    if (!printWindow) {
+        showNotificationDialog(
+            "無法開啟列印視窗，請允許瀏覽器顯示彈出式視窗後再試一次。",
+            "error",
+            document.activeElement
+        );
+        return;
+    }
+
+    // 圖片 HTML
+    const imageHTML = hasImage
+        ? `
+            <div class="print-image">
+                <img
+                    src="${infoImg.src}"
+                    alt="${infoImg.alt || "服務項目申辦流程示意圖"}"
+                >
+            </div>
+          `
+        : "";
+
+    printWindow.document.open();
+    printWindow.document.write(`<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <title>臨櫃洽辦應檢核／攜帶書表清單</title>
+
   <style>
     @page {
       size: A4;
       margin: 18mm 16mm;
     }
+
     * {
       box-sizing: border-box;
     }
+
     body {
       margin: 0;
       color: #111827;
@@ -2582,34 +2613,88 @@ function generateFormattedText() {
       font-size: 12pt;
       line-height: 1.75;
     }
+
     pre {
       margin: 0;
       font: inherit;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
+
+    .print-image {
+      margin-top: 20px;
+      text-align: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .print-image img {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+
     @media print {
       body {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
+
+      .print-image {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
     }
   </style>
 </head>
-<body><pre id="printContent"></pre></body>
+
+<body>
+  <pre id="printContent"></pre>
+  ${imageHTML}
+</body>
 </html>`);
-        printWindow.document.close();
-        printWindow.document.getElementById("printContent").textContent = text;
 
-        printWindow.onafterprint = function () {
-            printWindow.close();
-        };
+    printWindow.document.close();
 
-        setTimeout(function () {
-            printWindow.focus();
-            printWindow.print();
-        }, 200);
+    // 放入文字
+    const printContent = printWindow.document.getElementById("printContent");
+    printContent.textContent = text;
+
+    // 確保圖片載入完成後再呼叫列印
+    const printAfterImagesLoaded = () => {
+        printWindow.focus();
+        printWindow.print();
+    };
+
+    if (hasImage) {
+        const printImg = printWindow.document.querySelector(".print-image img");
+
+        if (printImg.complete) {
+            // 圖片已經載入
+            setTimeout(printAfterImagesLoaded, 200);
+        } else {
+            // 等待圖片載入完成
+            printImg.onload = () => {
+                setTimeout(printAfterImagesLoaded, 200);
+            };
+
+            // 圖片載入失敗時仍然可以列印文字
+            printImg.onerror = () => {
+                setTimeout(printAfterImagesLoaded, 200);
+            };
+        }
+    } else {
+        setTimeout(printAfterImagesLoaded, 200);
     }
+
+    printWindow.onafterprint = function () {
+        printWindow.close();
+    };
+}
+```
+
 
 
 // 依實際輸入方式切換焦點提示，不推測使用者身分或設備。
