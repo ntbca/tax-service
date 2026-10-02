@@ -2128,10 +2128,13 @@ let docs = [];
                 docs.push('委任書或授權書正本<br>- 如係在大陸地區委託時，應檢附大陸地區公證處出具之證明文件，及取得財團法人海峽交流基金會驗證之證明');
             } else if (identityVal === "guardian_declared") {
                 docs.push('由監護人出具之委任書或授權書正本');
+
           } else if (
     ["income_list", "property_list"].includes(currentSelectedItemKey) &&
-    ["minor"].includes(identityVal)) {
+    ["minor"].includes(identityVal)
+) {
     docs.push('由法定代理人共同或監護人委任第三人代理時，應檢附共同授權書或委任書（授權書或委任書上委任人簽章部分，應有法定代理人二人共同或監護人之簽章）');
+
             } else {
                 docs.push('委任書或授權書正本');
             }
@@ -2550,61 +2553,58 @@ function generateFormattedText() {
         button.addEventListener("click", handleCopyChecklistClick);
     }
 
-    ```javascript
-function printChecklist() {
-    // 清單文字仍沿用原本的產生方式
-    const text = generateFormattedText();
+    function printChecklist() {
+        // 直接沿用複製清單的文字來源，確保文字內容一致
+        const text = generateFormattedText();
 
-    // 取得目前畫面上的流程圖
-    const infoImg = document.getElementById("infoImg");
-    const infoImgContainer = document.getElementById("infoImgContainer");
-
-    // 判斷目前是否有可列印的圖片
-    const hasImage =
-        infoImg &&
-        infoImg.src &&
-        !infoImgContainer?.classList.contains("hidden");
-
-    const printWindow = window.open("", "_blank", "width=900,height=700");
-
-    if (!printWindow) {
-        showNotificationDialog(
-            "無法開啟列印視窗，請允許瀏覽器顯示彈出式視窗後再試一次。",
-            "error",
-            document.activeElement
+        // 取得目前畫面上的流程圖
+        const infoImg = document.getElementById("infoImg");
+        const infoImgContainer = document.getElementById("infoImgContainer");
+        const hasImage = !!(
+            infoImg &&
+            infoImg.src &&
+            infoImgContainer &&
+            !infoImgContainer.classList.contains("hidden")
         );
-        return;
-    }
 
-    // 圖片 HTML
-    const imageHTML = hasImage
-        ? `
-            <div class="print-image">
-                <img
-                    src="${infoImg.src}"
-                    alt="${infoImg.alt || "服務項目申辦流程示意圖"}"
-                >
-            </div>
-          `
-        : "";
+        const printWindow = window.open("", "_blank", "width=900,height=700");
 
-    printWindow.document.open();
-    printWindow.document.write(`<!DOCTYPE html>
+        if (!printWindow) {
+            showNotificationDialog(
+                "無法開啟列印視窗，請允許瀏覽器顯示彈出式視窗後再試一次。",
+                "error",
+                document.activeElement
+            );
+            return;
+        }
+
+        // 將目前圖片的 src / alt 傳入列印頁面
+        const imageHtml = hasImage
+            ? `
+                <div class="print-image-wrapper">
+                    <img
+                        id="printImage"
+                        src="${infoImg.src.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"
+                        alt="${(infoImg.alt || '服務項目申辦流程示意圖').replace(/&/g, '&amp;').replace(/"/g, '&quot;')}"
+                    >
+                </div>
+              `
+            : "";
+
+        printWindow.document.open();
+        printWindow.document.write(`<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <title>臨櫃洽辦應檢核／攜帶書表清單</title>
-
   <style>
     @page {
       size: A4;
       margin: 18mm 16mm;
     }
-
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       color: #111827;
@@ -2613,87 +2613,78 @@ function printChecklist() {
       font-size: 12pt;
       line-height: 1.75;
     }
-
     pre {
       margin: 0;
       font: inherit;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
-
-    .print-image {
-      margin-top: 20px;
+    .print-image-wrapper {
+      margin-top: 18px;
       text-align: center;
       page-break-inside: avoid;
       break-inside: avoid;
     }
-
-    .print-image img {
+    .print-image-wrapper img {
       display: block;
-      width: 100%;
+      width: auto;
       max-width: 100%;
       height: auto;
       margin: 0 auto;
     }
-
     @media print {
       body {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
-
-      .print-image {
+      .print-image-wrapper {
         page-break-inside: avoid;
         break-inside: avoid;
       }
     }
   </style>
 </head>
-
 <body>
   <pre id="printContent"></pre>
-  ${imageHTML}
+  ${imageHtml}
 </body>
 </html>`);
+        printWindow.document.close();
 
-    printWindow.document.close();
+        printWindow.document.getElementById("printContent").textContent = text;
 
-    // 放入文字
-    const printContent = printWindow.document.getElementById("printContent");
-    printContent.textContent = text;
+        const finishPrint = function () {
+            printWindow.focus();
+            printWindow.print();
+        };
 
-    // 確保圖片載入完成後再呼叫列印
-    const printAfterImagesLoaded = () => {
-        printWindow.focus();
-        printWindow.print();
-    };
+        // 圖片存在時，先等待圖片載入完成再列印，避免預覽時圖片尚未出現
+        if (hasImage) {
+            const printImage = printWindow.document.getElementById("printImage");
 
-    if (hasImage) {
-        const printImg = printWindow.document.querySelector(".print-image img");
-
-        if (printImg.complete) {
-            // 圖片已經載入
-            setTimeout(printAfterImagesLoaded, 200);
+            if (printImage) {
+                if (printImage.complete) {
+                    setTimeout(finishPrint, 200);
+                } else {
+                    printImage.onload = function () {
+                        setTimeout(finishPrint, 200);
+                    };
+                    printImage.onerror = function () {
+                        // 圖片載入失敗時仍可正常列印文字內容
+                        setTimeout(finishPrint, 200);
+                    };
+                }
+            } else {
+                setTimeout(finishPrint, 200);
+            }
         } else {
-            // 等待圖片載入完成
-            printImg.onload = () => {
-                setTimeout(printAfterImagesLoaded, 200);
-            };
-
-            // 圖片載入失敗時仍然可以列印文字
-            printImg.onerror = () => {
-                setTimeout(printAfterImagesLoaded, 200);
-            };
+            setTimeout(finishPrint, 200);
         }
-    } else {
-        setTimeout(printAfterImagesLoaded, 200);
+
+        printWindow.onafterprint = function () {
+            printWindow.close();
+        };
     }
-
-    printWindow.onafterprint = function () {
-        printWindow.close();
-    };
-}
-
 
 
 // 依實際輸入方式切換焦點提示，不推測使用者身分或設備。
