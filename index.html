@@ -1441,12 +1441,17 @@ withholding_setup: {
             { id: "corp_biz", name: "營利事業", docs: issuanceCommon.corp_biz },
             { id: "corp_group", name: "機關團體", docs: issuanceCommon.corp_group },
         ]},
-        issuance_item2: { title: "補發遺產稅不動產公同共有同意移轉證明書", options: [
-            { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof },
-            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof },
-            { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof },
-            { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof },
-        ]},
+        issuance_item2: { title: "補發遺產稅不動產公同共有同意移轉證明書",
+        hint: "※死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，其於國外出具之證明文件，應經我國當地駐外機構簽證正本",
+            options: [
+                { id: "citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: ["ID_CARD", ...common.estate], img: "流程圖.jpg" },
+                { id: "mainland", name: "繼承人（大陸地區人民）", docs: ["ID_CARD_MAINLAND_HEIR", ...common.estate], img: "流程圖.jpg"},
+                { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: ["ID_CARD_MAINLAND_SPOUSE", ...common.estate], img: "流程圖.jpg"},
+                { id: "foreign", name: "繼承人（外籍人士）", docs: ["ID_CARD_FOREIGN_HEIR", ...common.estate_foreign], img: "流程圖.jpg"},
+                { id: "minor", name: "繼承人（未成年人）" , role:"法定代理人或監護人", docs: [...common.minor , ...common.estate], img: "流程圖.jpg" },
+
+            ]
+        },
         issuance_item3: { title: "儲蓄免扣稅納稅證明", hint: "※ 同一申報戶內配偶及受扶養親屬，應合併申請一份儲蓄免扣證\n※ 換發新證者，舊證需繳回", options: [
             { id: "local_citizen", name: "納稅義務人（個人）", role: "納稅義務人", docs: ["ID_CARD"+"或戶口名簿正本"] },
             { id: "foreign_citizen", name: "納稅義務人（外籍人士）", role: "納稅義務人", docs: ["ID_CARD_FOREIGN_INCOME"] },
