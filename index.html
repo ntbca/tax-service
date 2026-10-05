@@ -1368,7 +1368,10 @@ official48Items.forEach(item => {
         gift_tax: {
             title: "全國贈與資料查詢",
             options: [
-                { id: "donor", name: "贈與人", docs: ["ID_CARD"] }
+            { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof },
+            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof },
+            { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof },
+            { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof },
             ]
         },
         estate_tax_extension: { 
@@ -1388,7 +1391,10 @@ official48Items.forEach(item => {
             title: "贈與稅延期申報", 
             hint: "※ 納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業", 
             options: [
-                { id: "donor", name: "贈與人親辦", docs: ["ID_CARD", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
+            { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof },
+            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof },
+            { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof },
+            { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof },
             ]
         },
 
