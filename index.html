@@ -1366,14 +1366,14 @@ official48Items.forEach(item => {
             ]
         },
         gift_tax: {
-            title: "全國贈與資料查詢",
-            options: [
-            { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof },
-            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof },
-            { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof },
-            { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof },
-            ]
+            title: "全國贈與資料查詢",hint:"※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種", options: [
+            { id: "local_citizen", name: "贈與人（國民）", role:"贈與人", docs: ["ID_CARD"] },
+            { id: "foreign_citizen", name: "贈與人（外籍人士）", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
+            { id: "mainland_citizen", name: "贈與人（大陸人士）", docs: ["ID_CARD_MAINLAND_NOTIFY"] },
+            { id: "heir_gift", name: "贈與人已死亡，由繼承人提出申請查詢者", docs: ["需附被繼承人死亡除戶資料（如死亡診斷證明書或載有死亡日期之戶口名簿影本等），如非配偶或民法第1138條第一順位繼承人，應另檢附加蓋申請人印章之繼承系統表", "納稅義務人（繼承人）身分證正本"] }
+        ]
         },
+      
         estate_tax_extension: { 
             title: "遺產稅延期申報", 
             hint: "※ 死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，檢附國外出具之相關證明文件，應經我國當地駐外機構簽證\n※ 繼承人應為遺產贈與稅法第6條所規定之遺產稅納稅義務人：\n１、有遺囑執行人者，為遺囑執行人\n２、無遺囑執行人者，為繼承人及受遺贈人\n３、無遺囑執行人及繼承人者，為依法選定之遺產管理人", 
@@ -1389,14 +1389,12 @@ official48Items.forEach(item => {
 
         gift_tax_extension: { 
             title: "贈與稅延期申報", 
-            hint: "※ 納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業", 
-            options: [
-            { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof },
-            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof },
-            { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof },
-            { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof },
-            ]
-        },
+            hint: "※ 納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業",hint:"※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種", options: [
+            { id: "local_citizen", name: "贈與人（國民）", role:"贈與人", docs: ["ID_CARD"] },
+            { id: "foreign_citizen", name: "贈與人（外籍人士）", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
+            { id: "mainland_citizen", name: "贈與人（大陸人士）", docs: ["ID_CARD_MAINLAND_NOTIFY"] },
+            { id: "heir_gift", name: "贈與人已死亡，由繼承人提出申請查詢者", docs: ["需附被繼承人死亡除戶資料（如死亡診斷證明書或載有死亡日期之戶口名簿影本等），如非配偶或民法第1138條第一順位繼承人，應另檢附加蓋申請人印章之繼承系統表", "納稅義務人（繼承人）身分證正本"] }
+        ]},
 
         instant_notify: { 
             title: "查調即時通知", 
