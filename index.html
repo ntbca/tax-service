@@ -1146,6 +1146,16 @@ select {
         <!-- 特別備註 -->
         <div id="specialNotes" class="mt-4 hidden bg-red-50 p-4 rounded-xl border border-red-200 text-red-800 text-sm leading-relaxed font-medium whitespace-pre-line"></div>
 
+        <!-- 各稅核定資料專屬注意事項 -->
+        <div id="taxHistoryNotice" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
+          <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>查詢綜合所得稅核定資料時，申請人需為納稅義務人本人，若為配偶或受扶養親屬仍需檢附委任書或授權書</li>
+            <li>核定資料清單不得據以申請復查</li>
+            <li>營業稅核定資料僅能跨轄區</li>
+          </ul>
+        </div>
+
         <!-- 複製與列印功能按鈕 -->
         <div class="pt-2 flex flex-wrap gap-4">
           <button type="button" id="copyChecklistBtn" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
@@ -1166,9 +1176,11 @@ select {
         <div id="alertInfoBox" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
           <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
           <ul class="list-disc pl-5 space-y-1">
-            <li>以下單位應向銷售稅課<b>(股)</b>營業稅<b>服務區</b>申請編配營利事業統一編號：1.營利事業 2.員工消費合作社 3.藥局(僅依醫師處方調劑者除外) 4.報社、雜誌社 5.業餘或職業演藝團體</li>
-            <li>外國營利事業在我國境內未設分支機構，而委託本國營利事業為營業代理人，該營業代理人無須辦理營業登記，但應向該管稽徵機關報備(所轄國稅局)</li>
-            <li>律師、會計師、地政士、記帳士、技師、建築師、醫師診所、不動產估價師、保險經紀人及專利師等，申請編配統一編號時<b>免檢附加入同業公會之證明文件</b></li>
+            <li>本項服務對象為非營利事業單位，屬營利事業之變更請洽營業稅服務區處理。</li>
+            <li>申請新設立者，於建立資料前應先以該扣繳單位名稱查詢有無申請紀錄如已申請則不另配新號。</li>
+            <li>非營利事業單位申請註銷或變更扣繳義務人、扣繳單位名稱、組織、地址等均比照申請設立登記程序辦理；惟地址變更，應向遷入地之所屬國稅局分局、稽徵所辦理。</li>
+            <li>外國營利事業在我國境內未設分支機構，而委託本國營利事業為營業代理人，該營業代理人無須辦理營業登記，但應向該管稽徵機關報備(所轄國稅局)。</li>
+            <li>律師、會計師、地政士、記帳士、技師、建築師、醫師診所、不動產估價師、保險經紀人及專利師等，申請編配統一編號時免檢附加入同業公會之證明文件。</li>
           </ul>
         </div>
 
@@ -1219,7 +1231,7 @@ function getStdIdText() {
     // STD_ID 保留為動態標記，於 renderChecklist() 時依是否委任代理再轉成實際文字
     const STD_ID = "STD_ID";
     const STD_TAX = "所在地全部所有權人最近一期房屋稅單影本或房屋稅籍證明文件（如為承租房屋請加附租賃合約書影本）";
-    const STD_EXAM = "考試及格證書/開業執照/執業執照影本";
+    const STD_EXAM = "主管機關核准文件及相關證書影本<br><strong>考試及格證書/開業執照/執業執照影本</strong>";
 
     // 債權人查調：下拉選單顯示名稱維持不變，清單改顯示各執行名義應附文件全文
     const creditorExecutionDocs = {
@@ -1426,7 +1438,7 @@ official48Items.forEach(item => {
                 { id: "corp_biz", name: "債權人（營利事業）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_biz], hint: "" },
                 { id: "corp_group", name: "債權人（機關團體）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_group] },
                 { id: "condo_committee", name: "債權人（公寓大廈管理委員會）", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_CONDO', '應檢附原取得執行名義時，呈送法院經認定具當事人資格之證明文件'] },
-                { id: "minor", name: "債權人（未成年人）" , role:"法定代理人或監護人", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_WITH_STAMP', ] },
+                { id: "minor", name: "債權人（未成年人）" , role:"法定代理人或監護人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.minor] },
 
             ]
         },
@@ -1539,7 +1551,7 @@ withholding_setup: {
             { id: "mainland_citizen", name: "納稅義務人（大陸人士）", role: "納稅義務人", docs: ["ID_CARD_MAINLAND_STANDARD"] }
         ]},
         issuance_item4: { title: "中(英)文綜合所得稅納稅證明書",hint:"※ 申請核發中、英文綜合所得稅納稅證明書，申請人需為納稅義務人本人，若為配偶或受扶養親屬申請時，仍應檢附委任書或授權書。\n※ 英文綜合所得稅納稅證明如須另記載配偶、受扶養親屬英文姓名或戶籍地址，應請申請人提供相關資料(如護照或居留證或至中華郵政網站查詢英譯地址)，俾利作業\n※ 納稅義務人為申請喪失國籍所需之綜合所得稅納稅證明案件，應依內政部要求之格式處理，本項作業不提供是項服務，<b>請申請人向</b>最後設籍之國稅局另案申請", options: [
-            { id: "local_citizen", name: "納稅義務人", docs: ["ID_CARD"+" (※ 申請<u><b>英文</b></u>納稅證明請另檢附<u><b>護照</b></u>或居留證)"] }
+            { id: "local_citizen", name: "納稅義務人", docs: ["ID_CARD"+" (※ 申請<u><b>英文</b></u>納稅證明請另檢附<u><b>護照</b></u>或居留證) *英文地址請至中華郵政全球資訊網中文地址英譯(https://www.post.gov.tw) 查詢。"] }
         ]},
         issuance_item5: { title: "核發違章欠稅查復表", options: [
             { id: "local_citizen", name: "納稅義務人（個人）", docs: ["ID_CARD"] },
@@ -1555,7 +1567,7 @@ withholding_setup: {
         issuance_item6: { title: "核發扣繳稅款繳納證明", options: [
             { id: "corp_biz", name: "營利事業", docs: issuanceCommon.corp_biz },
             { id: "corp_group", name: "機關團體", docs: issuanceCommon.corp_group },
-            { id: "landlord", name: "房東", docs: ["ID_CARD", "房屋稅單或租賃契約影本"] }
+            { id: "landlord", name: "房東（申請租賃所得報繳資料）", docs: ["ID_CARD", "房屋稅單或租賃契約影本"] }
         ]},
         issuance_item7: { title: "補發遺產稅證明書", hint:"※ 死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，檢附國外出具之相關證明文件，應經我國當地駐外機構簽證\n※ 提供補發之證明書計有遺產稅繳清證明書、遺產稅免稅證明書、遺產稅逾核課期間案件同意移轉證明書、遺產稅不計入遺產總額證明書等四種", options: [
             { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof , img: "流程圖.jpg"},
@@ -1575,7 +1587,8 @@ withholding_setup: {
             { id: "corp_biz", name: "納稅義務人（營利事業）", docs: issuanceCommon.corp_biz },
             { id: "corp_group", name: "納稅義務人（機關團體）", docs: issuanceCommon.corp_group },
         ]},
-        issuance_item10: { title: "核發中、英個人房屋土地交易所得稅納稅繳稅證明", options: [
+        issuance_item10: { title: "核發中、英個人房屋土地交易所得稅納稅繳稅證明", hint:"※ 申請英文個人房屋土地交易所得稅納稅證明，如須記載納稅義務人本人英文姓名，應提供護照或居留證。",
+          options: [
             { id: "taxpayer", name: "納稅義務人", docs: ["ID_CARD_INDIVIDUAL"] },
             { id: "foreign_no_permit", name: "無居留證之外僑", docs: ["護照正本（有效期間內）"] },
             { id: "minor", name: "申請人如屬未成年者", role: "法定代理人或監護人", docs: issuanceCommon.minor }
@@ -1772,7 +1785,7 @@ withholding_setup: {
         path: `申辦作業 > 3. 扣繳單位設立、變更登記 > ${item.name}`,
         badgeText: "申辦作業",
         badgeClass: "bg-purple-100 text-purple-900",
-        keywords: [item.name],
+        keywords: [item.name, "主管機關核准文件及相關證書影本", "考試及格證書", "開業執照", "執業執照"],
         key: "withholding_setup",
         targetIdentity: item.id,
         isReady: true
@@ -2471,9 +2484,11 @@ function renderChecklist() {
     const taxTypeSelect = document.getElementById("taxTypeSelect");
     if (currentSelectedItemKey === "tax_history" && (!taxTypeSelect || !taxTypeSelect.value)) {
         const specialNotesPlaceholder = document.getElementById("specialNotes");
+        const taxHistoryNoticePlaceholder = document.getElementById("taxHistoryNotice");
         const alertInfoBoxPlaceholder = document.getElementById("alertInfoBox");
         const infoImgContainerPlaceholder = document.getElementById("infoImgContainer");
         if (specialNotesPlaceholder) specialNotesPlaceholder.classList.add("hidden");
+        if (taxHistoryNoticePlaceholder) taxHistoryNoticePlaceholder.classList.add("hidden");
         if (alertInfoBoxPlaceholder) alertInfoBoxPlaceholder.classList.add("hidden");
         if (infoImgContainerPlaceholder) infoImgContainerPlaceholder.classList.add("hidden");
         const checklistStatusPlaceholder = document.getElementById("checklistStatus");
@@ -2652,6 +2667,9 @@ let docs = [];
         specialNotes.innerHTML = '';
         specialNotes.classList.add("hidden");
     }
+    const taxHistoryNotice = document.getElementById("taxHistoryNotice");
+    taxHistoryNotice?.classList.toggle("hidden", currentSelectedItemKey !== "tax_history");
+
     if (currentSelectedItemKey === "withholding_setup") {
         alertInfoBox.classList.remove("hidden");
     } else {
@@ -2840,7 +2858,20 @@ function generateFormattedText() {
             }
         }
 
-        // 5. 注意事項說明區 (alertInfoBox)
+        // 5. 各稅核定資料專屬注意事項 (taxHistoryNotice)
+        const taxHistoryNotice = document.getElementById("taxHistoryNotice");
+        if (taxHistoryNotice && !taxHistoryNotice.classList.contains("hidden")) {
+            const noticeTitle = "💡 【注意事項】";
+            const noticeItems = taxHistoryNotice.querySelectorAll("ul li");
+            if (noticeItems.length > 0) {
+                text += "\n" + noticeTitle + "\n";
+                noticeItems.forEach(li => {
+                    text += "• " + li.innerText.trim() + "\n";
+                });
+            }
+        }
+
+        // 6. 注意事項說明區 (alertInfoBox)
         const alertInfoBox = document.getElementById("alertInfoBox");
         if (alertInfoBox && !alertInfoBox.classList.contains("hidden")) {
             const infoTitle = "💡 【注意事項】";
