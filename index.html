@@ -1571,7 +1571,7 @@ withholding_setup: {
         ]},
         issuance_item7: { title: "補發遺產稅證明書", hint:"※ 死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，檢附國外出具之相關證明文件，應經我國當地駐外機構簽證\n※ 提供補發之證明書計有遺產稅繳清證明書、遺產稅免稅證明書、遺產稅逾核課期間案件同意移轉證明書、遺產稅不計入遺產總額證明書等四種", options: [
             { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof , img: "流程圖.jpg"},
-            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof , img: "流程圖.jpg"},
+            { id: "mainland_citizen", name: "繼承人（大陸地區人民）", docs: issuanceCommon.mainland_citizen_HeirProof , img: "流程圖.jpg"},
             { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof , img: "流程圖.jpg"},
             { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof , img: "流程圖.jpg"},
           { id: "minor", name: "繼承人（未成年人）" , role:"法定代理人或監護人", docs: [...common.minor , ...common.estate], img: "流程圖.jpg" },
@@ -1817,7 +1817,7 @@ withholding_setup: {
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item6", targetIdentity: "corp_biz", isReady: true },
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item6", targetIdentity: "corp_group", isReady: true },
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 房東", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["房東", "出租人"], key: "issuance_item6", targetIdentity: "landlord", isReady: true },
-      { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item7", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸地區人民）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item7", targetIdentity: "mainland_citizen", isReady: true },
       { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸籍配偶）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸籍配偶", "大陸配偶"], key: "issuance_item7", targetIdentity: "mainland_spouse", isReady: true },
       { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item7", targetIdentity: "foreign_citizen", isReady: true },
       { path: "核發書證 > 8. 補發贈與稅證明書 > 贈與人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item8", targetIdentity: "foreign_citizen", isReady: true },
