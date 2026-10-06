@@ -820,22 +820,15 @@ select {
               </span>
             </button>
             <!-- 查詢作業原第 8～10 項：已恢復顯示 -->
-            <button type="button" onclick="selectItem('small_business')" class="service-item-button block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
-              <span class="flex-1">8. 小規模營利事業營業額核定資料查詢</span>
-              <span class="flex items-center gap-2 flex-shrink-0">
-                <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded font-bold">跨轄區</span>
-                <span class="text-slate-400 font-bold">❯</span>
-              </span>
-            </button>
             <button type="button" onclick="selectItem('business_reg')" class="service-item-button block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
-              <span class="flex-1">9. 營業人暨扣繳單位稅籍查詢</span>
+              <span class="flex-1">8. 營業人暨扣繳單位稅籍查詢</span>
               <span class="flex items-center gap-2 flex-shrink-0">
                 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
                 <span class="text-slate-400 font-bold">❯</span>
               </span>
             </button>
             <button type="button" onclick="selectItem('gift_tax')" class="service-item-button block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
-              <span class="flex-1">10. 全國贈與資料查詢</span>
+              <span class="flex-1">9. 全國贈與資料查詢</span>
               <span class="flex items-center gap-2 flex-shrink-0">
                 <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
                 <span class="text-slate-400 font-bold">❯</span>
@@ -990,16 +983,35 @@ select {
         <!-- 動態紅框提示插槽 -->
         <div id="customAlertBox" role="alert" aria-live="assertive" style="display: none;"></div>
 
+        <!-- 各稅核定資料專用：下拉選單 1：選擇業別 -->
+        <div id="taxTypeSubGroup" class="mt-4 space-y-2 hidden">
+          <label id="taxTypeSelectLabel" for="taxTypeSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>
+            請選擇業別：
+          </label>
+          <select id="taxTypeSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
+            <option value="" selected disabled>請選擇業別：</option>
+            <option value="income_tax">1. 所得稅核定資料查詢</option>
+            <option value="estate_tax">2. 遺產稅核定資料查詢</option>
+            <option value="gift_tax">3. 贈與稅核定資料查詢</option>
+            <option value="securities_transaction_tax">4. 證券交易稅核定資料查詢</option>
+            <option value="futures_transaction_tax">5. 期貨交易稅核定資料查詢</option>
+            <option value="tobacco_alcohol_tax">6. 菸酒稅核定資料查詢</option>
+            <option value="small_business_sales_tax">7. 小規模營利事業營業額核定資料查詢</option>
+            <option value="commodity_tax">8. 貨物稅核定資料查詢</option>
+            <option value="business_tax">9. 營業稅核定資料查詢</option>
+          </select>
+        </div>
+
         <!-- 下拉選單 2：選擇身分／類別 -->
         <div id="subGroup" class="mt-4 space-y-2">
           <label id="identitySelectLabel" for="identitySelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
             <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">1</span>
             請選擇申請人身分／案件類別：
           </label>
-          
-<select id="identitySelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
 
-            <!-- 動態生成選項 -->
+<select id="identitySelect" onchange="renderChecklist()" disabled class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
+            <option value="">請先選擇業別</option>
           </select>
         </div>
 
@@ -1260,7 +1272,7 @@ official48Items.forEach(item => {
         income_list: {
             title: "個人綜合所得稅各類所得資料清單查詢",
             options: [
-                { id: "citizen", name: "納稅義務人（滿18歲之個人）", docs: ["ID_CARD"], img: "所得財產.jpg" },
+                { id: "citizen", name: "納稅義務人（個人）", docs: ["ID_CARD"], img: "所得財產.jpg" },
                 { id: "foreign", name: "納稅義務人（外籍人士）", docs: ["ID_CARD_FOREIGN_INCOME"], img: "所得財產.jpg" },
                 { id: "mainland", name: "納稅義務人（大陸人士）", docs: ["ID_CARD_MAINLAND_STANDARD"], img: "所得財產.jpg" },
                 {
@@ -1292,7 +1304,7 @@ official48Items.forEach(item => {
         property_list: {
             title: "個人財產歸戶資料查詢",
             options: [
-                { id: "citizen", name: "納稅義務人（滿18歲之個人）", docs: ["ID_CARD"], img: "所得財產.jpg" },
+                { id: "citizen", name: "納稅義務人（個人）", docs: ["ID_CARD"], img: "所得財產.jpg" },
                 { id: "foreign", name: "納稅義務人（外籍人士）", docs: ["ID_CARD_FOREIGN_PROPERTY"], img: "所得財產.jpg" },
                 { id: "mainland", name: "納稅義務人（大陸人士）", docs: ["ID_CARD_MAINLAND_STANDARD"], img: "所得財產.jpg" },
                 {
@@ -1388,7 +1400,7 @@ official48Items.forEach(item => {
             title: "贈與稅延期申報", 
             hint: "※ 納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業", 
             options: [
-                { id: "donor", name: "贈與人親辦", docs: ["ID_CARD", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
+                { id: "donor", name: "贈與人", docs: ["ID_CARD", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
             ]
         },
 
@@ -1496,24 +1508,92 @@ withholding_setup: {
             { id: "minor", name: "申請人如屬未成年者", role: "法定代理人或監護人", docs: issuanceCommon.minor }
         ]}
     });
+
+    // 各稅核定資料 9 種業別：申請人與應備文件均直接沿用既有查詢／核發項目的資料。
+    const taxHistoryTypeConfig = {
+      income_tax: { sourceKey: "tax_history", rename: { indiv: "國人", corp_biz: "營利事業", corp_group: "機關團體" } },
+      estate_tax: { sourceKey: "deceased_data" },
+      gift_tax: { sourceKey: "issuance_item8" },
+      securities_transaction_tax: { sourceKey: "tax_arrears", filter: ["indiv", "corp_biz"], rename: { indiv: "代徵人（個人）", corp_biz: "代徵人（營利事業）" } },
+      futures_transaction_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"], hideHint: true },
+      tobacco_alcohol_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"], hideHint: true },
+      small_business_sales_tax: { sourceKey: "small_business" },
+      commodity_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"] },
+      business_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"] },
+    };
+
+    function cloneTaxHistoryOption(opt, rename = {}) {
+      const cloned = { ...opt };
+      if (Array.isArray(opt.docs)) cloned.docs = [...opt.docs];
+      if (rename[opt.id]) cloned.name = rename[opt.id];
+      return cloned;
+    }
+
+    function getTaxHistoryData(taxTypeValue) {
+      const config = taxHistoryTypeConfig[taxTypeValue];
+      if (!config) return null;
+      const source = systemData[config.sourceKey];
+      if (!source || !Array.isArray(source.options)) return null;
+
+      let options = source.options.slice();
+      if (Array.isArray(config.filter)) {
+        options = options.filter(opt => config.filter.includes(opt.id));
+      }
+      options = options.map(opt => cloneTaxHistoryOption(opt, config.rename || {}));
+
+      return {
+        sourceKey: config.sourceKey,
+        title: source.title,
+        hint: config.hideHint ? "" : (source.hint || ""),
+        options
+      };
+    }
+
+    function populateIdentitySelect(options, selectedValue = "") {
+      const identitySelect = document.getElementById("identitySelect");
+      if (!identitySelect) return "";
+      identitySelect.innerHTML = "";
+
+      if (!options.length) {
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "請先選擇業別";
+        identitySelect.appendChild(placeholder);
+        identitySelect.disabled = true;
+        return "";
+      }
+
+      identitySelect.disabled = false;
+      options.forEach(opt => {
+        const optionElem = document.createElement("option");
+        optionElem.value = opt.id;
+        optionElem.textContent = opt.name;
+        identitySelect.appendChild(optionElem);
+      });
+
+      if (selectedValue && options.some(opt => opt.id === selectedValue)) {
+        identitySelect.value = selectedValue;
+      } else {
+        identitySelect.selectedIndex = 0;
+      }
+      return identitySelect.value;
+    }
+
     // 完整的深層檢索資料庫
     const deepSearchDatabase = [
-      { path: "查詢作業 > 1. 各稅核定資料", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料"], key: "tax_history", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料", "核定資料"], key: "tax_history", targetTaxType: "income_tax", targetIdentity: "indiv", isReady: true },
       { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢"], key: "tax_arrears", targetIdentity: "indiv", isReady: true },
       { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人綜合所得稅各類所得資料清單查詢", "所得清單"], key: "income_list", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 4. 個人財產歸戶資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["個人財產歸戶資料查詢", "財產歸戶"], key: "property_list", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人財產、所得及贈與資料查詢", "被繼承人資料"], key: "deceased_data", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人課稅資料查詢", "債權人查調", "債權人（個人）"], key: "creditor_data", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢", "綜所稅稅籍"], key: "tax_status", targetIdentity: "indiv", isReady: true },
-      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業"], key: "small_business", targetIdentity: "corp", isReady: true },
-      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
-      { path: "查詢作業 > 10. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: [], key: "gift_tax", targetIdentity: "local_citizen", isReady: true },
-
+      { path: "查詢作業 > 8. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 9. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: [], key: "gift_tax", targetIdentity: "local_citizen", isReady: true },
       { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["遺產稅延期申報"], key: "estate_tax_extension", targetIdentity: "citizen", isReady: true },
-      { path: "申辦作業 > 2. 贈與稅延期申報", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: [], key: "gift_tax_extension", targetIdentity: "local_citizen", isReady: true },
+      { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與人", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["贈與人"], key: "gift_tax_extension", targetIdentity: "local_citizen", isReady: true },
       { path: "申辦作業 > 3. 扣繳單位設立、變更登記（統一編號編配）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["扣繳單位設立、變更登記（統一編號編配）", "扣繳單位設立", "統一編號編配"], key: "withholding_setup", targetIdentity: "1", isReady: true },
       { path: "申辦作業 > 4. 查調即時通知", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900",  keywords: ["查調即時通知"], key: "instant_notify", targetIdentity: "local", isReady: true },
-
       { path: "核發書證 > 1. 各項稅款補發稅單", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["各項稅款補發稅單", "補發稅單", "稅單"], key: "issuance_item1", targetIdentity: "local_citizen", isReady: true },
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: [], key: "issuance_item2", targetIdentity: "citizen", isReady: true },
       { path: "核發書證 > 3. 儲蓄免扣證", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["儲蓄免扣證", "儲蓄免扣稅納稅證明", "免扣證"], key: "issuance_item3", targetIdentity: "local_citizen", isReady: true },
@@ -1525,13 +1605,47 @@ withholding_setup: {
       { path: "核發書證 > 9. 核發繳稅證明", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["核發繳稅證明", "繳稅證明", "納稅證明"], key: "issuance_item9", targetIdentity: "individual", isReady: true },
       { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所所得稅繳納證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["核發中、英文個人房屋土地交易所所得稅繳納證明書", "房地合一所得稅繳納證明書", "房屋土地交易所得稅", "房地合一繳稅證明"], key: "issuance_item10", targetIdentity: "taxpayer", isReady: true },
 
-      { path: "查詢作業 > 1. 各稅核定資料 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 營利事業", "營利事業核定資料", "公司各稅核定"], key: "tax_history", targetIdentity: "corp_biz", isReady: true },
-      { path: "查詢作業 > 1. 各稅核定資料 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["各稅核定資料 機關團體", "機關團體核定資料"], key: "tax_history", targetIdentity: "corp_group", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 1. 所得稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得稅核定資料查詢", "所得稅核定"], key: "tax_history", targetTaxType: "income_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 1. 所得稅核定資料查詢 > 國人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["國人", "個人"], key: "tax_history", targetTaxType: "income_tax", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 1. 所得稅核定資料查詢 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營利事業", "公司"], key: "tax_history", targetTaxType: "income_tax", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 1. 所得稅核定資料查詢 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["機關團體"], key: "tax_history", targetTaxType: "income_tax", targetIdentity: "corp_group", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["遺產稅核定資料查詢", "遺產稅核定"], key: "tax_history", targetTaxType: "estate_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 繼承人（滿18歲之個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承人", "滿18歲", "個人"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 繼承人（大陸地區人民）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承人", "大陸地區人民", "大陸人士"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "mainland", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 繼承人（大陸籍配偶）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承人", "大陸籍配偶", "大陸配偶"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "mainland_spouse", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 繼承人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承人", "外籍人士", "外國人"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "foreign", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 繼承人（未成年人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承人", "未成年人", "法定代理人", "監護人"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "minor", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 死亡診斷證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["死亡診斷證明書", "死亡證明", "載有死亡日期之戶口名簿"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 親屬關係證明文件", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["親屬關係證明文件", "親屬關係證明"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 2. 遺產稅核定資料查詢 > 詳細記事戶口名簿、戶籍謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["詳細記事戶口名簿、戶籍謄本"], key: "tax_history", targetTaxType: "estate_tax", targetIdentity: "minor", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 3. 贈與稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與稅核定資料查詢", "贈與稅核定"], key: "tax_history", targetTaxType: "gift_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 3. 贈與稅核定資料查詢 > 贈與人（國民）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與人", "國民"], key: "tax_history", targetTaxType: "gift_tax", targetIdentity: "local_citizen", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 3. 贈與稅核定資料查詢 > 贈與人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與人", "外籍人士", "外國人"], key: "tax_history", targetTaxType: "gift_tax", targetIdentity: "foreign_citizen", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 3. 贈與稅核定資料查詢 > 贈與人（大陸人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與人", "大陸人士", "大陸地區人民"], key: "tax_history", targetTaxType: "gift_tax", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 3. 贈與稅核定資料查詢 > 贈與人已死亡，由繼承人提出申請查詢者", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與人已死亡", "繼承人"], key: "tax_history", targetTaxType: "gift_tax", targetIdentity: "heir_gift", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 3. 贈與稅核定資料查詢 > 死亡診斷證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["死亡診斷證明書", "死亡證明", "載有死亡日期之戶口名簿"], key: "tax_history", targetTaxType: "gift_tax", targetIdentity: "heir_gift", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 4. 證券交易稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["證券交易稅核定資料查詢", "證券交易稅"], key: "tax_history", targetTaxType: "securities_transaction_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 4. 證券交易稅核定資料查詢 > 代徵人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["代徵人", "個人"], key: "tax_history", targetTaxType: "securities_transaction_tax", targetIdentity: "indiv", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 4. 證券交易稅核定資料查詢 > 代徵人（營利事業）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["代徵人", "營利事業"], key: "tax_history", targetTaxType: "securities_transaction_tax", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 5. 期貨交易稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["期貨交易稅核定資料查詢", "期貨交易稅"], key: "tax_history", targetTaxType: "futures_transaction_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 5. 期貨交易稅核定資料查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "個人"], key: "tax_history", targetTaxType: "futures_transaction_tax", targetIdentity: "individual", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 5. 期貨交易稅核定資料查詢 > 納稅義務人（營利事業）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "營利事業"], key: "tax_history", targetTaxType: "futures_transaction_tax", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 6. 菸酒稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["菸酒稅核定資料查詢", "菸酒稅"], key: "tax_history", targetTaxType: "tobacco_alcohol_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 6. 菸酒稅核定資料查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "個人"], key: "tax_history", targetTaxType: "tobacco_alcohol_tax", targetIdentity: "individual", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 6. 菸酒稅核定資料查詢 > 納稅義務人（營利事業）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "營利事業"], key: "tax_history", targetTaxType: "tobacco_alcohol_tax", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 7. 小規模營利事業營業額核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業", "小規模營業額核定"], key: "tax_history", targetTaxType: "small_business_sales_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 7. 小規模營利事業營業額核定資料查詢 > 營利事業負責人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營利事業", "負責人"], key: "tax_history", targetTaxType: "small_business_sales_tax", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 8. 貨物稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["貨物稅核定資料查詢", "貨物稅"], key: "tax_history", targetTaxType: "commodity_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 8. 貨物稅核定資料查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "個人"], key: "tax_history", targetTaxType: "commodity_tax", targetIdentity: "individual", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 8. 貨物稅核定資料查詢 > 納稅義務人（營利事業）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "營利事業"], key: "tax_history", targetTaxType: "commodity_tax", targetIdentity: "corp_biz", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 9. 營業稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業稅核定資料查詢", "營業稅核定", "營業稅"], key: "tax_history", targetTaxType: "business_tax", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 9. 營業稅核定資料查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "個人"], key: "tax_history", targetTaxType: "business_tax", targetIdentity: "individual", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 9. 營業稅核定資料查詢 > 納稅義務人（營利事業）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "營利事業"], key: "tax_history", targetTaxType: "business_tax", targetIdentity: "corp_biz", isReady: true },
 
       { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 營利事業", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢 營利事業", "營利事業欠稅查詢", "公司退稅查詢"], key: "tax_arrears", targetIdentity: "corp_biz", isReady: true },
       { path: "查詢作業 > 2. 納稅欠稅及退稅資料查詢 > 機關團體", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅欠稅及退稅資料查詢 機關團體", "機關團體欠稅查詢"], key: "tax_arrears", targetIdentity: "corp_group", isReady: true },
 
-      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 個人（滿18歲以上）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 國民", "成年人所得清單", "個人綜所稅各類所得資料清單查詢 國民"], key: "income_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 國民", "個人所得清單", "個人綜所稅各類所得資料清單查詢 國民"], key: "income_list", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 個人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 外籍人士", "外國人所得清單", "外籍人士綜所稅清單"], key: "income_list", targetIdentity: "foreign", isReady: true },
       { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 個人（外籍人士） > 護照、居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["護照、居留證"], key: "income_list", targetIdentity: "foreign", isReady: true },
       { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 個人（大陸人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得清單 大陸人士", "大陸地區人民所得清單"], key: "income_list", targetIdentity: "mainland", isReady: true },
@@ -1540,8 +1654,7 @@ withholding_setup: {
       { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 監護人（代查調受監護宣告人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["監護人", "受監護宣告人", "監護宣告", "法院裁定監護記事", "法院民事裁定", "確定證明"], key: "income_list", targetIdentity: "guardian_declared", isReady: true },
       { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 查調未成年子女案件", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["未成年子女","未成年人"], key: "income_list", targetIdentity: "minor", isReady: true },
       { path: "查詢作業 > 3. 個人綜合所得稅各類所得資料清單查詢 > 查調未成年子女案件 > 詳細記事戶口名簿、戶籍謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["詳細記事戶口名簿、戶籍謄本"], key: "income_list", targetIdentity: "minor", isReady: true },
-
-      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 個人（滿18歲以上）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 國民", "成年人財產歸戶", "個人財產歸戶資料查詢 國民"], key: "property_list", targetIdentity: "citizen", isReady: true },
+      { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 國民", "個人財產歸戶", "個人財產歸戶資料查詢 國民"], key: "property_list", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 個人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 外籍人士", "外國人財產歸戶"], key: "property_list", targetIdentity: "foreign", isReady: true },
       { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 個人（外籍人士） > 護照、居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["護照、居留證"], key: "property_list", targetIdentity: "foreign", isReady: true },
       { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 個人（大陸人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["財產歸戶 大陸人士", "大陸地區人民財產歸戶"], key: "property_list", targetIdentity: "mainland", isReady: true },
@@ -1550,7 +1663,6 @@ withholding_setup: {
       { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 監護人（代查調受監護宣告人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["監護人", "受監護宣告人", "監護宣告", "法院裁定監護記事", "法院民事裁定", "確定證明"], key: "property_list", targetIdentity: "guardian_declared", isReady: true },
       { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 查調未成年子女案件", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["未成年子女","未成年人"], key: "property_list", targetIdentity: "minor", isReady: true },
       { path: "查詢作業 > 4. 個人財產歸戶資料查詢 > 查調未成年子女案件 > 詳細記事戶口名簿、戶籍謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["詳細記事戶口名簿、戶籍謄本"], key: "property_list", targetIdentity: "minor", isReady: true },
-
       { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人（滿18歲之個人） > 死亡診斷證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["死亡診斷證明書", "死亡證明"], key: "deceased_data", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人（滿18歲之個人） > 被繼承人除戶謄本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["被繼承人除戶謄本", "除戶謄本", "被繼承人除戶"], key: "deceased_data", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人（滿18歲之個人） > 載有死亡日期之戶口名簿影本", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["載有死亡日期之戶口名簿", "死亡戶口名簿"], key: "deceased_data", targetIdentity: "citizen", isReady: true },
@@ -1559,9 +1671,6 @@ withholding_setup: {
       { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人（大陸籍配偶）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["大陸籍", "配偶"], key: "deceased_data", targetIdentity: "mainland_spouse", isReady: true },
       { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["外籍人士", "外國人"], key: "deceased_data", targetIdentity: "foreign", isReady: true },
       { path: "查詢作業 > 5. 被繼承人財產、所得及贈與資料查詢 > 繼承人（未成年人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["繼承人（未成年人）", "未成年繼承人", "法定代理人", "監護人", "詳細記事戶口名簿", "詳細記事戶籍謄本"], key: "deceased_data", targetIdentity: "minor", isReady: true },
-
-
-
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人（個人） > 債權人查調債務人財產及所得資料申請書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人財產及所得資料申請書"], key: "creditor_data", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人（個人） > 司法機關民事判決暨確定證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關民事判決暨確定證明書"], key: "creditor_data", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人（個人） > 司法機關支付命令暨確定證明書", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["司法機關支付命令暨確定證明書"], key: "creditor_data", targetIdentity: "citizen", isReady: true },
@@ -1571,25 +1680,17 @@ withholding_setup: {
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人（機關團體）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人（機關團體）", "機關團體債權人", "法人登記證", "立案證書"], key: "creditor_data", targetIdentity: "corp_group", isReady: true },
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人（公寓大廈管理委員會）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人（公寓大廈管理委員會）", "公寓大廈管理委員會", "管理委員會債權人", "當事人資格證明文件"], key: "creditor_data", targetIdentity: "condo_committee", isReady: true },
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢 > 債權人（未成年人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人（未成年人）", "未成年債權人", "法定代理人", "監護人"], key: "creditor_data", targetIdentity: "minor", isReady: true },
-
       { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 納稅義務人（大陸人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢 大陸人士", "大陸地區人民綜所稅稅籍"], key: "tax_status", targetIdentity: "mainland", isReady: true },
       { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 納稅義務人（大陸人士） > 出境許可證或居留證", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["出境許可證或居留證"], key: "tax_status", targetIdentity: "mainland", isReady: true },
       { path: "查詢作業 > 7. 綜合所得稅稅籍查詢 > 納稅義務人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢 外籍人士", "外籍人士", "外國人", "護照", "居留證"], key: "tax_status", targetIdentity: "foreign", isReady: true },
-
-      { path: "查詢作業 > 8. 小規模營利事業營業額核定資料查詢 > 營利事業負責人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業負責人", "小規模營業額核定"], key: "small_business", targetIdentity: "corp", isReady: true },
-
-      { path: "查詢作業 > 9. 營業人暨扣繳單位稅籍查詢 > 營利事業或扣繳單位", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢", "扣繳單位稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
-
-      { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["外籍人士", "外國人"], key: "gift_tax", targetIdentity: "foreign_citizen", isReady: true },
-      { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人（大陸人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["大陸人士", "大陸地區人民"], key: "gift_tax", targetIdentity: "mainland_citizen", isReady: true },
-      { path: "查詢作業 > 10. 全國贈與資料查詢 > 贈與人已死亡，由繼承人提出申請查詢者", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與人已死亡", "繼承人"], key: "gift_tax", targetIdentity: "heir_gift", isReady: true },
-
-
+      { path: "查詢作業 > 8. 營業人暨扣繳單位稅籍查詢 > 營利事業或扣繳單位", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢", "扣繳單位稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 9. 全國贈與資料查詢 > 贈與人（外籍人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["外籍人士", "外國人"], key: "gift_tax", targetIdentity: "foreign_citizen", isReady: true },
+      { path: "查詢作業 > 9. 全國贈與資料查詢 > 贈與人（大陸人士）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["大陸人士", "大陸地區人民"], key: "gift_tax", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "查詢作業 > 9. 全國贈與資料查詢 > 贈與人已死亡，由繼承人提出申請查詢者", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["贈與人已死亡", "繼承人"], key: "gift_tax", targetIdentity: "heir_gift", isReady: true },
      { path: "申辦作業 > 1. 遺產稅延期申報 > 繼承人（滿18歲之個人） > 死亡診斷證明書或載有死亡日期之戶口名簿", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["死亡診斷證明書或載有死亡日期之戶口名簿"], key: "estate_tax_extension", targetIdentity: "citizen", isReady: true },
       { path: "申辦作業 >1. 遺產稅延期申報 > 繼承人（大陸地區人民） > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["入出境許可證或居留證"], key: "estate_tax_extension", targetIdentity: "mainland", isReady: true }, 
       { path: "申辦作業 > 1. 遺產稅延期申報 > 繼承人（大陸籍配偶）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["繼承人（大陸籍配偶）", "大陸籍配偶", "親屬關係證明", "海峽交流基金會驗證"], key: "estate_tax_extension", targetIdentity: "mainland_spouse", isReady: true },
       { path: "申辦作業 > 1. 遺產稅延期申報 > 繼承人（外籍人士）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["繼承人（外籍人士）", "外籍繼承人", "外籍人士", "護照", "駐外機構簽證"], key: "estate_tax_extension", targetIdentity: "foreign", isReady: true },
-
       { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與人（外籍人士）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["外籍人士", "外國人"], key: "gift_tax_extension", targetIdentity: "foreign_citizen", isReady: true },
       { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與人（大陸人士）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["大陸人士", "大陸地區人民"], key: "gift_tax_extension", targetIdentity: "mainland_citizen", isReady: true },
       { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與人已死亡，由繼承人提出申請查詢者", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["贈與人已死亡", "繼承人"], key: "gift_tax_extension", targetIdentity: "heir_gift", isReady: true },
@@ -1604,19 +1705,15 @@ withholding_setup: {
         isReady: true
       })),
 
-
       { path: "申辦作業 > 4. 查調即時通知 > 納稅義務人（個人 含限制行為能力人）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["限制行為能力人"], key: "instant_notify", targetIdentity: "local", isReady: true },
       { path: "申辦作業 > 4. 查調即時通知 > 納稅義務人（外籍人士） > 護照或居留證", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["護照或居留證"], key: "instant_notify", targetIdentity: "foreign", isReady: true },
       { path: "申辦作業 > 4. 查調即時通知 > 納稅義務人（大陸人士） > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["入出境許可證或居留證"], key: "instant_notify", targetIdentity: "mainland", isReady: true },
       { path: "申辦作業 >4. 查調即時通知 > 未成年人之法定代理人親自申請", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["未成年子女","未成年人之法定代理人"], key: "instant_notify", targetIdentity: "minor", isReady: true },
       { path: "申辦作業 >4. 查調即時通知 > 未成年人之法定代理人親自申請 > 詳細記事戶口名簿、戶籍謄本", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["詳細記事戶口名簿、戶籍謄本"], key: "instant_notify", targetIdentity: "minor", isReady: true },
-
-      // 核發書證：身分層級搜尋（關鍵字僅使用身分及其同義詞）
       { path: "核發書證 > 1. 各項稅款補發稅單 > 納稅義務人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item1", targetIdentity: "foreign_citizen", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單 > 納稅義務人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item1", targetIdentity: "mainland_citizen", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item1", targetIdentity: "corp_biz", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item1", targetIdentity: "corp_group", isReady: true },
-
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 繼承人（滿18歲之個人） > 死亡診斷證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["死亡診斷證明書", "死亡證明"], key: "issuance_item2", targetIdentity: "citizen", isReady: true },
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 繼承人（滿18歲之個人） > 被繼承人除戶謄本", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["被繼承人除戶謄本", "除戶謄本", "被繼承人除戶"], key: "issuance_item2", targetIdentity: "citizen", isReady: true },
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 繼承人（滿18歲之個人） > 載有死亡日期之戶口名簿影本", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["載有死亡日期之戶口名簿", "死亡戶口名簿"], key: "issuance_item2", targetIdentity: "citizen", isReady: true },
@@ -1625,34 +1722,25 @@ withholding_setup: {
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 繼承人（大陸籍配偶）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸籍", "配偶"], key: "issuance_item2", targetIdentity: "mainland_spouse", isReady: true },
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 繼承人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item2", targetIdentity: "foreign", isReady: true },
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書 > 繼承人（未成年人）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["繼承人（未成年人）", "未成年繼承人", "法定代理人", "監護人", "詳細記事戶口名簿", "詳細記事戶籍謄本"], key: "issuance_item2", targetIdentity: "minor", isReady: true },
-
       { path: "核發書證 > 3. 儲蓄免扣證 > 納稅義務人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item3", targetIdentity: "foreign_citizen", isReady: true },
       { path: "核發書證 > 3. 儲蓄免扣證 > 納稅義務人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item3", targetIdentity: "mainland_citizen", isReady: true },
-
       { path: "核發書證 > 5. 核發違章欠稅查復表 > 納稅義務人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item5", targetIdentity: "foreign_citizen", isReady: true },
       { path: "核發書證 > 5. 核發違章欠稅查復表 > 納稅義務人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item5", targetIdentity: "mainland_citizen", isReady: true },
       { path: "核發書證 > 5. 核發違章欠稅查復表 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item5", targetIdentity: "corp_biz", isReady: true },
       { path: "核發書證 > 5. 核發違章欠稅查復表 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item5", targetIdentity: "corp_group", isReady: true },
-
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item6", targetIdentity: "corp_biz", isReady: true },
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item6", targetIdentity: "corp_group", isReady: true },
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 房東", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["房東", "出租人"], key: "issuance_item6", targetIdentity: "landlord", isReady: true },
-
       { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item7", targetIdentity: "mainland_citizen", isReady: true },
       { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸籍配偶）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸籍配偶", "大陸配偶"], key: "issuance_item7", targetIdentity: "mainland_spouse", isReady: true },
       { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item7", targetIdentity: "foreign_citizen", isReady: true },
-
       { path: "核發書證 > 8. 補發贈與稅證明書 > 贈與人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item8", targetIdentity: "foreign_citizen", isReady: true },
       { path: "核發書證 > 8. 補發贈與稅證明書 > 贈與人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item8", targetIdentity: "mainland_citizen", isReady: true },
       { path: "核發書證 > 8. 補發贈與稅證明書 > 贈與人已死亡，由繼承人提出申請查詢者", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["贈與人已死亡", "繼承人"], key: "issuance_item8", targetIdentity: "heir_gift", isReady: true },
-
       { path: "核發書證 > 9. 核發繳稅證明 > 納稅義務人（營利事業）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item9", targetIdentity: "corp_biz", isReady: true },
       { path: "核發書證 > 9. 核發繳稅證明 > 納稅義務人（機關團體）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item9", targetIdentity: "corp_group", isReady: true },
-
       { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所得稅繳納證明書 > 無居留證之外僑", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["無居留證之外僑", "外僑"], key: "issuance_item10", targetIdentity: "foreign_no_permit", isReady: true },
       { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所得稅繳納證明書 > 申請人如屬未成年者", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["未成年者", "未成年人", "法定代理人", "監護人"], key: "issuance_item10", targetIdentity: "minor", isReady: true },
-
-
     ];
 
     // ==================== 深層檢索資料庫一致性與索引優化 ====================
@@ -1683,7 +1771,9 @@ withholding_setup: {
     }
 
     function getCanonicalApplicantName(item) {
-      const data = systemData[item.key];
+      const data = (item.key === "tax_history" && item.targetTaxType)
+        ? getTaxHistoryData(item.targetTaxType)
+        : systemData[item.key];
       if (!data || !Array.isArray(data.options)) return "";
 
       const target = String(item.targetIdentity ?? "");
@@ -1702,7 +1792,10 @@ withholding_setup: {
 
       if (canonicalApplicant) {
         // 基準：第 1 欄＝作業區、第 2 欄＝作業名稱、第 3 欄＝申請人／身分類別、第 4 欄起＝文件／細項。
-        if (originalColumns.length === 2) {
+        // 各稅核定資料第7項保留「7. 小規模營利事業營業額核定資料查詢」為第3欄，申請人放第4欄。
+        if (item.key === "tax_history" && item.targetTaxType && originalColumns.length >= 4) {
+          originalColumns[originalColumns.length - 1] = canonicalApplicant;
+        } else if (originalColumns.length === 2) {
           originalColumns.push(canonicalApplicant);
         } else if (
           item.key === "deceased_data" &&
@@ -1802,7 +1895,7 @@ withholding_setup: {
 
     // 第二頁依各區實際顯示順序重新編號。
     const visibleItemNumbers = {
-      // 查詢作業 1～10
+      // 查詢作業 1～9（小規模營利事業已併入各稅核定資料第7項業別）
       tax_history: 1,
       tax_arrears: 2,
       income_list: 3,
@@ -1810,9 +1903,8 @@ withholding_setup: {
       deceased_data: 5,
       creditor_data: 6,
       tax_status: 7,
-      small_business: 8,
-      business_reg: 9,
-      gift_tax: 10,
+      business_reg: 8,
+      gift_tax: 9,
 
       // 申辦作業 1～4
       estate_tax_extension: 1,
@@ -2043,7 +2135,7 @@ withholding_setup: {
       searchInput.style.height = `${searchInput.scrollHeight}px`;
       closeAllDropdowns();
       if (item.isReady) {
-        selectItem(item.key, item.targetIdentity);
+        selectItem(item.key, item.targetIdentity, { taxTypeValue: item.targetTaxType || "" });
       } else {
         showBuildingAlert();
       }
@@ -2089,13 +2181,30 @@ withholding_setup: {
       document.getElementById('selectedItemTitle').textContent = data.title;
 
       const identitySelect = document.getElementById("identitySelect");
-      identitySelect.innerHTML = "";
-      data.options.forEach(opt => {
-          const optionElem = document.createElement("option");
-          optionElem.value = opt.id;
-          optionElem.textContent = opt.name;
-          identitySelect.appendChild(optionElem);
-      });
+      const taxTypeSubGroup = document.getElementById("taxTypeSubGroup");
+      const taxTypeSelect = document.getElementById("taxTypeSelect");
+
+      let activeItemData = data;
+      let activeIdentityOptions = data.options || [];
+      let restoredTaxTypeValue = "";
+
+      if (itemKey === "tax_history") {
+          taxTypeSubGroup.classList.remove("hidden");
+          restoredTaxTypeValue = (restoredState && restoredState.taxTypeValue) || options.taxTypeValue || "";
+          taxTypeSelect.value = restoredTaxTypeValue;
+          const taxHistoryData = getTaxHistoryData(restoredTaxTypeValue);
+          if (taxHistoryData) {
+              activeItemData = taxHistoryData;
+              activeIdentityOptions = taxHistoryData.options;
+          } else {
+              activeIdentityOptions = [];
+          }
+      } else {
+          taxTypeSubGroup.classList.add("hidden");
+          taxTypeSelect.value = "";
+      }
+
+      populateIdentitySelect(activeIdentityOptions, (restoredState && restoredState.identityValue) || targetIdentity || "");
 
 const identityLabel = document.getElementById("identitySelectLabel");
 const agentGroupText = document.getElementById("agentGroupText");
@@ -2105,35 +2214,19 @@ if (itemKey === "withholding_setup") {
     // 加上 display: inline-flex 以確保圓圈能正常佔位
     identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #4f46e5; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">1</span>請選擇業別 (共 48 項) :';
     agentGroupText.textContent = '委託代理人申請(委託他人代辦請勾選)';
+} else if (itemKey === "tax_history") {
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">2</span>請選擇申請人身分／案件類別：';
+    agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
 } else {
-    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別 :';
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別：';
     agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
 }
 
+      // 原本第三頁最上方的紅色「特別事項」目前不顯示；保留元件與複製功能程式碼供日後使用。
       const customAlertBox = document.getElementById("customAlertBox");
-      if (itemKey === "small_business") {
-          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
-          customAlertBox.innerHTML = "※ 請至本分局 銷售稅課辦理";
-          customAlertBox.style.display = "block";
-      } else if (itemKey === "gift_tax") {
-          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
-          customAlertBox.innerHTML = "※ 請至本分局 營所遺贈稅課辦理";
-          customAlertBox.style.display = "block";
-      } else if (itemKey === "business_reg") {
-          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
-          customAlertBox.innerHTML = "※ 營業人 請至本分局銷售稅課辦理";
-          customAlertBox.style.display = "block";
-      } else if (itemKey === "issuance_item7") {
-          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
-          customAlertBox.innerHTML = "※ 倘繼承人死亡，請逕洽原申報管轄國稅局分局、稽徵所遺贈稅課(股)辦理";
-          customAlertBox.style.display = "block";
-      } else if (itemKey === "issuance_item8") {
-          customAlertBox.className = "bg-red-600 text-white text-center font-bold py-2.5 px-4 rounded-xl shadow-md text-base tracking-wider";
-          customAlertBox.innerHTML = "※ 請逕洽原申報管轄國稅局分局、稽徵所遺贈稅課(股)辦理";
-          customAlertBox.style.display = "block";
-
-      } else {
+      if (customAlertBox) {
           customAlertBox.style.display = "none";
+          customAlertBox.innerHTML = "";
       }
 
       if (targetIdentity !== null && targetIdentity !== undefined) {
@@ -2214,15 +2307,53 @@ function renderChecklist() {
     if (!currentSelectedItemKey) return;
 
     const docList = document.getElementById("docList");
-    docList.innerHTML = ""; 
+    docList.innerHTML = "";
 
-    const identityVal = document.getElementById("identitySelect").value;
+    // 「各稅核定資料」需先選擇業別，並依業別載入既有申請人與文件資料。
+    const taxTypeSelect = document.getElementById("taxTypeSelect");
+    if (currentSelectedItemKey === "tax_history" && (!taxTypeSelect || !taxTypeSelect.value)) {
+        const specialNotesPlaceholder = document.getElementById("specialNotes");
+        const alertInfoBoxPlaceholder = document.getElementById("alertInfoBox");
+        const infoImgContainerPlaceholder = document.getElementById("infoImgContainer");
+        if (specialNotesPlaceholder) specialNotesPlaceholder.classList.add("hidden");
+        if (alertInfoBoxPlaceholder) alertInfoBoxPlaceholder.classList.add("hidden");
+        if (infoImgContainerPlaceholder) infoImgContainerPlaceholder.classList.add("hidden");
+        const checklistStatusPlaceholder = document.getElementById("checklistStatus");
+        if (checklistStatusPlaceholder) {
+            checklistStatusPlaceholder.textContent = "請先選擇業別，再查看應備文件清單。";
+        }
+        syncThirdStepHistory();
+        return;
+    }
+
+    const identitySelect = document.getElementById("identitySelect");
+    let identityVal = identitySelect ? identitySelect.value : "";
+    let itemData = systemData[currentSelectedItemKey];
+    let taxHistorySourceKey = "";
+
+    if (currentSelectedItemKey === "tax_history") {
+        const taxHistoryData = getTaxHistoryData(taxTypeSelect.value);
+        if (!taxHistoryData) return;
+        taxHistorySourceKey = taxHistoryData.sourceKey;
+        itemData = taxHistoryData;
+
+        const currentIdentity = identityVal;
+        populateIdentitySelect(taxHistoryData.options, currentIdentity);
+        identityVal = identitySelect.value;
+    }
 
 // ==========================================
     // 💡 新增：處理「查調即時通知」且身分選擇「國人」時，隱藏委任代辦選項
     // ==========================================
     const agentGroup = document.getElementById("agentGroup"); // 請確保你的 HTML 中委任代辦的外框 ID 是 agentGroup
     const isAgentCheckbox = document.getElementById("isAgent");
+
+    // 第三頁最上方的紅色「特別事項」已取消顯示；保留元件供後續擴充使用。
+    const customAlertBoxForTaxHistory = document.getElementById("customAlertBox");
+    if (customAlertBoxForTaxHistory) {
+        customAlertBoxForTaxHistory.style.display = "none";
+        customAlertBoxForTaxHistory.innerHTML = "";
+    }
 
     const isIncarceratedTrustee =
         ["income_list", "property_list"].includes(currentSelectedItemKey) &&
@@ -2242,7 +2373,6 @@ function renderChecklist() {
     const infoImgContainer = document.getElementById("infoImgContainer");
     const infoImg = document.getElementById("infoImg");
 
-    const itemData = systemData[currentSelectedItemKey];
     if (!itemData) return;
 
     const selectedOpt = itemData.options.find(opt => opt.id === identityVal) || itemData.options[0];
@@ -2269,7 +2399,8 @@ let docs = [];
         }
     }
 
-    const isIssuance = currentSelectedItemKey.startsWith("issuance_item");
+    const isIssuance = currentSelectedItemKey.startsWith("issuance_item")
+        || (currentSelectedItemKey === "tax_history" && taxHistorySourceKey === "issuance_item8");
     if (isAgent) {
         if (isIssuance) {
             if (identityVal === "foreign_citizen") {
@@ -2398,9 +2529,11 @@ function getThirdStepState() {
     const identitySelect = document.getElementById("identitySelect");
     const executionSelect = document.getElementById("executionSelect");
     const isAgent = document.getElementById("isAgent");
+    const taxTypeSelect = document.getElementById("taxTypeSelect");
     return {
         itemKey: currentSelectedItemKey || "",
         identityValue: identitySelect ? identitySelect.value : "",
+        taxTypeValue: taxTypeSelect ? taxTypeSelect.value : "",
         executionValue: executionSelect ? executionSelect.value : "",
         isAgent: Boolean(isAgent && isAgent.checked)
     };
