@@ -641,6 +641,75 @@ select {
     list-style-type: disc !important;
 }
 
+    /* 第三頁上方列：一般狀態單行；只有右側標題實際放不下時才切換按鈕為兩行 */
+    #step-3 > div:first-of-type {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      column-gap: 24px;
+      align-items: start;
+    }
+    #step-3 > div:first-of-type > button {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      min-width: 0;
+    }
+    #step-3 > div:first-of-type > .text-right {
+      min-width: 0;
+      width: 100%;
+      justify-self: end;
+      text-align: right;
+    }
+    /* 預設維持一行「⭠ 回上一頁」 */
+    .step3-back-normal {
+      display: inline;
+    }
+    .step3-back-compact {
+      display: none;
+      line-height: 1.5;
+      text-align: left;
+      align-items: flex-start;
+      gap: 0.3rem;
+    }
+    .step3-back-compact .step3-back-arrow {
+      flex: 0 0 auto;
+    }
+    .step3-back-compact .step3-back-text {
+      display: inline-block;
+      text-align: left;
+    }
+    /* 僅在 JavaScript 判定右側標題需要讓位時，才啟用兩行按鈕 */
+    #step-3 > div:first-of-type.step3-compact-mode > button {
+      white-space: normal;
+      width: 5.2rem;
+      min-width: 5.2rem;
+    }
+    #step-3 > div:first-of-type.step3-compact-mode .step3-back-normal {
+      display: none;
+    }
+    #step-3 > div:first-of-type.step3-compact-mode .step3-back-compact {
+      display: inline-flex;
+    }
+
+    /* 第三頁轄區標籤：比標題小一級，固定靠右對齊 */
+    #selectedItemScope {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      text-align: right;
+    }
+    #selectedItemScope > span {
+      display: inline-block;
+      text-align: right;
+      font-size: 1.125rem !important;
+      line-height: 1.75rem !important;
+    }
+    @media (min-width: 768px) {
+      #selectedItemScope > span {
+        font-size: 1.25rem !important;
+        line-height: 1.75rem !important;
+      }
+    }
+
   </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col justify-between" onclick="closeAllDropdowns(event)">
@@ -766,7 +835,7 @@ select {
                查詢作業項目清單
             </div>
 
-          <div class="p-2 flex-1 overflow-y-auto space-y-1 custom-scrollbar">
+          <div class="p-4 flex-1 overflow-y-auto space-y-1 custom-scrollbar">
             <!-- 查詢作業原第 1、2 項：已恢復顯示 -->
             <button type="button" onclick="selectItem('tax_history')" class="service-item-button block p-3 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded transition-colors text-min-14 font-medium flex items-center justify-between gap-2">
               <span class="flex-1">1. 各稅核定資料</span>
@@ -972,9 +1041,13 @@ select {
       <div class="flex items-center justify-between border-b border-slate-300 pb-4">
         <!-- 將原本的 i 標籤換成 ⭠ -->
         <button type="button" onclick="goBack()" class="flex items-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg font-bold text-min-14 transition-all cursor-pointer">
-  ⭠ 回上一頁
+          <span class="step3-back-normal">⭠ 回上一頁</span>
+          <span class="step3-back-compact"><span class="step3-back-arrow" aria-hidden="true">⭠</span><span class="step3-back-text">回上<br>一頁</span></span>
         </button>
-        <h2 id="selectedItemTitle" tabindex="-1" class="text-xl md:text-2xl font-bold text-blue-900">服務項目詳細資料</h2>
+        <div class="text-right">
+          <h2 id="selectedItemTitle" tabindex="-1" class="text-xl md:text-2xl font-bold text-blue-900">服務項目詳細資料</h2>
+          <div id="selectedItemScope" class="mt-1 flex w-full justify-end text-right" aria-label="轄區辦理範圍"></div>
+        </div>
       </div>
 
       <!-- 條件選單卡片 -->
@@ -2172,6 +2245,89 @@ withholding_setup: {
       activeSearchIndex = -1;
     }
 
+    // 第三頁標題下方顯示第二頁相同的「跨轄區／跨區局」標籤。
+    const itemScopeLabels = {
+      tax_history: "跨區局",
+      tax_arrears: "跨區局",
+      income_list: "跨區局",
+      property_list: "跨區局",
+      deceased_data: "跨區局",
+      creditor_data: "跨區局",
+      tax_status: "跨區局",
+      business_reg: "跨區局",
+      gift_tax: "跨區局",
+      estate_tax_extension: "跨區局",
+      gift_tax_extension: "跨區局",
+      withholding_setup: "跨轄區",
+      instant_notify: "跨區局",
+      issuance_item1: "跨區局",
+      issuance_item2: "跨區局",
+      issuance_item3: "跨區局",
+      issuance_item4: "跨區局",
+      issuance_item5: "跨區局",
+      issuance_item6: "跨區局",
+      issuance_item7: "跨區局",
+      issuance_item8: "跨區局",
+      issuance_item9: "跨區局",
+      issuance_item10: "跨區局"
+    };
+
+    function updateSelectedItemScope(itemKey) {
+      const scopeContainer = document.getElementById('selectedItemScope');
+      if (!scopeContainer) return;
+
+      const scopeText = itemScopeLabels[itemKey] || "";
+      if (!scopeText) {
+        scopeContainer.innerHTML = "";
+        return;
+      }
+
+      const isCrossJurisdiction = scopeText === "跨轄區";
+      const bgClass = isCrossJurisdiction ? "bg-red-100" : "bg-orange-100";
+      const textClass = isCrossJurisdiction ? "text-red-800" : "text-orange-800";
+
+      scopeContainer.innerHTML = `<span class="${bgClass} ${textClass} text-lg md:text-xl px-3 py-1.5 rounded font-bold inline-block text-right">${scopeText}</span>`;
+    }
+
+    function updateStep3BackLayout() {
+      const step3 = document.getElementById('step-3');
+      const topRow = step3 ? step3.querySelector(':scope > div:first-of-type') : null;
+      const backButton = topRow ? topRow.querySelector(':scope > button') : null;
+      const title = document.getElementById('selectedItemTitle');
+      if (!topRow || !backButton || !title) return;
+
+      // 先以單行按鈕計算「標題自然寬度」，只有真的放不下才進入緊縮模式。
+      topRow.classList.remove('step3-compact-mode');
+
+      const probe = title.cloneNode(true);
+      probe.removeAttribute('id');
+      probe.style.position = 'absolute';
+      probe.style.visibility = 'hidden';
+      probe.style.pointerEvents = 'none';
+      probe.style.whiteSpace = 'nowrap';
+      probe.style.width = 'max-content';
+      probe.style.maxWidth = 'none';
+      probe.style.left = '-99999px';
+      probe.style.top = '0';
+      document.body.appendChild(probe);
+
+      const naturalTitleWidth = probe.getBoundingClientRect().width;
+      probe.remove();
+
+      const gap = 24;
+      const availableTitleWidth = topRow.getBoundingClientRect().width
+        - backButton.getBoundingClientRect().width
+        - gap;
+
+      if (naturalTitleWidth > availableTitleWidth + 0.5) {
+        topRow.classList.add('step3-compact-mode');
+      }
+    }
+
+    function scheduleStep3BackLayout() {
+      window.requestAnimationFrame(updateStep3BackLayout);
+    }
+
     function selectItem(itemKey, targetIdentity = null, options = {}) {
       currentSelectedItemKey = itemKey;
       const data = systemData[itemKey];
@@ -2179,6 +2335,8 @@ withholding_setup: {
       const restoredState = options.restoredState || null;
 
       document.getElementById('selectedItemTitle').textContent = data.title;
+      updateSelectedItemScope(itemKey);
+      scheduleStep3BackLayout();
 
       const identitySelect = document.getElementById("identitySelect");
       const taxTypeSubGroup = document.getElementById("taxTypeSubGroup");
@@ -2576,6 +2734,7 @@ function generateFormattedText() {
 
         const identitySelect = document.getElementById("identitySelect");
         const executionSelect = document.getElementById("executionSelect");
+        const taxTypeSelect = document.getElementById("taxTypeSelect");
         const isAgent = document.getElementById("isAgent").checked;
 
         const isWithholding = (currentSelectedItemKey === "withholding_setup");
@@ -2593,7 +2752,22 @@ function generateFormattedText() {
             ? identitySelect.options[identitySelect.selectedIndex].text 
             : "";
 
-        text += "• 查詢項目：" + itemData.title + "\n";
+        // 各稅核定資料：複製內容需一併帶出目前選擇的「業別」，與第三頁畫面一致。
+        let selectedTaxTypeText = (taxTypeSelect && taxTypeSelect.selectedIndex >= 0 && taxTypeSelect.options[taxTypeSelect.selectedIndex])
+            ? taxTypeSelect.options[taxTypeSelect.selectedIndex].text
+            : "";
+
+        // 複製清單的項目名稱加入第二頁實際序號，第三頁標題本身仍不加序號。
+        const itemNumber = visibleItemNumbers[currentSelectedItemKey];
+        const numberedItemTitle = itemNumber ? `${itemNumber}. ${itemData.title}` : itemData.title;
+        const scopeText = itemScopeLabels[currentSelectedItemKey] || "";
+        const itemTitleWithScope = scopeText ? `${numberedItemTitle}（${scopeText}）` : numberedItemTitle;
+
+        text += "• 查詢項目：" + itemTitleWithScope + "\n";
+
+        if (currentSelectedItemKey === "tax_history" && selectedTaxTypeText) {
+            text += "• 業別：" + selectedTaxTypeText + "\n";
+        }
         
         if (isWithholding) {
             if (selectedOptionText) {
@@ -3032,6 +3206,19 @@ function clearSearch() {
 }
 
 // 監聽輸入框變化以決定是否顯示按鈕（使用 DOM 載入後監聽或確保元素存在）
+window.addEventListener('resize', scheduleStep3BackLayout);
+
+if (window.ResizeObserver) {
+  const step3LayoutObserver = new ResizeObserver(scheduleStep3BackLayout);
+  window.addEventListener('DOMContentLoaded', () => {
+    const topRow = document.querySelector('#step-3 > div:first-of-type');
+    const title = document.getElementById('selectedItemTitle');
+    if (topRow) step3LayoutObserver.observe(topRow);
+    if (title) step3LayoutObserver.observe(title);
+    scheduleStep3BackLayout();
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // 將初始畫面設為站內第一層，之後每進入一層都會建立瀏覽器歷史紀錄。
   try {
