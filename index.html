@@ -630,13 +630,15 @@ select {
 
 /* 強制讓注意事項的清單顯示預設圓點 */
 #alertInfoBox ul,
-#issuanceGlobalNotice ul {
+#issuanceGlobalNotice ul,
+#taxHistoryNotice ul {
     list-style-type: disc !important;
     padding-left: 1.25rem !important; /* 確保有足夠的縮排空間放圓點 */
 }
 
 #alertInfoBox li,
-#issuanceGlobalNotice li {
+#issuanceGlobalNotice li,
+#taxHistoryNotice li {
     display: list-item !important; /* 強制以清單項目模式顯示 */
     list-style-type: disc !important;
 }
@@ -1145,17 +1147,6 @@ select {
 
         <!-- 特別備註 -->
         <div id="specialNotes" class="mt-4 hidden bg-red-50 p-4 rounded-xl border border-red-200 text-red-800 text-sm leading-relaxed font-medium whitespace-pre-line"></div>
-
-        <!-- 各稅核定資料專屬注意事項 -->
-        <div id="taxHistoryNotice" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
-          <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
-          <ul class="list-disc pl-5 space-y-1">
-            <li>查詢綜合所得稅核定資料時，申請人需為納稅義務人本人，若為配偶或受扶養親屬仍需檢附委任書或授權書</li>
-            <li>核定資料清單不得據以申請復查</li>
-            <li>營業稅核定資料僅能跨轄區</li>
-          </ul>
-        </div>
-
         <!-- 複製與列印功能按鈕 -->
         <div class="pt-2 flex flex-wrap gap-4">
           <button type="button" id="copyChecklistBtn" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer">
@@ -1170,6 +1161,16 @@ select {
         <div class="mt-4 p-4 rounded-xl text-sm leading-relaxed" style="background: linear-gradient(135deg, #fffaf0 0%, #fff3e0 100%); border: 1px solid #fdba74; color: #78350f;">
           <strong class="block text-base mb-2" style="color: #9a3412;">🔔 溫馨提醒：</strong>
           <p>本清單僅供參考，實際文件請以各地區國稅局、稽徵所全功能服務櫃檯審核為準。如有疑問歡迎洽詢免付費專線：0800-000-321</p>
+        </div>
+
+        <!-- 各稅核定資料專屬注意事項 -->
+        <div id="taxHistoryNotice" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
+          <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>查詢綜合所得稅核定資料時，申請人需為納稅義務人本人，若為配偶或受扶養親屬仍需檢附委任書或授權書</li>
+            <li>核定資料清單不得據以申請復查</li>
+            <li>營業稅核定資料僅能跨轄區</li>
+          </ul>
         </div>
 
         <!-- 注意事項說明區 -->
@@ -1438,7 +1439,7 @@ official48Items.forEach(item => {
                 { id: "corp_biz", name: "債權人（營利事業）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_biz], hint: "" },
                 { id: "corp_group", name: "債權人（機關團體）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_group] },
                 { id: "condo_committee", name: "債權人（公寓大廈管理委員會）", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_CONDO', '應檢附原取得執行名義時，呈送法院經認定具當事人資格之證明文件'] },
-                { id: "minor", name: "債權人（未成年人）" , role:"法定代理人或監護人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.minor] },
+                { id: "minor", name: "債權人（未成年人）" , role:"法定代理人或監護人", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_WITH_STAMP', ] },
 
             ]
         },
@@ -1464,8 +1465,12 @@ official48Items.forEach(item => {
         },
         gift_tax: {
             title: "全國贈與資料查詢",
+            hint: "※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種",
             options: [
-                { id: "donor", name: "贈與人", docs: ["ID_CARD"] }
+                { id: "local_citizen", name: "贈與人（國民）", role: "贈與人", docs: ["ID_CARD"] },
+                { id: "foreign_citizen", name: "贈與人（外籍人士）", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
+                { id: "mainland_citizen", name: "贈與人（大陸人士）", docs: ["ID_CARD_MAINLAND_NOTIFY"] },
+                { id: "heir_gift", name: "贈與人已死亡，由繼承人提出申請查詢者", docs: ["需附被繼承人死亡除戶資料（如死亡診斷證明書或載有死亡日期之戶口名簿影本等），如非配偶或民法第1138條第一順位繼承人，應另檢附加蓋申請人印章之繼承系統表", "納稅義務人（繼承人）身分證正本"] }
             ]
         },
         estate_tax_extension: { 
@@ -1483,9 +1488,12 @@ official48Items.forEach(item => {
 
         gift_tax_extension: { 
             title: "贈與稅延期申報", 
-            hint: "※ 納稅義務人無法於規定期限申報贈與稅，為避免逾期申報受罰，提供贈與稅延期申報作業", 
+            hint: "※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種",
             options: [
-                { id: "donor", name: "贈與人", docs: ["ID_CARD", "贈與契約書影本", "若贈與人係在中華民國境外委託時，應檢附經我國駐外單位簽證之授權書"] }
+                { id: "local_citizen", name: "贈與人（國民）", role: "贈與人", docs: ["ID_CARD"] },
+                { id: "foreign_citizen", name: "贈與人（外籍人士）", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
+                { id: "mainland_citizen", name: "贈與人（大陸人士）", docs: ["ID_CARD_MAINLAND_NOTIFY"] },
+                { id: "heir_gift", name: "贈與人已死亡，由繼承人提出申請查詢者", docs: ["需附被繼承人死亡除戶資料（如死亡診斷證明書或載有死亡日期之戶口名簿影本等），如非配偶或民法第1138條第一順位繼承人，應另檢附加蓋申請人印章之繼承系統表", "納稅義務人（繼承人）身分證正本"] }
             ]
         },
 
@@ -1571,7 +1579,7 @@ withholding_setup: {
         ]},
         issuance_item7: { title: "補發遺產稅證明書", hint:"※ 死亡人為非中華民國國民或經常居住中華民國境外之中華民國國民，檢附國外出具之相關證明文件，應經我國當地駐外機構簽證\n※ 提供補發之證明書計有遺產稅繳清證明書、遺產稅免稅證明書、遺產稅逾核課期間案件同意移轉證明書、遺產稅不計入遺產總額證明書等四種", options: [
             { id: "local_citizen", name: "繼承人（滿18歲之個人）", role: "繼承人", docs: issuanceCommon.heir_Proof , img: "流程圖.jpg"},
-            { id: "mainland_citizen", name: "繼承人（大陸地區人民）", docs: issuanceCommon.mainland_citizen_HeirProof , img: "流程圖.jpg"},
+            { id: "mainland_citizen", name: "繼承人（大陸人士）", docs: issuanceCommon.mainland_citizen_HeirProof , img: "流程圖.jpg"},
             { id: "mainland_spouse", name: "繼承人（大陸籍配偶）", docs: issuanceCommon.mainland_spouse_HeirProof , img: "流程圖.jpg"},
             { id: "foreign_citizen", name: "繼承人（外籍人士）", docs: issuanceCommon.foreign_HeirProof , img: "流程圖.jpg"},
           { id: "minor", name: "繼承人（未成年人）" , role:"法定代理人或監護人", docs: [...common.minor , ...common.estate], img: "流程圖.jpg" },
@@ -1594,6 +1602,21 @@ withholding_setup: {
             { id: "minor", name: "申請人如屬未成年者", role: "法定代理人或監護人", docs: issuanceCommon.minor }
         ]}
     });
+
+    // 查詢10、申辦2第三頁內容與核發書證8保持完全一致；僅保留各自的作業標題。
+    const giftIssuance8 = systemData.issuance_item8;
+    if (giftIssuance8) {
+        systemData.gift_tax = {
+            title: "全國贈與資料查詢",
+            hint: giftIssuance8.hint || "",
+            options: giftIssuance8.options.map(opt => ({ ...opt, docs: Array.isArray(opt.docs) ? [...opt.docs] : opt.docs }))
+        };
+        systemData.gift_tax_extension = {
+            title: "贈與稅延期申報",
+            hint: giftIssuance8.hint || "",
+            options: giftIssuance8.options.map(opt => ({ ...opt, docs: Array.isArray(opt.docs) ? [...opt.docs] : opt.docs }))
+        };
+    }
 
     // 各稅核定資料 9 種業別：申請人與應備文件均直接沿用既有查詢／核發項目的資料。
     const taxHistoryTypeConfig = {
@@ -1675,9 +1698,9 @@ withholding_setup: {
       { path: "查詢作業 > 6. 債權人查調債務人課稅資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["債權人查調債務人課稅資料查詢", "債權人查調", "債權人（個人）"], key: "creditor_data", targetIdentity: "citizen", isReady: true },
       { path: "查詢作業 > 7. 綜合所得稅稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["綜合所得稅稅籍查詢", "綜所稅稅籍"], key: "tax_status", targetIdentity: "indiv", isReady: true },
       { path: "查詢作業 > 8. 營業人暨扣繳單位稅籍查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營業人暨扣繳單位稅籍查詢", "營業人稅籍查詢"], key: "business_reg", targetIdentity: "corp", isReady: true },
-      { path: "查詢作業 > 9. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: [], key: "gift_tax", targetIdentity: "local_citizen", isReady: true },
+      { path: "查詢作業 > 9. 全國贈與資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["全國贈與資料查詢", "贈與資料查詢"], key: "gift_tax", targetIdentity: "local_citizen", isReady: true },
       { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["遺產稅延期申報"], key: "estate_tax_extension", targetIdentity: "citizen", isReady: true },
-      { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與人", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["贈與人"], key: "gift_tax_extension", targetIdentity: "local_citizen", isReady: true },
+      { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與人（國民）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["贈與人", "國民"], key: "gift_tax_extension", targetIdentity: "local_citizen", isReady: true },
       { path: "申辦作業 > 3. 扣繳單位設立、變更登記（統一編號編配）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["扣繳單位設立、變更登記（統一編號編配）", "扣繳單位設立", "統一編號編配"], key: "withholding_setup", targetIdentity: "1", isReady: true },
       { path: "申辦作業 > 4. 查調即時通知", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900",  keywords: ["查調即時通知"], key: "instant_notify", targetIdentity: "local", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["各項稅款補發稅單", "補發稅單", "稅單"], key: "issuance_item1", targetIdentity: "local_citizen", isReady: true },
@@ -1817,7 +1840,7 @@ withholding_setup: {
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item6", targetIdentity: "corp_biz", isReady: true },
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 機關團體", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item6", targetIdentity: "corp_group", isReady: true },
       { path: "核發書證 > 6. 核發扣繳稅繳納證明 > 房東", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["房東", "出租人"], key: "issuance_item6", targetIdentity: "landlord", isReady: true },
-      { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸地區人民）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item7", targetIdentity: "mainland_citizen", isReady: true },
+      { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item7", targetIdentity: "mainland_citizen", isReady: true },
       { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（大陸籍配偶）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸籍配偶", "大陸配偶"], key: "issuance_item7", targetIdentity: "mainland_spouse", isReady: true },
       { path: "核發書證 > 7. 補發遺產稅證明書 > 繼承人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item7", targetIdentity: "foreign_citizen", isReady: true },
       { path: "核發書證 > 8. 補發贈與稅證明書 > 贈與人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item8", targetIdentity: "foreign_citizen", isReady: true },
@@ -1859,7 +1882,9 @@ withholding_setup: {
     function getCanonicalApplicantName(item) {
       const data = (item.key === "tax_history" && item.targetTaxType)
         ? getTaxHistoryData(item.targetTaxType)
-        : systemData[item.key];
+        : ((item.key === "gift_tax" || item.key === "gift_tax_extension") && systemData.issuance_item8)
+          ? systemData.issuance_item8
+          : systemData[item.key];
       if (!data || !Array.isArray(data.options)) return "";
 
       const target = String(item.targetIdentity ?? "");
@@ -2573,7 +2598,9 @@ let docs = [];
     }
 
     const isIssuance = currentSelectedItemKey.startsWith("issuance_item")
-        || (currentSelectedItemKey === "tax_history" && taxHistorySourceKey === "issuance_item8");
+        || (currentSelectedItemKey === "tax_history" && taxHistorySourceKey === "issuance_item8")
+        || currentSelectedItemKey === "gift_tax"
+        || currentSelectedItemKey === "gift_tax_extension";
     if (isAgent) {
         if (isIssuance) {
             if (identityVal === "foreign_citizen") {
@@ -2668,20 +2695,48 @@ let docs = [];
         specialNotes.classList.add("hidden");
     }
     const taxHistoryNotice = document.getElementById("taxHistoryNotice");
-    taxHistoryNotice?.classList.toggle("hidden", currentSelectedItemKey !== "tax_history");
+    const issuanceGlobalNotice = document.getElementById("issuanceGlobalNotice");
+    const selectedIdentityName = selectedOpt.name || "";
+    const isBusinessEntity = ["corp_biz", "corp_group", "corp"].includes(identityVal)
+        || selectedIdentityName.includes("營利事業")
+        || selectedIdentityName.includes("機關團體");
+
+    // 各稅核定資料：固定注意事項置於上方；若所選身分為營利事業／機關團體，
+    // 再將原本的企業／機關團體注意事項接在同一框最下方，避免產生第二個注意事項框。
+    if (currentSelectedItemKey === "tax_history") {
+        const taxNoticeItems = taxHistoryNotice?.querySelector("ul");
+        if (taxNoticeItems) {
+            const baseItems = [
+                "查詢綜合所得稅核定資料時，申請人需為納稅義務人本人，若為配偶或受扶養親屬仍需檢附委任書或授權書",
+                "核定資料清單不得據以申請復查",
+                "營業稅核定資料僅能跨轄區"
+            ];
+            taxNoticeItems.innerHTML = baseItems.map(text => `<li>${text}</li>`).join("");
+
+            if (isBusinessEntity) {
+                const businessNoticeItems = [
+                    "納稅義務人為營利事業或機關團體，應檢附公司登記證明文件或商業登記證明文件或法人登記證影本（90年11月12日公司法修正後），得以 (1)中央或地方政府核發之核准函及公司申請設立或變更之登記表，或(2)公司法第392條規定之登記事項證明書(代替)，並應由申請人或代理人具結「與正本相符，如有不符願負法律責任」。",
+                    "外國法人在臺未辦登記者，應檢附經我國當地駐外機構簽證之授權書及該法人組織於當地國核准設立之證明文件。若當地國核准設立之證明文件無法確認授權者之授權行為是否合法適格，應另檢附公司章程或其他證明文件以表彰其為該法人執行業務範圍之負責人、經理人身分。如文件為外文者，並應檢附駐外機構驗證或國內公證人認證之中譯本。"
+                ];
+                businessNoticeItems.forEach(text => {
+                    const li = document.createElement("li");
+                    li.textContent = text;
+                    taxNoticeItems.appendChild(li);
+                });
+            }
+        }
+        taxHistoryNotice?.classList.remove("hidden");
+        issuanceGlobalNotice?.classList.add("hidden");
+    } else {
+        taxHistoryNotice?.classList.add("hidden");
+        issuanceGlobalNotice?.classList.toggle("hidden", !isBusinessEntity);
+    }
 
     if (currentSelectedItemKey === "withholding_setup") {
         alertInfoBox.classList.remove("hidden");
     } else {
         alertInfoBox.classList.add("hidden");
     }
-
-    const issuanceGlobalNotice = document.getElementById("issuanceGlobalNotice");
-    const selectedIdentityName = selectedOpt.name || "";
-    const isBusinessEntity = ["corp_biz", "corp_group", "corp"].includes(identityVal)
-        || selectedIdentityName.includes("營利事業")
-        || selectedIdentityName.includes("機關團體");
-    issuanceGlobalNotice.classList.toggle("hidden", !isBusinessEntity);
 
     if (selectedOpt.img) {
         infoImg.src = selectedOpt.img;
@@ -3145,6 +3200,7 @@ function generateFormattedText() {
   <pre id="printContent"></pre>
   ${imageHtml}
 </body>
+<!-- 本版同步修正：各稅核定注意事項版型與查詢9（全國贈與）／申辦2比照核發書證8完整同步。 -->
 </html>`);
         printWindow.document.close();
 
