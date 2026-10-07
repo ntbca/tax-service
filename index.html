@@ -263,6 +263,16 @@ a {
     .bg-orange-100 { background-color: #ffedd5 !important; }
     .bg-purple-900 {background-color: #581c87 !important; /* Tailwind 標準 purple-900 色碼 */}
     .bg-purple-100 {  background-color: #f3e8ff !important;  }
+    /* 其他作業專用灰色系 Tailwind 自訂色彩 */
+    .bg-other-50 { background-color: #f9fafb; }
+    .bg-other-100 { background-color: #f3f4f6; }
+    .bg-other-200 { background-color: #e5e7eb; }
+    .bg-other-300 { background-color: #d1d5db; }
+    .bg-other-700 { background-color: #374151; }
+    .text-other-700 { color: #374151; }
+    .text-other-800 { color: #1f2937; }
+    .border-other-200 { border-color: #e5e7eb; }
+    .border-other-300 { border-color: #d1d5db; }
 
     .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
     .from-blue-900 { --tw-gradient-from: #1e3a8a; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(30, 58, 138, 0)); }
@@ -400,6 +410,10 @@ a {
     .hover\:bg-slate-800:hover { background-color: #1e293b; }
     .hover\:bg-orange-50:hover { background-color: #fff7ed !important; } 
     .hover\:bg-purple-50:hover {background-color: #faf5ff !important;  }
+    .hover\:bg-other-50:hover { background-color: #f9fafb; }
+    .hover\:bg-other-100:hover { background-color: #f3f4f6; }
+    .hover\:text-other-700:hover { color: #374151; }
+    .hover\:bg-other-700:hover { background-color: #374151; }
      .hover\:text-purple-900:hover {color: #581c87 !important;  }
     .hover\:text-orange-700:hover { color: #c2410c !important; }
     .hover\:text-white:hover { color: #ffffff; }
@@ -576,23 +590,117 @@ a {
   text-align: left;
 }
 
-/* 電腦版 (寬度 1100px 以上)：三欄橫向排列，以內容最長欄位為準等高對齊 */
+/* 電腦版 (寬度 1100px 以上)：三大欄；中間欄上下分割為「申辦」與「其他作業」。
+   左側查詢與右側核發各維持完整高度，中間上下兩區共用同一欄位。 */
 @media (min-width: 1100px) {
   .service-note-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: 2rem;
   }
+
   .custom-card-container {
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: "query middle issuance";
+    gap: 1.5rem;
     align-items: stretch;
   }
+
   .custom-card-container > div {
-    height: auto !important;
+    min-width: 0;
+    height: 700px !important;
   }
+
+  .custom-card-container > div:first-child {
+    grid-area: query;
+  }
+
+  .desktop-middle-service-column {
+    grid-area: middle;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 700px !important;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .desktop-middle-service-column > .application-service-card,
+  .desktop-middle-service-column > .other-service-container {
+    flex: 1 1 0%;
+    min-height: 0;
+    height: auto !important;
+    margin: 0;
+  }
+
+  .desktop-middle-service-column > .application-service-card,
+  .desktop-middle-service-column > .other-service-container .other-service-card {
+    min-height: 0;
+    height: 100% !important;
+  }
+
+  .issuance-service-card {
+    grid-area: issuance;
+  }
+
   .custom-card-container .p-2,
   .custom-card-container .p-4 {
     overflow-y: visible !important;
+  }
+}
+
+/* 第二頁「其他服務項目」：桌機位於申辦欄下半部；手機排在核發書證後面 */
+.other-service-container {
+  width: 100%;
+  margin-top: 0;
+}
+
+.other-service-card {
+  width: 100%;
+  min-height: 0;
+}
+
+.other-service-card .service-item-button {
+  color: #374151;
+  font-weight: 600;
+}
+
+@media (max-width: 1099px) {
+  /* 手機直式：查詢 → 申辦 → 核發 → 其他作業。
+     中間欄 wrapper 只在窄畫面拆開呈現，避免「其他作業」插到核發之前。 */
+  .custom-card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .desktop-middle-service-column {
+    display: contents;
+  }
+
+  .desktop-middle-service-column > .application-service-card {
+    order: 2;
+  }
+
+  .issuance-service-card {
+    order: 3;
+  }
+
+  .desktop-middle-service-column > .other-service-container {
+    order: 4;
+  }
+
+  .custom-card-container > div:first-child {
+    order: 1;
+  }
+
+  .other-service-container {
+    margin-top: 0;
+  }
+
+  .other-service-card {
+    min-height: 0;
   }
 }
 
@@ -909,8 +1017,10 @@ select {
           </div>
         </div>
 
-<!-- 卡片 2：申辦作業項目清單 (全面使用 Tailwind orange 系列) -->
-        <div class="bg-white rounded-2xl shadow-lg border border-purple-200 overflow-hidden flex flex-col h-[700px] flex-1">
+        <div class="desktop-middle-service-column">
+
+        <!-- 卡片 2：申辦作業項目清單 (全面使用 Tailwind orange 系列) -->
+        <div class="application-service-card bg-white rounded-2xl shadow-lg border border-purple-200 overflow-hidden flex flex-col h-auto flex-1">
           <div class="bg-purple-900 text-white p-5 text-center font-bold text-lg md:text-xl flex items-center justify-center gap-2 shadow-sm">
              申辦作業項目清單
           </div>
@@ -940,18 +1050,34 @@ select {
                 <span class="text-slate-400 font-bold">❯</span>
               </span>
             </button>
-            <button type="button" onclick="selectItem('instant_notify')" class="service-item-button block p-3 hover:bg-purple-50 text-slate-700 hover:text-purple-900 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2">
-              <span class="flex-1">4. 查調即時通知</span>
-              <span class="flex items-center gap-2 flex-shrink-0">
-                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold">跨區局</span>
-                <span class="text-slate-400 font-bold">❯</span>
-              </span>
-            </button>
           </div>
         </div>
 
+
+      <!-- 下半區：其他服務項目 -->
+      <div class="other-service-container">
+        <div class="other-service-card bg-white rounded-2xl shadow-lg border border-other-300 overflow-hidden flex flex-col">
+          <div class="bg-other-700 text-white p-5 text-center font-bold text-lg md:text-xl flex items-center justify-center gap-2 shadow-sm">
+             其他服務項目
+          </div>
+          <div class="p-4 space-y-1">
+            <button type="button" onclick="selectItem('instant_notify')" class="service-item-button block p-3 hover:bg-other-50 text-slate-700 hover:text-other-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2">
+              <span class="flex-1">1. 查調即時通知</span>
+              <span class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-slate-400 font-bold">❯</span>
+              </span>
+            </button>
+            <button type="button" onclick="selectItem('other_proxy_restriction')" class="service-item-button block p-3 hover:bg-other-50 text-slate-700 hover:text-other-700 rounded transition-colors text-min-14 font-semibold flex items-center justify-between gap-2">
+              <span class="flex-1">2. 限制他人代理本人查調所得、財產資料</span>
+              <span class="text-slate-400 font-bold">❯</span>
+            </button>
+          </div>
+        </div>
+      </div>
+        </div>
+
         <!-- 卡片 3：核發書證項目清單 -->
-          <div class="bg-white rounded-2xl shadow-lg border border-teal-100 overflow-hidden flex flex-col h-[700px] flex-1">
+          <div class="issuance-service-card bg-white rounded-2xl shadow-lg border border-teal-100 overflow-hidden flex flex-col h-[700px] flex-1">
             <div class="bg-teal-800 text-white p-5 text-center font-bold text-lg md:text-xl flex items-center justify-center gap-2 shadow-sm">
                核發書證項目清單
             </div>
@@ -1123,6 +1249,17 @@ select {
           </select>
         </div>
 
+        <!-- 其他作業：限制代理專用的第二層「申請原因」選單 -->
+        <div id="reasonGroup" class="mt-4 space-y-2 hidden">
+          <label for="reasonSelect" class="font-bold text-slate-800 text-base md:text-lg flex items-center gap-2">
+            <span class="w-7 h-7 bg-blue-600 text-white rounded-full inline-flex items-center justify-center text-sm">2</span>
+            請選擇申請原因：
+          </label>
+          <select id="reasonSelect" onchange="renderChecklist()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none text-slate-700 font-medium bg-slate-50 hover:bg-white transition-colors cursor-pointer">
+            <option value="" selected disabled>請選擇申請原因</option>
+          </select>
+        </div>
+
         <!-- 委任代理勾選框 -->
         <div id="agentGroup" class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-xl">
           <label class="flex items-start gap-3 cursor-pointer text-amber-900 font-medium">
@@ -1167,9 +1304,7 @@ select {
         <div id="taxHistoryNotice" class="mt-4 hidden bg-amber-50 border border-amber-200 p-5 rounded-xl text-amber-900 text-sm leading-relaxed space-y-2">
           <strong class="text-base text-amber-950 flex items-center gap-1">💡 注意事項：</strong>
           <ul class="list-disc pl-5 space-y-1">
-            <li>查詢綜合所得稅核定資料時，申請人需為納稅義務人本人，若為配偶或受扶養親屬仍需檢附委任書或授權書</li>
             <li>核定資料清單不得據以申請復查</li>
-            <li>營業稅核定資料僅能跨轄區</li>
           </ul>
         </div>
 
@@ -1233,6 +1368,13 @@ function getStdIdText() {
     const STD_ID = "STD_ID";
     const STD_TAX = "所在地全部所有權人最近一期房屋稅單影本或房屋稅籍證明文件（如為承租房屋請加附租賃合約書影本）";
     const STD_EXAM = "主管機關核准文件及相關證書影本<br><strong>考試及格證書/開業執照/執業執照影本</strong>";
+
+    // 「限制他人代理本人查調所得、財產資料」固定文件代碼。
+    // 六種申請原因皆共用，後續修改文件名稱只需調整此處。
+    const OTHER_PROXY_RESTRICTION_DOCS = {
+        ID_CARD: "申請人身分證正本",
+        APPLICATION_FORM: "限制他人代理本人查調所得、財產資料申請書"
+    };
 
     // 債權人查調：下拉選單顯示名稱維持不變，清單改顯示各執行名義應附文件全文
     const creditorExecutionDocs = {
@@ -1439,7 +1581,7 @@ official48Items.forEach(item => {
                 { id: "corp_biz", name: "債權人（營利事業）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_biz], hint: "" },
                 { id: "corp_group", name: "債權人（機關團體）", role: "負責人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.corp_group] },
                 { id: "condo_committee", name: "債權人（公寓大廈管理委員會）", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_CONDO', '應檢附原取得執行名義時，呈送法院經認定具當事人資格之證明文件'] },
-                { id: "minor", name: "債權人（未成年人）" , role:"法定代理人或監護人", docs: ['債權人查調債務人財產及所得資料申請書', 'ID_CARD_WITH_STAMP', ] },
+                { id: "minor", name: "債權人（未成年人）" , role:"法定代理人或監護人", docs: ['債權人查調債務人財產及所得資料申請書', ...common.minor ] },
 
             ]
         },
@@ -1465,7 +1607,7 @@ official48Items.forEach(item => {
         },
         gift_tax: {
             title: "全國贈與資料查詢",
-            hint: "※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種",
+            hint: "※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理",
             options: [
                 { id: "local_citizen", name: "贈與人（國民）", role: "贈與人", docs: ["ID_CARD"] },
                 { id: "foreign_citizen", name: "贈與人（外籍人士）", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
@@ -1488,12 +1630,29 @@ official48Items.forEach(item => {
 
         gift_tax_extension: { 
             title: "贈與稅延期申報", 
-            hint: "※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理\n※ 提供補發之證明書計有贈與稅繳清證明書、贈與稅免稅證明書、贈與稅不計入贈與總額證明書等三種",
+            hint: "※ 申請人應為贈與人，若由受贈人申請，應依代理人相關規定辦理",
             options: [
                 { id: "local_citizen", name: "贈與人（國民）", role: "贈與人", docs: ["ID_CARD"] },
                 { id: "foreign_citizen", name: "贈與人（外籍人士）", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
                 { id: "mainland_citizen", name: "贈與人（大陸人士）", docs: ["ID_CARD_MAINLAND_NOTIFY"] },
                 { id: "heir_gift", name: "贈與人已死亡，由繼承人提出申請查詢者", docs: ["需附被繼承人死亡除戶資料（如死亡診斷證明書或載有死亡日期之戶口名簿影本等），如非配偶或民法第1138條第一順位繼承人，應另檢附加蓋申請人印章之繼承系統表", "納稅義務人（繼承人）身分證正本"] }
+            ]
+        },
+
+        other_proxy_restriction: {
+            title: "限制他人代理本人查調所得、財產資料",
+            hint: "",
+            commonDocs: ["OTHER_PROXY_RESTRICTION_ID_CARD", "OTHER_PROXY_RESTRICTION_APPLICATION_FORM"],
+            options: [
+                { id: "self", name: "申請人（本人）", docs: [] }
+            ],
+            reasonOptions: [
+                { id: "lost_stolen", name: "1. 身分證遺失、遭竊或其他因素喪失，恐遭他人冒用變造", docs: ["戶政或警察等相關機關之證明文件"] },
+                { id: "misused_by_handler", name: "2. 身分證遭其他經手人或同居人利用，持以核發所得、財產等課稅資料，並據以向銀行辦理貸款或信用卡詐財等不法情事", docs: ["法院或金融機構等相關證明文件"] },
+                { id: "debt_deposited_or_paid", name: "3. 債務已提存或清償", docs: ["法院提存證明或已清償之確定判決"] },
+                { id: "mof_project_approval", name: "4. 財政部專案核准", docs: ["財政部相關之證明文件"] },
+                { id: "domestic_violence", name: "5. 家暴案件", docs: ["法院家暴令證明"] },
+                { id: "other", name: "6. 其他", docs: [] }
             ]
         },
 
@@ -1619,16 +1778,206 @@ withholding_setup: {
     }
 
     // 各稅核定資料 9 種業別：申請人與應備文件均直接沿用既有查詢／核發項目的資料。
+    /* =========================================================
+       查詢作業第 1 項：各稅核定資料－第三頁資料設定
+       ---------------------------------------------------------
+       每一種業別獨立列出，後續修改時可直接找到對應區塊。
+       重複的檢附文件盡量沿用既有 common / issuanceCommon 代碼，
+       修改共用文件時，不必逐一修改 9 種業別。
+       ========================================================= */
+
+    // 共用申請人／檢附文件設定
+    const taxHistorySharedOptions = {
+      personal: {
+        id: "individual",
+        name: "納稅義務人（個人）",
+        docs: ["ID_CARD"]
+      },
+      corpBiz: {
+        id: "corp_biz",
+        name: "納稅義務人（營利事業）",
+        role: "負責人",
+        docs: [...common.corp_biz]
+      },
+      corpGroup: {
+        id: "corp_group",
+        name: "納稅義務人（機關團體）",
+        role: "負責人",
+        docs: [...common.corp_group]
+      }
+    };
+
+    // 各稅核定資料 9 種業別
     const taxHistoryTypeConfig = {
-      income_tax: { sourceKey: "tax_history", rename: { indiv: "國人", corp_biz: "營利事業", corp_group: "機關團體" } },
-      estate_tax: { sourceKey: "deceased_data" },
-      gift_tax: { sourceKey: "issuance_item8" },
-      securities_transaction_tax: { sourceKey: "tax_arrears", filter: ["indiv", "corp_biz"], rename: { indiv: "代徵人（個人）", corp_biz: "代徵人（營利事業）" } },
-      futures_transaction_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"], hideHint: true },
-      tobacco_alcohol_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"], hideHint: true },
-      small_business_sales_tax: { sourceKey: "small_business" },
-      commodity_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"] },
-      business_tax: { sourceKey: "issuance_item9", filter: ["individual", "corp_biz"] },
+
+      /* 1. 所得稅核定資料查詢 */
+      income_tax: {
+        sourceKey: "tax_history",
+        title: "所得稅核定資料查詢",
+        options: [
+          { id: "indiv", name: "國人", docs: ["ID_CARD"] },
+          { id: "corp_biz", name: "營利事業", role: "負責人", docs: [...common.corp_biz] },
+          { id: "corp_group", name: "機關團體", role: "負責人", docs: [...common.corp_group] }
+        ]
+      },
+
+      /* 2. 遺產稅核定資料查詢 */
+      estate_tax: {
+        sourceKey: "deceased_data",
+        title: "遺產稅核定資料查詢",
+        hint: systemData.deceased_data.hint || "",
+        options: [
+          {
+            id: "citizen",
+            name: "繼承人（滿18歲之個人）",
+            role: "繼承人",
+            docs: ["ID_CARD", ...common.estate],
+            img: "流程圖.jpg"
+          },
+          {
+            id: "mainland",
+            name: "繼承人（大陸地區人民）",
+            docs: ["ID_CARD_MAINLAND_HEIR", ...common.estate],
+            img: "流程圖.jpg"
+          },
+          {
+            id: "mainland_spouse",
+            name: "繼承人（大陸籍配偶）",
+            docs: ["ID_CARD_MAINLAND_SPOUSE", ...common.estate],
+            img: "流程圖.jpg"
+          },
+          {
+            id: "foreign",
+            name: "繼承人（外籍人士）",
+            docs: ["ID_CARD_FOREIGN_HEIR", ...common.estate_foreign],
+            img: "流程圖.jpg"
+          },
+          {
+            id: "minor",
+            name: "繼承人（未成年人）",
+            role: "法定代理人或監護人",
+            docs: [...common.minor, ...common.estate],
+            img: "流程圖.jpg"
+          }
+        ]
+      },
+
+      /* 3. 贈與稅核定資料查詢 */
+      gift_tax: {
+        sourceKey: "issuance_item8",
+        title: "贈與稅核定資料查詢",
+        hint: systemData.issuance_item8.hint || "",
+        options: [
+          { id: "local_citizen", name: "贈與人（國民）", role: "贈與人", docs: ["ID_CARD"] },
+          { id: "foreign_citizen", name: "贈與人（外籍人士）", docs: ["ID_CARD_FOREIGN_NOTIFY"] },
+          { id: "mainland_citizen", name: "贈與人（大陸人士）", docs: ["ID_CARD_MAINLAND_NOTIFY"] },
+          {
+            id: "heir_gift",
+            name: "贈與人已死亡，由繼承人提出申請查詢者",
+            docs: [
+              "需附被繼承人死亡除戶資料（如死亡診斷證明書或載有死亡日期之戶口名簿影本等），如非配偶或民法第1138條第一順位繼承人，應另檢附加蓋申請人印章之繼承系統表",
+              "納稅義務人（繼承人）身分證正本"
+            ]
+          }
+        ]
+      },
+
+      /* 4. 證券交易稅核定資料查詢 */
+      securities_transaction_tax: {
+        sourceKey: "tax_arrears",
+        title: "證券交易稅核定資料查詢",
+        options: [
+          {
+            id: "indiv",
+            name: "代徵人（個人）",
+            docs: [...taxHistorySharedOptions.personal.docs]
+          },
+          {
+            id: "corp_biz",
+            name: "代徵人（營利事業）",
+            role: "負責人",
+            docs: [...common.corp_biz]
+          }
+        ]
+      },
+
+      /* 5. 期貨交易稅核定資料查詢 */
+      futures_transaction_tax: {
+        sourceKey: "issuance_item9",
+        title: "期貨交易稅核定資料查詢",
+        hideHint: true,
+        options: [
+          { ...taxHistorySharedOptions.personal, id: "individual" },
+          {
+            id: "corp_biz",
+            name: "納稅義務人（營利事業）",
+            role: "負責人",
+            docs: [...common.corp_biz]
+          }
+        ]
+      },
+
+      /* 6. 菸酒稅核定資料查詢 */
+      tobacco_alcohol_tax: {
+        sourceKey: "issuance_item9",
+        title: "菸酒稅核定資料查詢",
+        hideHint: true,
+        options: [
+          { ...taxHistorySharedOptions.personal, id: "individual" },
+          {
+            id: "corp_biz",
+            name: "納稅義務人（營利事業）",
+            role: "負責人",
+            docs: [...common.corp_biz]
+          }
+        ]
+      },
+
+      /* 7. 小規模營利事業營業額核定資料查詢 */
+      small_business_sales_tax: {
+        sourceKey: "small_business",
+        title: "小規模營利事業營業額核定資料查詢",
+        options: [
+          {
+            id: "corp",
+            name: "負責人",
+            role: "負責人",
+            docs: ["主管機關核准設立文件影本", "ID_CARD_CORP_BIZ"]
+          }
+        ]
+      },
+
+      /* 8. 貨物稅核定資料查詢 */
+      commodity_tax: {
+        sourceKey: "issuance_item9",
+        title: "貨物稅核定資料查詢",
+        hideHint: true,
+        options: [
+          { ...taxHistorySharedOptions.personal, id: "individual" },
+          {
+            id: "corp_biz",
+            name: "納稅義務人（營利事業）",
+            role: "負責人",
+            docs: [...common.corp_biz]
+          }
+        ]
+      },
+
+      /* 9. 營業稅核定資料查詢 */
+      business_tax: {
+        sourceKey: "issuance_item9",
+        title: "營業稅核定資料查詢",
+        hideHint: true,
+        options: [
+          { ...taxHistorySharedOptions.personal, id: "individual" },
+          {
+            id: "corp_biz",
+            name: "納稅義務人（營利事業）",
+            role: "負責人",
+            docs: [...common.corp_biz]
+          }
+        ]
+      }
     };
 
     function cloneTaxHistoryOption(opt, rename = {}) {
@@ -1640,20 +1989,14 @@ withholding_setup: {
 
     function getTaxHistoryData(taxTypeValue) {
       const config = taxHistoryTypeConfig[taxTypeValue];
-      if (!config) return null;
-      const source = systemData[config.sourceKey];
-      if (!source || !Array.isArray(source.options)) return null;
+      if (!config || !Array.isArray(config.options)) return null;
 
-      let options = source.options.slice();
-      if (Array.isArray(config.filter)) {
-        options = options.filter(opt => config.filter.includes(opt.id));
-      }
-      options = options.map(opt => cloneTaxHistoryOption(opt, config.rename || {}));
+      const options = config.options.map(opt => cloneTaxHistoryOption(opt, config.rename || {}));
 
       return {
-        sourceKey: config.sourceKey,
-        title: source.title,
-        hint: config.hideHint ? "" : (source.hint || ""),
+        sourceKey: config.sourceKey || "",
+        title: config.title || "",
+        hint: config.hideHint ? "" : (config.hint || ""),
         options
       };
     }
@@ -1702,7 +2045,6 @@ withholding_setup: {
       { path: "申辦作業 > 1. 遺產稅延期申報", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["遺產稅延期申報"], key: "estate_tax_extension", targetIdentity: "citizen", isReady: true },
       { path: "申辦作業 > 2. 贈與稅延期申報 > 贈與人（國民）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["贈與人", "國民"], key: "gift_tax_extension", targetIdentity: "local_citizen", isReady: true },
       { path: "申辦作業 > 3. 扣繳單位設立、變更登記（統一編號編配）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["扣繳單位設立、變更登記（統一編號編配）", "扣繳單位設立", "統一編號編配"], key: "withholding_setup", targetIdentity: "1", isReady: true },
-      { path: "申辦作業 > 4. 查調即時通知", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900",  keywords: ["查調即時通知"], key: "instant_notify", targetIdentity: "local", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["各項稅款補發稅單", "補發稅單", "稅單"], key: "issuance_item1", targetIdentity: "local_citizen", isReady: true },
       { path: "核發書證 > 2. 補發遺產稅不動產公同共有同意移轉證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: [], key: "issuance_item2", targetIdentity: "citizen", isReady: true },
       { path: "核發書證 > 3. 儲蓄免扣證", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["儲蓄免扣證", "儲蓄免扣稅納稅證明", "免扣證"], key: "issuance_item3", targetIdentity: "local_citizen", isReady: true },
@@ -1713,6 +2055,9 @@ withholding_setup: {
       { path: "核發書證 > 8. 補發贈與稅證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["補發贈與稅證明書", "贈與稅證明書", "贈與稅繳清證明", "贈與稅免稅證明"], key: "issuance_item8", targetIdentity: "local_citizen", isReady: true },
       { path: "核發書證 > 9. 核發繳稅證明", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["核發繳稅證明", "繳稅證明", "納稅證明"], key: "issuance_item9", targetIdentity: "individual", isReady: true },
       { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所所得稅繳納證明書", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["核發中、英文個人房屋土地交易所所得稅繳納證明書", "房地合一所得稅繳納證明書", "房屋土地交易所得稅", "房地合一繳稅證明"], key: "issuance_item10", targetIdentity: "taxpayer", isReady: true },
+      { path: "其他作業 > 1. 查調即時通知", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["查調即時通知"], key: "instant_notify", targetIdentity: "local", isReady: true },
+      { path: "其他作業 > 2. 限制他人代理本人查調所得、財產資料", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["限制他人代理本人查調所得、財產資料"], key: "other_proxy_restriction", targetIdentity: "self", isReady: true },
+
 
       { path: "查詢作業 > 1. 各稅核定資料 > 1. 所得稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["所得稅核定資料查詢", "所得稅核定"], key: "tax_history", targetTaxType: "income_tax", isReady: true },
       { path: "查詢作業 > 1. 各稅核定資料 > 1. 所得稅核定資料查詢 > 國人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["國人", "個人"], key: "tax_history", targetTaxType: "income_tax", targetIdentity: "indiv", isReady: true },
@@ -1743,7 +2088,7 @@ withholding_setup: {
       { path: "查詢作業 > 1. 各稅核定資料 > 6. 菸酒稅核定資料查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "個人"], key: "tax_history", targetTaxType: "tobacco_alcohol_tax", targetIdentity: "individual", isReady: true },
       { path: "查詢作業 > 1. 各稅核定資料 > 6. 菸酒稅核定資料查詢 > 納稅義務人（營利事業）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "營利事業"], key: "tax_history", targetTaxType: "tobacco_alcohol_tax", targetIdentity: "corp_biz", isReady: true },
       { path: "查詢作業 > 1. 各稅核定資料 > 7. 小規模營利事業營業額核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["小規模營利事業營業額核定資料查詢", "小規模營利事業", "小規模營業額核定"], key: "tax_history", targetTaxType: "small_business_sales_tax", isReady: true },
-      { path: "查詢作業 > 1. 各稅核定資料 > 7. 小規模營利事業營業額核定資料查詢 > 營利事業負責人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營利事業", "負責人"], key: "tax_history", targetTaxType: "small_business_sales_tax", targetIdentity: "corp", isReady: true },
+      { path: "查詢作業 > 1. 各稅核定資料 > 7. 小規模營利事業營業額核定資料查詢 > 負責人", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["營利事業", "負責人"], key: "tax_history", targetTaxType: "small_business_sales_tax", targetIdentity: "corp", isReady: true },
       { path: "查詢作業 > 1. 各稅核定資料 > 8. 貨物稅核定資料查詢", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["貨物稅核定資料查詢", "貨物稅"], key: "tax_history", targetTaxType: "commodity_tax", isReady: true },
       { path: "查詢作業 > 1. 各稅核定資料 > 8. 貨物稅核定資料查詢 > 納稅義務人（個人）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "個人"], key: "tax_history", targetTaxType: "commodity_tax", targetIdentity: "individual", isReady: true },
       { path: "查詢作業 > 1. 各稅核定資料 > 8. 貨物稅核定資料查詢 > 納稅義務人（營利事業）", badgeText: "查詢作業", badgeClass: "bg-blue-100 text-blue-800", keywords: ["納稅義務人", "營利事業"], key: "tax_history", targetTaxType: "commodity_tax", targetIdentity: "corp_biz", isReady: true },
@@ -1814,11 +2159,6 @@ withholding_setup: {
         isReady: true
       })),
 
-      { path: "申辦作業 > 4. 查調即時通知 > 納稅義務人（個人 含限制行為能力人）", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["限制行為能力人"], key: "instant_notify", targetIdentity: "local", isReady: true },
-      { path: "申辦作業 > 4. 查調即時通知 > 納稅義務人（外籍人士） > 護照或居留證", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["護照或居留證"], key: "instant_notify", targetIdentity: "foreign", isReady: true },
-      { path: "申辦作業 > 4. 查調即時通知 > 納稅義務人（大陸人士） > 入出境許可證或居留證", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["入出境許可證或居留證"], key: "instant_notify", targetIdentity: "mainland", isReady: true },
-      { path: "申辦作業 >4. 查調即時通知 > 未成年人之法定代理人親自申請", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["未成年子女","未成年人之法定代理人"], key: "instant_notify", targetIdentity: "minor", isReady: true },
-      { path: "申辦作業 >4. 查調即時通知 > 未成年人之法定代理人親自申請 > 詳細記事戶口名簿、戶籍謄本", badgeText: "申辦作業", badgeClass: "bg-purple-100 text-purple-900", keywords: ["詳細記事戶口名簿、戶籍謄本"], key: "instant_notify", targetIdentity: "minor", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單 > 納稅義務人（外籍人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["外籍人士", "外國人"], key: "issuance_item1", targetIdentity: "foreign_citizen", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單 > 納稅義務人（大陸人士）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["大陸人士", "大陸地區人民"], key: "issuance_item1", targetIdentity: "mainland_citizen", isReady: true },
       { path: "核發書證 > 1. 各項稅款補發稅單 > 營利事業", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["營利事業", "公司"], key: "issuance_item1", targetIdentity: "corp_biz", isReady: true },
@@ -1850,6 +2190,18 @@ withholding_setup: {
       { path: "核發書證 > 9. 核發繳稅證明 > 納稅義務人（機關團體）", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["機關團體", "法人"], key: "issuance_item9", targetIdentity: "corp_group", isReady: true },
       { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所得稅繳納證明書 > 無居留證之外僑", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["無居留證之外僑", "外僑"], key: "issuance_item10", targetIdentity: "foreign_no_permit", isReady: true },
       { path: "核發書證 > 10. 核發中、英文個人房屋土地交易所得稅繳納證明書 > 申請人如屬未成年者", badgeText: "核發書證", badgeClass: "bg-teal-100 text-teal-800", keywords: ["未成年者", "未成年人", "法定代理人", "監護人"], key: "issuance_item10", targetIdentity: "minor", isReady: true },
+
+      { path: "其他作業 > 1. 查調即時通知 > 納稅義務人（個人 含限制行為能力人）", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["限制行為能力人"], key: "instant_notify", targetIdentity: "local", isReady: true },
+      { path: "其他作業 > 1. 查調即時通知 > 納稅義務人（外籍人士） > 護照或居留證", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["護照或居留證"], key: "instant_notify", targetIdentity: "foreign", isReady: true },
+      { path: "其他作業 > 1. 查調即時通知 > 納稅義務人（大陸人士） > 入出境許可證或居留證", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["入出境許可證或居留證"], key: "instant_notify", targetIdentity: "mainland", isReady: true },
+      { path: "其他作業 > 1. 查調即時通知 > 未成年人之法定代理人親自申請", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["未成年子女","未成年人之法定代理人"], key: "instant_notify", targetIdentity: "minor", isReady: true },
+      { path: "其他作業 > 1. 查調即時通知 > 未成年人之法定代理人親自申請 > 詳細記事戶口名簿、戶籍謄本", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["詳細記事戶口名簿、戶籍謄本"], key: "instant_notify", targetIdentity: "minor", isReady: true },
+      { path: "其他作業 > 2. 限制他人代理本人查調所得、財產資料 > 1. 身分證遺失，恐遭冒用 > 戶政或警察等相關機關之證明文件", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["身分證遺失", "身分證遭竊", "喪失", "冒用變造", "戶政", "警察"], key: "other_proxy_restriction", targetIdentity: "self", targetReason: "lost_stolen", isReady: true },
+      { path: "其他作業 > 2. 限制他人代理本人查調所得、財產資料 > 2. 身分證遭利用，涉貸款或信用卡詐財 > 法院或金融機構等相關證明文件", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["經手人", "同居人", "貸款", "信用卡詐財", "法院", "金融機構"], key: "other_proxy_restriction", targetIdentity: "self", targetReason: "misused_by_handler", isReady: true },
+      { path: "其他作業 > 2. 限制他人代理本人查調所得、財產資料 > 3. 債務已提存或清償 > 法院提存證明或已清償之確定判決", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["債務提存", "債務清償", "法院提存證明", "確定判決"], key: "other_proxy_restriction", targetIdentity: "self", targetReason: "debt_deposited_or_paid", isReady: true },
+      { path: "其他作業 > 2. 限制他人代理本人查調所得、財產資料 > 4. 財政部專案核准 > 財政部相關之證明文件", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["財政部專案核准", "財政部相關證明文件"], key: "other_proxy_restriction", targetIdentity: "self", targetReason: "mof_project_approval", isReady: true },
+      { path: "其他作業 > 2. 限制他人代理本人查調所得、財產資料 > 5. 家暴案件 > 法院家暴令證明", badgeText: "其他作業", badgeClass: "bg-other-100 text-other-800", keywords: ["家暴案件", "法院家暴令", "家暴令證明"], key: "other_proxy_restriction", targetIdentity: "self", targetReason: "domestic_violence", isReady: true },
+
     ];
 
     // ==================== 深層檢索資料庫一致性與索引優化 ====================
@@ -1916,6 +2268,13 @@ withholding_setup: {
         ) {
           // 被繼承人查詢的四筆資料原先把「死亡診斷證明書／除戶謄本／戶口名簿／親屬關係證明」
           // 直接放在第 3 欄，實際上它們是文件細項，應保留為第 4 欄。
+          originalColumns.splice(2, 0, canonicalApplicant);
+        } else if (
+          item.key === "other_proxy_restriction" &&
+          originalColumns.length >= 3 &&
+          normalizeSearchText(originalApplicant) !== normalizeSearchText(canonicalApplicant)
+        ) {
+          // 第 3 欄固定放申請人；第 4 欄起保留申請原因與證明文件。
           originalColumns.splice(2, 0, canonicalApplicant);
         } else if (
           item.key === "gift_tax_extension" &&
@@ -2004,7 +2363,7 @@ withholding_setup: {
     // 所有項目皆於第二頁顯示，搜尋結果也全部保留。
     const frontHiddenItemKeys = new Set();
 
-    // 第二頁依各區實際顯示順序重新編號。
+    // 第二頁依各區實際顯示順序重新編號（其他作業獨立編號）。
     const visibleItemNumbers = {
       // 查詢作業 1～9（小規模營利事業已併入各稅核定資料第7項業別）
       tax_history: 1,
@@ -2017,11 +2376,14 @@ withholding_setup: {
       business_reg: 8,
       gift_tax: 9,
 
-      // 申辦作業 1～4
+      // 申辦作業 1～3
       estate_tax_extension: 1,
       gift_tax_extension: 2,
       withholding_setup: 3,
-      instant_notify: 4,
+
+      // 其他作業 1～2
+      instant_notify: 1,
+      other_proxy_restriction: 2,
 
       // 核發書證 1～10
       issuance_item1: 1,
@@ -2040,7 +2402,7 @@ withholding_setup: {
       const newNumber = visibleItemNumbers[item.key];
       if (!newNumber) return item.path;
       return item.path.replace(
-        /^(查詢作業|申辦作業|核發書證)\s*>\s*\d+\./,
+        /^(查詢作業|申辦作業|其他作業|核發書證)\s*>\s*\d+\./,
         `$1 > ${newNumber}.`
       );
     }
@@ -2246,7 +2608,7 @@ withholding_setup: {
       searchInput.style.height = `${searchInput.scrollHeight}px`;
       closeAllDropdowns();
       if (item.isReady) {
-        selectItem(item.key, item.targetIdentity, { taxTypeValue: item.targetTaxType || "" });
+        selectItem(item.key, item.targetIdentity, { taxTypeValue: item.targetTaxType || "", targetReason: item.targetReason || "" });
       } else {
         showBuildingAlert();
       }
@@ -2283,7 +2645,8 @@ withholding_setup: {
       activeSearchIndex = -1;
     }
 
-    // 第三頁標題下方顯示第二頁相同的「跨轄區／跨區局」標籤。
+    // 第三頁標題下方顯示各服務的「跨轄區／跨區局」標籤。
+    // 「其他服務項目」不顯示區局／轄區，因此不在此設定標籤。
     const itemScopeLabels = {
       tax_history: "跨區局",
       tax_arrears: "跨區局",
@@ -2297,7 +2660,6 @@ withholding_setup: {
       estate_tax_extension: "跨區局",
       gift_tax_extension: "跨區局",
       withholding_setup: "跨轄區",
-      instant_notify: "跨區局",
       issuance_item1: "跨區局",
       issuance_item2: "跨區局",
       issuance_item3: "跨區局",
@@ -2413,6 +2775,9 @@ if (itemKey === "withholding_setup") {
 } else if (itemKey === "tax_history") {
     identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">2</span>請選擇申請人身分／案件類別：';
     agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
+} else if (itemKey === "other_proxy_restriction") {
+    identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別：';
+    agentGroupText.textContent = '本項目不提供委託代理辦理';
 } else {
     identityLabel.innerHTML = '<span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background-color: #2563eb; color: white; border-radius: 50%; font-size: 14px; margin-right: 0px; flex-shrink: 0;">1</span>請選擇申請人身分／案件類別：';
     agentGroupText.textContent = '委託他人代理辦理（委任辦理請勾選）';
@@ -2443,7 +2808,36 @@ if (itemKey === "withholding_setup") {
           document.getElementById("executionSelect").value = restoredState.executionValue;
       }
 
+      const reasonGroup = document.getElementById("reasonGroup");
+      const reasonSelect = document.getElementById("reasonSelect");
+      if (itemKey === "other_proxy_restriction") {
+          reasonGroup.classList.remove("hidden");
+          reasonSelect.innerHTML = '<option value="" selected disabled>請選擇申請原因</option>';
+          (data.reasonOptions || []).forEach(reason => {
+              const optionElem = document.createElement("option");
+              optionElem.value = reason.id;
+              optionElem.textContent = reason.name;
+              reasonSelect.appendChild(optionElem);
+          });
+          const restoredReasonValue = (restoredState && restoredState.reasonValue) || options.targetReason || "";
+          if (restoredReasonValue && (data.reasonOptions || []).some(reason => reason.id === restoredReasonValue)) {
+              reasonSelect.value = restoredReasonValue;
+          } else {
+              reasonSelect.value = "";
+          }
+      } else {
+          reasonGroup.classList.add("hidden");
+          reasonSelect.innerHTML = '<option value="" selected disabled>請選擇申請原因</option>';
+          reasonSelect.value = "";
+      }
+
       document.getElementById("isAgent").checked = Boolean(restoredState && restoredState.isAgent);
+      if (itemKey === "instant_notify" || itemKey === "other_proxy_restriction") {
+          document.getElementById("agentGroup").classList.add("hidden");
+          document.getElementById("isAgent").checked = false;
+      } else {
+          document.getElementById("agentGroup").classList.remove("hidden");
+      }
       if (options.recordHistory === false) {
           displayStep(3);
       } else {
@@ -2557,7 +2951,7 @@ function renderChecklist() {
         ["income_list", "property_list"].includes(currentSelectedItemKey) &&
         identityVal === "incarcerated_trustee";
 
-    if (currentSelectedItemKey === "instant_notify" || isIncarceratedTrustee) {
+    if (currentSelectedItemKey === "instant_notify" || currentSelectedItemKey === "other_proxy_restriction" || isIncarceratedTrustee) {
         if (agentGroup) agentGroup.classList.add("hidden");       // 隱藏委任代辦勾選區塊
         if (isAgentCheckbox) isAgentCheckbox.checked = false;   // 強制取消勾選，避免帶入代理狀態
     } else {
@@ -2577,17 +2971,36 @@ function renderChecklist() {
     if (!selectedOpt) return;
 
 let docs = [];
-    selectedOpt.docs.forEach(docKey => {
-        // 💡 新增：若為扣繳單位，或遇到 STD_ID，就動態判斷是否勾選委任代辦
-        if (currentSelectedItemKey === "withholding_setup" || docKey === "STD_ID") {
-            const resolvedStdId = isAgent ? "申請人（負責人）身分證正本或正反面影本" : "申請人（負責人）身分證正本";
-            docs.push(docKey.replace(/STD_ID/g, resolvedStdId));
-        } else if (docKey.includes("ID_CARD")) {
-            docs.push(docKey.replace(/ID_CARD(?:_[A-Z]+)*/g, code => getIdText(code, isAgent, selectedOpt.role)));
-        } else {
-            docs.push(docKey);
+    if (currentSelectedItemKey === "other_proxy_restriction") {
+        // 固定文件：六種申請原因均必備。
+        (itemData.commonDocs || []).forEach(docCode => {
+            const text = docCode === "OTHER_PROXY_RESTRICTION_ID_CARD"
+                ? OTHER_PROXY_RESTRICTION_DOCS.ID_CARD
+                : docCode === "OTHER_PROXY_RESTRICTION_APPLICATION_FORM"
+                    ? OTHER_PROXY_RESTRICTION_DOCS.APPLICATION_FORM
+                    : "";
+            if (text) docs.push(text);
+        });
+
+        const reasonSelect = document.getElementById("reasonSelect");
+        const selectedReasonId = reasonSelect ? reasonSelect.value : "";
+        const selectedReason = (itemData.reasonOptions || []).find(reason => reason.id === selectedReasonId);
+        if (selectedReason && Array.isArray(selectedReason.docs)) {
+            selectedReason.docs.forEach(doc => docs.unshift(doc));
         }
-    });
+    } else {
+        selectedOpt.docs.forEach(docKey => {
+            // 💡 新增：若為扣繳單位，或遇到 STD_ID，就動態判斷是否勾選委任代辦
+            if (currentSelectedItemKey === "withholding_setup" || docKey === "STD_ID") {
+                const resolvedStdId = isAgent ? "申請人（負責人）身分證正本或正反面影本" : "申請人（負責人）身分證正本";
+                docs.push(docKey.replace(/STD_ID/g, resolvedStdId));
+            } else if (docKey.includes("ID_CARD")) {
+                docs.push(docKey.replace(/ID_CARD(?:_[A-Z]+)*/g, code => getIdText(code, isAgent, selectedOpt.role)));
+            } else {
+                docs.push(docKey);
+            }
+        });
+    }
 
 
     if (currentSelectedItemKey === "creditor_data") {
@@ -2701,29 +3114,29 @@ let docs = [];
         || selectedIdentityName.includes("營利事業")
         || selectedIdentityName.includes("機關團體");
 
-    // 各稅核定資料：固定注意事項置於上方；若所選身分為營利事業／機關團體，
-    // 再將原本的企業／機關團體注意事項接在同一框最下方，避免產生第二個注意事項框。
+    // 各稅核定資料注意事項：
+    // ① 每一項業別固定顯示「核定資料清單不得據以申請復查」
+    // ② 僅選項 1（所得稅核定資料查詢）顯示所得稅申請人注意事項
+    // ③ 僅選項 9（營業稅核定資料查詢）顯示「營業稅核定資料僅能跨轄區」
+    // ④ 移除營利事業／機關團體的個別注意事項
     if (currentSelectedItemKey === "tax_history") {
         const taxNoticeItems = taxHistoryNotice?.querySelector("ul");
         if (taxNoticeItems) {
             const baseItems = [
-                "查詢綜合所得稅核定資料時，申請人需為納稅義務人本人，若為配偶或受扶養親屬仍需檢附委任書或授權書",
-                "核定資料清單不得據以申請復查",
-                "營業稅核定資料僅能跨轄區"
+                "核定資料清單不得據以申請復查"
             ];
-            taxNoticeItems.innerHTML = baseItems.map(text => `<li>${text}</li>`).join("");
 
-            if (isBusinessEntity) {
-                const businessNoticeItems = [
-                    "納稅義務人為營利事業或機關團體，應檢附公司登記證明文件或商業登記證明文件或法人登記證影本（90年11月12日公司法修正後），得以 (1)中央或地方政府核發之核准函及公司申請設立或變更之登記表，或(2)公司法第392條規定之登記事項證明書(代替)，並應由申請人或代理人具結「與正本相符，如有不符願負法律責任」。",
-                    "外國法人在臺未辦登記者，應檢附經我國當地駐外機構簽證之授權書及該法人組織於當地國核准設立之證明文件。若當地國核准設立之證明文件無法確認授權者之授權行為是否合法適格，應另檢附公司章程或其他證明文件以表彰其為該法人執行業務範圍之負責人、經理人身分。如文件為外文者，並應檢附駐外機構驗證或國內公證人認證之中譯本。"
-                ];
-                businessNoticeItems.forEach(text => {
-                    const li = document.createElement("li");
-                    li.textContent = text;
-                    taxNoticeItems.appendChild(li);
-                });
+            const selectedTaxTypeValue = taxTypeSelect?.value || "";
+
+            if (selectedTaxTypeValue === "income_tax") {
+                baseItems.unshift("查詢綜合所得稅核定資料時，申請人需為納稅義務人本人，若為配偶或受扶養親屬仍需檢附委任書或授權書");
             }
+
+            if (selectedTaxTypeValue === "business_tax") {
+                baseItems.push("營業稅核定資料僅能跨轄區");
+            }
+
+            taxNoticeItems.innerHTML = baseItems.map(text => `<li>${text}</li>`).join("");
         }
         taxHistoryNotice?.classList.remove("hidden");
         issuanceGlobalNotice?.classList.add("hidden");
@@ -2766,6 +3179,7 @@ function getThirdStepState() {
         identityValue: identitySelect ? identitySelect.value : "",
         taxTypeValue: taxTypeSelect ? taxTypeSelect.value : "",
         executionValue: executionSelect ? executionSelect.value : "",
+        reasonValue: document.getElementById("reasonSelect") ? document.getElementById("reasonSelect").value : "",
         isAgent: Boolean(isAgent && isAgent.checked)
     };
 }
@@ -2811,11 +3225,14 @@ function generateFormattedText() {
         const isAgent = document.getElementById("isAgent").checked;
 
         const isWithholding = (currentSelectedItemKey === "withholding_setup");
-        const withholdingKeys = ["estate_tax_extension", "gift_tax_extension", "instant_notify", "withholding_setup"];
+        const applicationKeys = ["estate_tax_extension", "gift_tax_extension", "withholding_setup"];
+        const otherOperationKeys = ["instant_notify", "other_proxy_restriction"];
         let systemHeader = "【國稅查詢作業系統】";
         
-        if (withholdingKeys.includes(currentSelectedItemKey)) {
+        if (applicationKeys.includes(currentSelectedItemKey)) {
             systemHeader = "【國稅申辦作業系統】";
+        } else if (otherOperationKeys.includes(currentSelectedItemKey)) {
+            systemHeader = "【國稅其他作業系統】";
         }
 
         let text = `${systemHeader}\n\n`;
@@ -2856,7 +3273,14 @@ function generateFormattedText() {
             text += "• 執行名義：" + executionSelect.options[executionSelect.selectedIndex].text + "\n";
         }
 
-        if (isAgent) {
+        if (currentSelectedItemKey === "other_proxy_restriction") {
+            const reasonSelect = document.getElementById("reasonSelect");
+            if (reasonSelect && reasonSelect.selectedIndex >= 0 && reasonSelect.value) {
+                text += "• 申請原因：" + reasonSelect.options[reasonSelect.selectedIndex].text + "\n";
+            }
+        }
+
+        if (isAgent && currentSelectedItemKey !== "other_proxy_restriction") {
             text += "• 辦理方式：委託他人代理辦理\n";
         }
 
