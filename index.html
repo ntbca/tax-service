@@ -3363,11 +3363,13 @@ let docs = [];
         }
     } else {
         selectedOpt.docs.forEach(docKey => {
-            // 💡 新增：若為扣繳單位，或遇到 STD_ID，就動態判斷是否勾選委任代辦
-            if (currentSelectedItemKey === "withholding_setup" || docKey === "STD_ID") {
-                const resolvedStdId = isAgent ? "申請人（負責人）身分證正本或正反面影本" : "申請人（負責人）身分證正本";
-                docs.push(revisedMinorAgentDoc);
-            } else if (docKey.includes("ID_CARD")) {
+            // 僅在遇到 STD_ID 動態代入扣繳單位負責人身分證文件；其他業別文件照常保留。
+            if (docKey === "STD_ID") {
+                const resolvedStdId = isAgent
+                    ? "申請人（負責人）身分證正本或正反面影本"
+                    : "申請人（負責人）身分證正本";
+                docs.push(resolvedStdId);
+            } else if (typeof docKey === "string" && docKey.includes("ID_CARD")) {
                 docs.push(docKey.replace(/ID_CARD(?:_[A-Z]+)*/g, code => getIdText(code, isAgent, selectedOpt.role)));
             } else {
                 docs.push(docKey);
