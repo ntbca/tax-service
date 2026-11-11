@@ -1827,10 +1827,10 @@ function getStdIdText() {
     official48Items.forEach(item => {
         const organizedDocs = [];
         if (item.relatedCertificateDocs.length) {
-            organizedDocs.push(`<b>相關證書影本</b><br>${formatWithholdingDocDetails(item.relatedCertificateDocs)}`);
+            organizedDocs.push(`<b>相關證書影本</b><br>${formatWithholdingDocDetails(item.relatedCertificateDocs.map(doc => doc.replace(/影本/g, "")))}`);
         }
         if (item.authorityApprovalDocs.length) {
-            organizedDocs.push(`<b>主管機關核准文件</b><br>${formatWithholdingDocDetails(item.authorityApprovalDocs)}`);
+            organizedDocs.push(`<b>主管機關核准文件影本</b><br>${formatWithholdingDocDetails(item.authorityApprovalDocs.map(doc => doc.replace(/影本/g, "")))}`);
         }
         item.otherDocs.forEach(doc => {
             if (doc === "STD_ID") {
@@ -3438,7 +3438,7 @@ let docs = [];
         const li = document.createElement("li");
         let formattedText = doc;
         
-        if (doc.includes("主管機關核准文件<br>")) {
+        if (doc.includes("主管機關核准文件</b>影本<br>")) {
             // 這一欄的細項已在資料整理階段完成編號及換行，直接輸出以免再次切割內容。
             formattedText = doc;
         } else if (doc.includes("※註：")) {
