@@ -1393,44 +1393,44 @@ function getStdIdText() {
     };
 
     // 扣繳單位 48 種業別：文件分組資料。要修改文件時，直接編輯下方對應欄位即可。
-    // relatedCertificateDocs：相關證書影本細項；authorityApprovalDocs：主管機關核准文件細項；otherDocs：其他共用或原始獨立文件。
+    // relatedCertificateDocs、authorityApprovalDocs：直接填寫要顯示的細項文字（不需在這兩欄輸入「影本」）；otherDocs：其他共用或原始獨立文件。
     const official48Items = [
         {
             id: "1",
             name: "1. 律師或法律事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["公會核發之律師身分證明影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["公會核發之律師身分證明"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 事務所地址、電話、傳真異動者，應向公會陳報，取具「律師身分證明」文件\n※ 事務所註銷時，無需向公會報備，故無主管機關核備文件。惟律師已不再執業，才需向公會辦理退會，取具「退會證明」"
         },
         {
             id: "2",
             name: "2. 以合署方式經營之律師或法律事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["公會核發之律師身分證明影本", "合署契約書影本", "以合署方式經營之律師或法律事務所全體律師名冊影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["公會核發之律師身分證明", "合署契約書", "以合署方式經營之律師或法律事務所全體律師名冊"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 105.6.17財北國稅審二字第1050023302號函規定\n※ 事務所中每位合署律師皆需分別編配統一編號\n※ 扣繳單位名稱：「○○律師  (或法律)事務所○○○律師  」（註：不強制加「合署」二字）"
         },
         {
             id: "3",
             name: "3. 會計師事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["金融監督管理委員會(法人)或會計師公會全國聯合會(非法人)登錄核備文及事務所登錄事項表影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["金融監督管理委員會(法人)或會計師公會全國聯合會(非法人)登錄核備文及事務所登錄事項表"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
         },
         {
             id: "4",
             name: "4. 合署會計師事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["會計師公會全國聯合會登錄核備文及事務所登錄事項表影本", "合署會計師事務所全體會計師名冊影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["會計師公會全國聯合會登錄核備文及事務所登錄事項表", "合署會計師事務所全體會計師名冊"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 參考99.3.3財北國稅資字第0990207129號函規定\n※ 事務所中每位合署會計師皆需分別編配統一編號\n※ 扣繳單位名稱：「○○會計師事務所○○○會計師」（註：不強制加「合署」二字）"
         },
         {
             id: "5",
             name: "5. 精算師事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
             authorityApprovalDocs: [],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
@@ -1438,79 +1438,79 @@ function getStdIdText() {
         {
             id: "6",
             name: "6. 土地登記代理人事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["所轄直轄市、縣(市)政府地政處登錄核備文影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["所轄直轄市、縣(市)政府地政處登錄核備文"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 目前已不核發專業代理人證書"
         },
         {
             id: "7",
             name: "7. 地政士事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["所轄直轄市、縣(市)政府地政處登錄核備文影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["所轄直轄市、縣(市)政府地政處登錄核備文"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
         },
         {
             id: "8",
             name: "8. 不動產估價師事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["所轄直轄市、縣(市)政府地政處登錄核備文影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["所轄直轄市、縣(市)政府地政處登錄核備文"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
         },
         {
             id: "9",
             name: "9. 技師事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["行政院公共工程委員會登錄核備文影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["行政院公共工程委員會登錄核備文"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
         },
         {
             id: "10",
             name: "10. 建築師事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["轄直轄市、縣(市)政府主管局(處)核准立案證書影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["轄直轄市、縣(市)政府主管局(處)核准立案證書"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 中區主管局(處)：臺中市政府都市發展局、苗栗縣政府工商發展處、彰化縣政府建設處、南投縣政府建設處、雲林縣政府建設處"
         },
         {
             id: "11",
             name: "11. 記帳及報稅代理人事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["所轄國稅局核準登錄執業證明書影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["所轄國稅局核準登錄執業證明書"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 目前已不核發記帳及報稅代理人登錄執業證明書\n※ 如變更登錄事項，需具所轄國稅局核准文"
         },
         {
             id: "12",
             name: "12. 記帳士事務所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["所轄國稅局核發之登錄(記)執行記帳士業務核准文影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["所轄國稅局核發之登錄(記)執行記帳士業務核准文"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 注意事項三、第23次聯繫會議第14案決議：…、記帳士、技師事務所、…等單位申請編配統一編號時，免檢附加入同業公會之證明文件"
         },
         {
             id: "13",
             name: "13. 醫師診所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["衛生福利部或所轄直轄市、縣(市)政府衛生局核發開業執照影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["衛生福利部或所轄直轄市、縣(市)政府衛生局核發開業執照"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 主管機關在中央為行政院衛生署；在直轄市為直轄市政府；在縣（市）為縣（市）政府"
         },
         {
             id: "14",
             name: "14. 獸醫診所",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
-            authorityApprovalDocs: ["農業部或所轄直轄市、縣(市)政府主管處(所)核發開業執照影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
+            authorityApprovalDocs: ["農業部或所轄直轄市、縣(市)政府主管處(所)核發開業執照"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 中區主管處(所)：臺中市動物保護防疫處、苗栗縣動物保護防疫所、 彰化縣動物防疫所、南投縣家畜疾病防治所、雲林縣動植物防疫所"
         },
         {
             id: "15",
             name: "15. 國術館損傷技術員",
-            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照影本"],
+            relatedCertificateDocs: ["考試及格證書/開業執照/執業執照"],
             authorityApprovalDocs: [],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
@@ -1591,7 +1591,7 @@ function getStdIdText() {
             id: "25",
             name: "25. 各類文教機構團體協會",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["內政部核准設立公文及立案證書", "理事長當選證書影本"],
+            authorityApprovalDocs: ["內政部核准設立公文及立案證書", "理事長當選證書"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
         },
@@ -1607,7 +1607,7 @@ function getStdIdText() {
             id: "27",
             name: "27. 人民團體、同業工會",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["需具所轄直轄市、縣(市)政府社會局(處)或勞工局(處)核准設立公文及立案證書", "理事長當選證書影本"],
+            authorityApprovalDocs: ["需具所轄直轄市、縣(市)政府社會局(處)或勞工局(處)核准設立公文及立案證書", "理事長當選證書"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
         },
@@ -1615,14 +1615,14 @@ function getStdIdText() {
             id: "28",
             name: "28. 財團法人",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["法院核備之設立公文及法人登記證書影本"],
+            authorityApprovalDocs: ["法院核備之設立公文及法人登記證書"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 依目的事業主管機關(如內政部、教育部、文化部等)規定全國性○○財團法人之設立流程，經主管機關許可設立者，即應向法院聲請設立登記，聲請人須繳驗財團法人已取得財產之證明文件，法院方能發給法人登記證書。是捐助人於移轉捐助財產給法人時，因須具金融機構帳戶而有統一編號需求者，可提供「主管機關核准設立公文、地方法院登記處公文、法院登記公告及法人登記簿謄本」，先予編配統一編號，並於扣繳單位設立登記申請書（三聯）空白處備註「申請人須於取得法人登記證書後10日內，檢具法院核備之設立公文及法人登記證書向本分局(所)辦理核備，倘因故未完成設立登記程序致經法院撤銷登記，本分局(所)將撤銷原核准編配之統一編號。」"
         },
         {
             id: "29",
             name: "29. 保險經紀人事務所",
-            relatedCertificateDocs: ["考試及格證書/執業證照影本"],
+            relatedCertificateDocs: ["考試及格證書/執業證照"],
             authorityApprovalDocs: [],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 保險經紀人管理規則第3條：經紀人非依本規則取得執業證照，不得經營或執行執業\n※ 保險經紀人管理規則第7條：具備本規則所定經紀人資格……得以個人名義、……於取得執業證照後執行業務\n※ 保險經紀人管理規則第8條：個人執業經紀人應檢附下列文件，向主管機關辦理許可登記：……"
@@ -1630,7 +1630,7 @@ function getStdIdText() {
         {
             id: "30",
             name: "30. 保險代理人事務所",
-            relatedCertificateDocs: ["考試及格證書/執業證照影本"],
+            relatedCertificateDocs: ["考試及格證書/執業證照"],
             authorityApprovalDocs: [],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 保險代理人規則第3條：代理人非依本規則取得執業證照，不得經營或執行執業\n※ 保險代理人管理規則第7條：具備本規則所定代理人資格……得以個人名義、……於取得執業證照後執行業務\n※ 保險代理人管理規則第8條：個人執業代理人應檢附下列文件，向主管機關辦理許可登記：……"
@@ -1695,7 +1695,7 @@ function getStdIdText() {
             id: "37",
             name: "37. 祭祀公業",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["所轄鄉、鎮、市、區公所核准設立公文影本", "派下員名冊影本", "派下員系統表影本", "不動產清冊影本"],
+            authorityApprovalDocs: ["所轄鄉、鎮、市、區公所核准設立公文", "派下員名冊", "派下員系統表", "不動產清冊"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 有祠堂者，向祠堂所在地國稅局各分局、稽徵所申請統一編號\n※ 無祠堂者，向管理人戶籍所在地國稅局各分局、稽徵所辦理"
         },
@@ -1703,7 +1703,7 @@ function getStdIdText() {
             id: "38",
             name: "38. 本國銀行受託保管外國公司投資信託基金專戶",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["本國銀行營業執照影本", "金融監督管理委員會核準函影本"],
+            authorityApprovalDocs: ["本國銀行營業執照", "金融監督管理委員會核準函"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: ""
         },
@@ -1711,7 +1711,7 @@ function getStdIdText() {
             id: "39",
             name: "39. 保管機構受託保管外國人(含外國法人)投資專戶",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["保管機構營業執照影本", "委託書影本(需附中文譯本)", "臺灣證券交易所核發「境外華僑及外國人完成登記證明」影本"],
+            authorityApprovalDocs: ["保管機構營業執照", "委託書(需附中文譯本)", "臺灣證券交易所核發「境外華僑及外國人完成登記證明」"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 台灣證券交易所給號後由分局、稽徵所編配稅籍編號\n目前實務作業(自96.8月起)，係由台灣證券交易所於核發「境外華僑及外國人完成登記證明」時，一併編配由國稅局提供之「扣繳單位統一編號」予保管機構並代收申請文件(扣繳單位申請書第一、三聯暨附件)，再於次月初將上述文件寄國稅局鍵檔，以產出稅籍編號\n※ 參考條文：\n華僑及外國人投資證券管理辦法第10條及臺灣證券交易所股份有限公司營業細則第77條之4 規定，外國公司投資國內上市、櫃股票，首先須向臺灣證券交易所辦理登記，再委託國內代理人（通常即為國內保管銀行、證券商）或代表人申請辦理登記，並指定我國國內保管機構，委託辦理後續交易確認及交割等相關事宜"
         },
@@ -1719,7 +1719,7 @@ function getStdIdText() {
             id: "39-1",
             name: "39-1. 保管機構受託保管外資客戶境外投資活動擔保品專戶",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["保管機構營業執照影本", "臺灣證券交易所於核發之核准函"],
+            authorityApprovalDocs: ["保管機構營業執照", "臺灣證券交易所於核發之核准函"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 依「臺灣證券交易所股份有限公司華僑及外國人以國內有價證券作為境外投資活動擔保品操作辦法」第 9 條規定，擔保品保管機構應於集保結算所開設專屬之擔保品保管劃撥帳戶"
         },
@@ -1727,7 +1727,7 @@ function getStdIdText() {
             id: "40",
             name: "40. 保管機構受託保管大陸地區投資人投資專戶",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["保管機構營業執照影本", "委託書影本(需附中文譯本)", "臺灣證券交易所核發「大陸地區投資人完成登記證明」影本"],
+            authorityApprovalDocs: ["保管機構營業執照", "委託書(需附中文譯本)", "臺灣證券交易所核發「大陸地區投資人完成登記證明」"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 台灣證券交易所給號後由分局、稽徵所編配稅籍編號\n目前實務作業(自98.1月起)，由台灣證券交易所於核發「大陸地區投資人完成登記證明」時，一併編配本局所提供之「扣繳單位統一編號」予保管機關並代收申請文件(扣繳單位申請書第一、三聯暨附件)，再於次月初將上述文件寄本局鍵檔，以產出稅籍編號\n※ 參考條文：\n「大陸地區投資人來臺從事證券投資及期貨交易管理辦法」第16 條"
         },
@@ -1735,7 +1735,7 @@ function getStdIdText() {
             id: "41",
             name: "41. 外國營利事業在臺未設分支機構僅設辦事處",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["經濟部核准設立公文影本"],
+            authorityApprovalDocs: ["經濟部核准設立公文"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 以經濟部核准之「公司在臺灣地區指派之訴訟及非訴訟代理人」為在臺負責人\n※ 由經濟部編配統一編號"
         },
@@ -1743,7 +1743,7 @@ function getStdIdText() {
             id: "42",
             name: "42. 外國營利事業投資國內未上市、櫃股票在臺開立新臺幣帳戶",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["經濟部投資審查委員會、科學工業園區管理局或加工出口區管理處核准文影本", "外國法人資格證明文件影本", "外國法人負責人身分證明文件影本", "經當地民間公證人公、認證出具之授權書影本(需附中文譯本)", "在臺代理人身分證明文件影本"],
+            authorityApprovalDocs: ["經濟部投資審查委員會、科學工業園區管理局或加工出口區管理處核准文", "外國法人資格證明文件", "外國法人負責人身分證明文件", "經當地民間公證人公、認證出具之授權書(需附中文譯本)", "在臺代理人身分證明文件"],
             otherDocs: ["STD_ID"],
             hint: "※ 向在臺代理人或代表人之戶籍所在地國稅局各分局、稽徵所編配統一編號\n※ 依華僑及外國人投資證券管理辦法第10條 及臺灣證券交易所股份有限公司營業細則第77條之4 規定，外國營利事業投資國內上市、櫃股票，應依本表序號39規定辦理\n※ 第36及37次聯繫會決議，授權書經下列單位其中之一公、認、驗證：\n1.我國駐外使領館、代表處或辦事處或行政院於香港或澳門設立或指定之機構或委託之民間團體驗證\n2.當地政府機關或當地法院或當地公證人公認證\n3.外國駐我國使領館或獲授權辦理文件證明之外國代表機構驗證\n4.我國法院或所屬民間公證人依我國公證法作成公證書(自然人得依我國公證法認證)"
         },
@@ -1751,7 +1751,7 @@ function getStdIdText() {
             id: "43",
             name: "43. 海外企業在臺申請第一上市(櫃)或登錄興櫃",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["證券主管機關核准上市(櫃)或同意興櫃登錄核准函影本", "代理人出具經我國駐外單位認證之海外企業授權書影本(需附中文譯本)", "海外企業負責人身分證明文件影本", "在臺代理人身分證明文件影本"],
+            authorityApprovalDocs: ["證券主管機關核准上市(櫃)或同意興櫃登錄核准函", "代理人出具經我國駐外單位認證之海外企業授權書(需附中文譯本)", "海外企業負責人身分證明文件", "在臺代理人身分證明文件"],
             otherDocs: ["STD_ID","所在地全部所有權人最近一期房屋稅單影本或房屋稅籍證明文件（如為承租房屋請加附租賃合約書影本）（外國營利事業在臺有設籍地址，需檢附房屋稅單影本，如為承租，請加附租賃契約影本）"],
             hint: "※ 參考臺北市國稅局99.4.26財北國稅資字第0990205020號函\n※ 負責人及扣繳義務人均填海外企業之負責人，若在台無設籍地址則填海外企業所在國地址，房屋稅籍編號除縣市別為英文代碼外，數字欄均填9\n※ 海外營利事業在臺有設籍地址，則向該址之國稅局各分局、稽徵所編配統一編號；若無，則向在臺代理人或代表人戶籍所在地國稅局各分局、稽徵所辦理\n※ 第37次聯繫會決議，授權書免經我國駐外單位認證"
         },
@@ -1759,7 +1759,7 @@ function getStdIdText() {
             id: "44",
             name: "44. 海外企業之海外法人股東在臺開立新臺幣帳戶",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["海外企業在中華民國委任之專業代理機構出具股票持有證明書正本（註：此項依規定需正本）", "主管機關核准海外企業上市(櫃)或同意興櫃登錄之核准函影本", "經我國駐外單位認證之法人股東依註冊國法律組織登記且有效存在之證明文件影本", "經我國駐外單位認證之法人股東委託代理人之授權書影本(需附中文譯本)", "法人股東負責人身分證明文件影本", "在臺代理人之身分證明文件影本",],
+            authorityApprovalDocs: ["海外企業在中華民國委任之專業代理機構出具股票持有證明書正本（註：此項依規定需正本）", "主管機關核准海外企業上市(櫃)或同意興櫃登錄之核准函", "經我國駐外單位認證之法人股東依註冊國法律組織登記且有效存在之證明文件", "經我國駐外單位認證之法人股東委託代理人之授權書(需附中文譯本)", "法人股東負責人身分證明文件", "在臺代理人之身分證明文件",],
             otherDocs: [ "STD_ID","所在地全部所有權人最近一期房屋稅單影本或房屋稅籍證明文件（海外企業之海外法人股東在臺有設籍地址，需檢附房屋稅單影本，如為承租，請加附租賃契約影本）"],
             hint: "※ 參考臺北市國稅局99.10.4財北國稅資字第0990243537號函\n※ 負責人及扣繳義務人均填海外法人股東之負責人，地址填海外法人股東所在國地址，房屋稅籍編號除縣市別為英文代碼外，數字欄均填9\n※ 海外企業之海外法人股東，在臺有設籍地址，則向該址之國稅局各分局、稽徵所編配統一編號；若無，則向在臺代理人或代表人戶籍所在地國稅局各分局、稽徵所辦理\n※ 第38次聯繫會決議，授權書之公、認、驗證程序同編號42"
         },
@@ -1767,7 +1767,7 @@ function getStdIdText() {
             id: "45",
             name: "45. 已參與發行海外存託憑證公司因辦理分割減資致海外存託憑證持有人持有國內未上市公司股票",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["金管會核准分割減資公文影本", "存託機構指定之國內代理人營業執照影本", "存託機構指定之國內代理人之負責人、扣繳義務人及代理人身分證影本", "存託機構指定之國內代理人所在地最近1期房屋稅單或房屋使用同意書],
+            authorityApprovalDocs: ["金管會核准分割減資公文", "存託機構指定之國內代理人營業執照", "存託機構指定之國內代理人之負責人、扣繳義務人及代理人身分證", "存託機構指定之國內代理人所在地最近1期房屋稅單或房屋使用同意書"],
             otherDocs: ["STD_ID", "STD_TAX"],
             hint: "※ 扣繳單位名稱：「存託機構受託保管XXX公司因分割致海外存託憑證持有人取得○○○公司股票集合專戶」"
         },
@@ -1775,7 +1775,7 @@ function getStdIdText() {
             id: "46",
             name: "46. 信託專戶-專案核准案件/一般信託案件",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["專案核准案件：檢附主管機關專案核准信託基金文件影本","非專案核准案件：檢附信託契約書影本"],
+            authorityApprovalDocs: ["專案核准案件：檢附主管機關專案核准信託基金文件","非專案核准案件：檢附信託契約書"],
             otherDocs: ["STD_ID"],
             hint: "※ 專案核准案件：(符合所得稅法第3條之4第5項、第6項規定經主管機關專案核准案件)每一專案編配一個扣繳單位統一編號\n※ 非專案核准案件：每一受託人編配一個扣繳單位統一編號"
         },
@@ -1783,7 +1783,7 @@ function getStdIdText() {
             id: "47",
             name: "47. 信託專戶-私募基金案件",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["董事會議事錄影本", "投資說明書影本", "證券投資信託契約書影本",],
+            authorityApprovalDocs: ["董事會議事錄", "投資說明書", "證券投資信託契約書",],
             otherDocs: [ "STD_ID"],
             hint: "※ 扣繳單位名稱：投資說明書載明之基金登記名稱(於基金募集完成前申請者，應加「籌備」字樣)"
         },
@@ -1791,7 +1791,7 @@ function getStdIdText() {
             id: "48",
             name: "48. 證券商經營財富管理帳戶/現金管理專戶",
             relatedCertificateDocs: [],
-            authorityApprovalDocs: ["金管會核准文件影本", "證券商許可證照影本", "中華民國證券商業同業公會會員證書影本", "財富或現金管理契約書影本"],
+            authorityApprovalDocs: ["金管會核准文件", "證券商許可證照", "中華民國證券商業同業公會會員證書", "財富或現金管理契約書"],
             otherDocs: ["STD_TAX"],
             hint: "※ 扣繳單位名稱：「○○證券商之客戶財富管理帳戶/○○證券商之客戶現金管理專戶」"
         },
@@ -1827,10 +1827,10 @@ function getStdIdText() {
     official48Items.forEach(item => {
         const organizedDocs = [];
         if (item.relatedCertificateDocs.length) {
-            organizedDocs.push(`<b>相關證書影本</b><br>${formatWithholdingDocDetails(item.relatedCertificateDocs.map(doc => doc.replace(/影本/g, "")))}`);
+            organizedDocs.push(`<b>相關證書影本</b><br>${formatWithholdingDocDetails(item.relatedCertificateDocs)}`);
         }
         if (item.authorityApprovalDocs.length) {
-            organizedDocs.push(`<b>主管機關核准文件影本</b><br>${formatWithholdingDocDetails(item.authorityApprovalDocs.map(doc => doc.replace(/影本/g, "")))}`);
+            organizedDocs.push(`<b>主管機關核准文件影本</b><br>${formatWithholdingDocDetails(item.authorityApprovalDocs)}`);
         }
         item.otherDocs.forEach(doc => {
             if (doc === "STD_ID") {
@@ -2863,6 +2863,14 @@ withholding_setup: {
 
     function showBuildingAlert() {
       showNotificationDialog('該項目第三頁功能建置中，敬請期待！', 'error', document.activeElement);
+    }
+
+    // 同步搜尋框右側的清除按鈕，避免事件呼叫未定義函式而中斷搜尋操作。
+    function toggleClearButton() {
+      const searchInput = document.getElementById('searchInput');
+      const clearBtn = document.getElementById('clearSearchBtn');
+      if (!searchInput || !clearBtn) return;
+      clearBtn.classList.toggle('hidden', searchInput.value.length === 0);
     }
 
     function handleSearchInput() {
